@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="28117d5d-ed8c-4a20-98ce-3e3fadb71976" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin1/Cuenta/Cuenta.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin1/Cuenta/CuentaException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin1/Cuenta/Cuenta_App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin1/MaquinaDeCafe/MaquinaDeCafe.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin1/MaquinaDeCafe/MaquinaDeCafeException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin1/MaquinaDeCafe/MaquinaDeCafe_App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin1/Rectangulo/Rectangulo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin1/Rectangulo/RectanguloException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin1/Rectangulo/Rectangulo_App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin2/Ordenador/DiscoDuro.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin2/Ordenador/Microprocesador.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin2/Ordenador/Ordenador.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin2/Ordenador/Ordenador_App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin2/Ordenador/PlacaBase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin2/Ordenador/PlacaBaseException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin2/Ordenador/TarjetaGrafica.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin2/Persona/Persona.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin2/Persona/PersonaException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/Boletin2/Persona/Persona_App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Boletin_Tema3/src/utils/MiEntradaSalida.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Examen2020_elecionesUSA/src/Ejercicio1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Examen2020_elecionesUSA/src/Ejercicio2.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ExamenBuscaminas/src/Ejercicio1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ExamenOca/src/Ejercicio1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../RepasoBuscaMinas/src/Ejercicio1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../RepasoJardin/src/Jardin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio10.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio11.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio12.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio13.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio14.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio15.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio16.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio17.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio18.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio3.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio4.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio5.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio6.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio7.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio8.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin1/Ejercicio9.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio10.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio11.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio12.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio13.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio14.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio15.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio16.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio2.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio3.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio4.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio5.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio6.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio7.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio8.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Boletines/Boletin_Tema2/src/Boletin2/Ejercicio9.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Boletin_Tema1/src/Boletin1/Ejercicio1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Boletin_Tema1/src/Boletin1/Ejercicio2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Boletin_Tema1/src/Boletin1/Ejercicio3.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2pVzsLuDPMvKKJS6aspVfWh9n4r" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Alberto Carmona/Downloads/GOL-Alumnos",
+    "onboarding.tips.debug.path": "C:/Users/Alberto Carmona/OneDrive/Escritorio/Programacion 2/Boletin_Tema1/PracticaJuegoVida/src/Main.java"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="28117d5d-ed8c-4a20-98ce-3e3fadb71976" name="Changes" comment="" />
+      <created>1732866241710</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1732866241710</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Main.java</url>
+          <line>11</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
