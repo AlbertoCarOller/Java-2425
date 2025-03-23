@@ -11,8 +11,8 @@ public class Autor {
     private List<Libro> librosEnviados;
 
     // Creamos el constructor
-    public Autor(String nombre) {
-        this.nombre = nombre;
+    public Autor(String nombre) throws LibroException {
+        setNombre(nombre);
         this.librosEnviados = new ArrayList<>();
     }
 
@@ -21,7 +21,15 @@ public class Autor {
         return nombre;
     }
 
-    private void setNombre(String nombre) {
+    private void setNombre(String nombre) throws LibroException {
+        if (!Character.isUpperCase(nombre.charAt(0))) {
+            throw new LibroException("El nombre del autor debe empezar por mayúsculas");
+        }
+        for (int i = 1; i < nombre.length(); i++) {
+            if (Character.isUpperCase(nombre.charAt(i)) || !Character.isLetter(nombre.charAt(i))) {
+                throw new LibroException("El resto de palabras debe estar en minúsculas y ser letras");
+            }
+        }
         this.nombre = nombre;
     }
 

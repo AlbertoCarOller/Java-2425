@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Boletin_Tema1/Boletin_Tema1.iml" filepath="$PROJECT_DIR$/Boletin_Tema1/Boletin_Tema1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Boletin_Tema3/Boletin_Tema3.iml" filepath="$PROJECT_DIR$/Boletin_Tema3/Boletin_Tema3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Boletin_Tema4/Boletin_Tema4.iml" filepath="$PROJECT_DIR$/Boletin_Tema4/Boletin_Tema4.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Boletin_Tema5/Boletin_Tema5.iml" filepath="$PROJECT_DIR$/Boletin_Tema5/Boletin_Tema5.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CodeWars/CodeWars.iml" filepath="$PROJECT_DIR$/CodeWars/CodeWars.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EjerciciosPracticaTema4/EjerciciosPracticaTema4.iml" filepath="$PROJECT_DIR$/EjerciciosPracticaTema4/EjerciciosPracticaTema4.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EjerciciosPracticasTema3/EjerciciosPracticasTema3.iml" filepath="$PROJECT_DIR$/EjerciciosPracticasTema3/EjerciciosPracticasTema3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Examen2020_elecionesUSA/Examen2020_elecionesUSA.iml" filepath="$PROJECT_DIR$/Examen2020_elecionesUSA/Examen2020_elecionesUSA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ExamenBuscaminas/ExamenBuscaminas.iml" filepath="$PROJECT_DIR$/ExamenBuscaminas/ExamenBuscaminas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ExamenCancionNavidad/ExamenCancionNavidad.iml" filepath="$PROJECT_DIR$/ExamenCancionNavidad/ExamenCancionNavidad.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ExamenHerencia/ExamenHerencia.iml" filepath="$PROJECT_DIR$/ExamenHerencia/ExamenHerencia.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ExamenJuguetes/ExamenJuguetes.iml" filepath="$PROJECT_DIR$/ExamenJuguetes/ExamenJuguetes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ExamenOca/ExamenOca.iml" filepath="$PROJECT_DIR$/ExamenOca/ExamenOca.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ExamenOrientadoAObjetos/ExamenOrientadoAObjetos.iml" filepath="$PROJECT_DIR$/ExamenOrientadoAObjetos/ExamenOrientadoAObjetos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ExamenTema4MundialChapas/ExamenTema4MundialChapas.iml" filepath="$PROJECT_DIR$/ExamenTema4MundialChapas/ExamenTema4MundialChapas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PracticaBiblioteca/PracticaBiblioteca.iml" filepath="$PROJECT_DIR$/PracticaBiblioteca/PracticaBiblioteca.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PracticaJuegoVida/PracticaJuegoVida.iml" filepath="$PROJECT_DIR$/PracticaJuegoVida/PracticaJuegoVida.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RepasoBuscaMinas/RepasoBuscaMinas.iml" filepath="$PROJECT_DIR$/RepasoBuscaMinas/RepasoBuscaMinas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RepasoJardin/RepasoJardin.iml" filepath="$PROJECT_DIR$/RepasoJardin/RepasoJardin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Repositorio.iml" filepath="$PROJECT_DIR$/Repositorio.iml" />
+    </modules>
+  </component>
+</project>

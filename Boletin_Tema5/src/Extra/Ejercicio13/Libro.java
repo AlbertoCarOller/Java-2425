@@ -21,7 +21,15 @@ public class Libro {
         return titulo;
     }
 
-    private void setTitulo(String titulo) {
+    private void setTitulo(String titulo) throws LibroException {
+        if (!Character.isUpperCase(titulo.charAt(0))) {
+            throw new LibroException("El nombre del autor debe empezar por mayúsculas");
+        }
+        for (int i = 1; i < titulo.length(); i++) {
+            if (Character.isUpperCase(titulo.charAt(i)) || !Character.isLetter(titulo.charAt(i))) {
+                throw new LibroException("El resto de palabras debe estar en minúsculas y ser letras");
+            }
+        }
         this.titulo = titulo;
     }
 
@@ -29,7 +37,15 @@ public class Libro {
         return genero;
     }
 
-    private void setGenero(String genero) {
+    private void setGenero(String genero) throws LibroException {
+        if (!Character.isUpperCase(genero.charAt(0))) {
+            throw new LibroException("El nombre del autor debe empezar por mayúsculas");
+        }
+        for (int i = 1; i < genero.length(); i++) {
+            if (Character.isUpperCase(genero.charAt(i)) || !Character.isLetter(genero.charAt(i))) {
+                throw new LibroException("El resto de palabras debe estar en minúsculas y ser letras");
+            }
+        }
         this.genero = genero;
     }
 
