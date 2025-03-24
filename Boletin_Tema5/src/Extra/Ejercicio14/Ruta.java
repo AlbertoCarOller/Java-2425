@@ -37,10 +37,6 @@ public class Ruta {
         return paquetes;
     }
 
-    private void setPaquetes(Queue<Paquete> paquetes) {
-        this.paquetes = paquetes;
-    }
-
     // Hacemos un equals
     @Override
     public boolean equals(Object o) {

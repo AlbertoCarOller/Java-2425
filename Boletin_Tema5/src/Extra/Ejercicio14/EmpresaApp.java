@@ -1,5 +1,7 @@
 package Extra.Ejercicio14;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,11 +13,16 @@ public class EmpresaApp {
     public static void main(String[] args) {
         try {
             // Creamos paquetes
-            Paquete paquete = new Paquete("Chelu", "Carles", 3, 10);
-            Paquete paquete1 = new Paquete("Atisbedo", "Respecio", 2, 22);
-            Paquete paquete2 = new Paquete("Saragarcon", "Xavier", 2, 25);
-            Paquete paquete3 = new Paquete("Lolitogoku", "Natalia", 3, 8);
-            Paquete paquete4 = new Paquete("Bermudín", "Peccary", 1, 1);
+            Paquete paquete = new Paquete("Chelu", "Carles",
+                    3, LocalDateTime.of(2020, 5, 13, 12, 30));
+            Paquete paquete1 = new Paquete("Atisbedo", "Respecio", 2,
+                    LocalDateTime.of(2021, 3, 15, 13, 45));
+            Paquete paquete2 = new Paquete("Saragarcon", "Xavier", 2,
+                    LocalDateTime.of(2023, 9, 19, 20, 10));
+            Paquete paquete3 = new Paquete("Lolitogoku", "Natalia", 3,
+                    LocalDateTime.of(2022, 11, 25, 19, 20));
+            Paquete paquete4 = new Paquete("Bermudín", "Peccary", 1,
+                    LocalDateTime.of(2024, 10, 22, 13, 55));
             // Creamos las rutas
             Ruta ruta = new Ruta("Ruta mediterránea");
             Ruta ruta1 = new Ruta("Ruta del bacalao");
@@ -34,12 +41,7 @@ public class EmpresaApp {
             System.out.println("La próxima ruta en salir es la ruta con id "
                     + proximoPaqueteAEntregar(ruta).getNumeroSeguimiento());
             // Llamamos al método para avisar si hay paquetes en la ruta que lleven más de 1 día
-            if (avisarDePaquetes(ruta1)) {
-                System.out.println("En la ruta " + ruta1.getNombre() + " hay paquetes con más de 1 día de espera");
-
-            } else {
-                System.out.println("En la ruta " + ruta1.getNombre() + " no tiene paquetes con más de 1 día de espera");
-            }
+            System.out.println(avisarDePaquetes());
             // Llamamos al método para combinar rutas
             System.out.println(combinarRutas(ruta, ruta1));
 
@@ -57,13 +59,17 @@ public class EmpresaApp {
     }
 
     // Hacemos un método para listar todos los paquetes de una ruta específica
-    public static String listarPaquetesRuta(Ruta ruta) throws PaqueteException {
-        return Optional.of(rutas.stream().filter(ruta::equals)
+    public static List<Paquete> listarPaquetesRuta(Ruta ruta) throws PaqueteException {
+        /*return Optional.of(rutas.stream().filter(ruta::equals)
                         .flatMap(r -> r.getPaquetes().stream())
                         .map(Paquete::toString)
                         .collect(Collectors.joining("\n")))
                 .filter(s -> !s.isEmpty())
-                .orElseThrow(() -> new PaqueteException("No se han encontrado resultados"));
+                .orElseThrow(() -> new PaqueteException("No se han encontrado resultados"));*/
+        if (!rutas.contains(ruta)) {
+            throw new PaqueteException("No existe la ruta");
+        }
+        return ruta.getPaquetes().stream().toList();
     }
 
     // Hacemos un método para ver el próximo paquete que se entregará de una ruta sin eliminarlo
@@ -71,8 +77,7 @@ public class EmpresaApp {
         if (rutas.stream().noneMatch(ruta::equals)) {
             throw new PaqueteException("La ruta no está registrada");
         }
-        int indiceRuta = rutas.indexOf(ruta);
-        Paquete paquete = rutas.get(indiceRuta).getPaquetes().peek();
+        Paquete paquete = ruta.getPaquetes().peek();
         if (paquete == null) {
             throw new PaqueteException("No hay paquetes");
         }
@@ -81,14 +86,17 @@ public class EmpresaApp {
 
     /* Hacemos un método que avise si hay paquetes en una ruta específica que llevan más de 1
      día esperando para ser entregados */
-    public static boolean avisarDePaquetes(Ruta ruta) {
-        return rutas.stream().filter(ruta::equals)
-                .flatMap(r -> r.getPaquetes().stream())
-                .anyMatch(p -> p.getTiempoEspera() > 24);
+    public static List<Ruta> avisarDePaquetes() throws PaqueteException {
+        return Optional.of(rutas.stream().filter(r -> r.getPaquetes().stream()
+                        .anyMatch(p -> Duration.between(p.getFechaRecepcion(), LocalDateTime.now()).toHours() > 24))
+                .toList()).filter(l -> !l.isEmpty()).orElseThrow(() -> new PaqueteException("No hay resultados"));
     }
 
     // Hacemos un método para combinar los paquetes de dos rutas
-    public static List<Paquete> combinarRutas(Ruta ruta, Ruta otraRuta) {
+    public static List<Paquete> combinarRutas(Ruta ruta, Ruta otraRuta) throws PaqueteException {
+        if (!rutas.contains(ruta) || !rutas.contains(otraRuta)) {
+            throw new PaqueteException("Las rutas no están");
+        }
         return rutas.stream().filter(r -> r.equals(ruta) || r.equals(otraRuta))
                 .flatMap(r -> r.getPaquetes().stream()).sorted()
                 .toList();

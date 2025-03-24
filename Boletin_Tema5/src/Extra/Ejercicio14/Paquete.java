@@ -1,5 +1,7 @@
 package Extra.Ejercicio14;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Paquete implements Comparable<Paquete> {
@@ -10,15 +12,15 @@ public class Paquete implements Comparable<Paquete> {
     private String nombreRemitente;
     private String nombreDestinatario;
     private int prioridad;
-    private int tiempoEspera;
+    private LocalDateTime fechaRecepcion;
 
     // Creamos el constructor
-    public Paquete(String nombreRemitente, String nombreDestinatario, int prioridad, int tiempoEspera) throws PaqueteException {
+    public Paquete(String nombreRemitente, String nombreDestinatario, int prioridad, LocalDateTime fechaRecepcion) throws PaqueteException {
         this.numeroSeguimiento = ++valorNumSeguimiento;
         setNombreRemitente(nombreRemitente);
         setNombreDestinatario(nombreDestinatario);
         setPrioridad(prioridad);
-        setTiempoEspera(tiempoEspera);
+        setFechaRecepcion(fechaRecepcion);
     }
 
     // Hacemos un get y set
@@ -34,15 +36,15 @@ public class Paquete implements Comparable<Paquete> {
         return nombreRemitente;
     }
 
-    public int getTiempoEspera() {
-        return tiempoEspera;
+    public LocalDateTime getFechaRecepcion() {
+        return fechaRecepcion;
     }
 
-    private void setTiempoEspera(int tiempoEspera) throws PaqueteException {
-        if (tiempoEspera < 0) {
-            throw new PaqueteException("El tiempo de espera no puede ser menor a 0");
+    public void setFechaRecepcion(LocalDateTime fechaRecepcion) throws PaqueteException {
+        if (fechaRecepcion.isAfter(LocalDateTime.now())) {
+            throw new PaqueteException("La fecha no puede ser posterior a la actual");
         }
-        this.tiempoEspera = tiempoEspera;
+        this.fechaRecepcion = fechaRecepcion;
     }
 
     public void setNombreRemitente(String nombreRemitente) throws PaqueteException {
@@ -103,11 +105,15 @@ public class Paquete implements Comparable<Paquete> {
     public String toString() {
         return String.format("Número de seguimiento: %d, Nombre remitente: %s, Nombre destinatario: %s, Prioridad: %d" +
                         ", Tiempo en espera: %d horas", this.numeroSeguimiento, this.nombreRemitente,
-                this.nombreDestinatario, this.prioridad, this.tiempoEspera);
+                this.nombreDestinatario, this.prioridad, Duration.between(this.fechaRecepcion, LocalDateTime.now()).toHours());
     }
 
     @Override
     public int compareTo(Paquete o) {
-        return Integer.compare(this.prioridad, o.prioridad);
+        int i = Integer.compare(this.prioridad, o.prioridad);
+        if (i == 0) {
+            return fechaRecepcion.compareTo(o.fechaRecepcion);
+        }
+        return i;
     }
 }
