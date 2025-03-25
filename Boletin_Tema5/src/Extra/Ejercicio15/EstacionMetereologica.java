@@ -1,6 +1,7 @@
 package Extra.Ejercicio15;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EstacionMetereologica {
     // Creamos los atributos
@@ -118,7 +119,23 @@ public class EstacionMetereologica {
         if (!this.sensores.contains(sensor)) {
             throw new EstacionException("La estación no tiene el sensor");
         }
+        if (this.metrosAltitud != estacionMetereologica.metrosAltitud) {
+            throw new EstacionException("Las estaciones no tienen los mismos metros de altitud");
+        }
         this.sensores.remove(sensor);
         estacionMetereologica.getSensores().add(sensor);
+    }
+
+    // Hacemos un método que va a devolver un mapa con todos los sensores y la media, max y min valor de cada sensor
+    public Map<Sensor, String> informeSensor() {
+        return this.sensores.stream().sorted(Comparator.comparing(s -> s.getTipo().name()))
+                .collect(Collectors.toMap(s -> s, s -> {
+                    try {
+                        return "Media: " + s.calcularMedia() + " Max: " + s.obtenerMax() + " Min: " + s.obtenerMin();
+
+                    } catch (EstacionException e) {
+                        throw new RuntimeException(e.getMessage());
+                    }
+                }));
     }
 }

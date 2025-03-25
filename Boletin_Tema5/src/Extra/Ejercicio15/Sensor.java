@@ -50,4 +50,22 @@ public class Sensor {
     public String toString() {
         return String.format("Código: %d, Tipo: %s, Mediciones: %s", this.codigo, this.tipo, this.mediciones);
     }
+
+    // Hacemos un método que va a calcular la media de todas las mediciones
+    public double calcularMedia() throws EstacionException {
+        return mediciones.stream().mapToDouble(Medicion::getValorRegistrado).average()
+                .orElseThrow(() -> new EstacionException("No se puede calcular"));
+    }
+
+    // Hacemos un método para calcular el valor máximo obtenido por una medición
+    public double obtenerMax() throws EstacionException {
+        return mediciones.stream().mapToDouble(Medicion::getValorRegistrado).max()
+                .orElseThrow(() -> new EstacionException("No se puede calcular"));
+    }
+
+    // Hacemos un método para calcular el valor mínimo obtenido por una medición
+    public double obtenerMin() throws EstacionException {
+        return mediciones.stream().mapToDouble(Medicion::getValorRegistrado).min()
+                .orElseThrow(() -> new EstacionException("No se puede calcular"));
+    }
 }
