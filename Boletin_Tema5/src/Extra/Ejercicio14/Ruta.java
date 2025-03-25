@@ -11,8 +11,8 @@ public class Ruta {
     private Queue<Paquete> paquetes;
 
     // Creamos el constructor
-    public Ruta(String nombre) {
-        this.nombre = nombre;
+    public Ruta(String nombre) throws PaqueteException {
+        setNombre(nombre);
         this.paquetes = new PriorityQueue<>();
     }
 
@@ -26,8 +26,8 @@ public class Ruta {
             throw new PaqueteException("La primera letra debe estar en mayúsculas");
         }
         for (int i = 1; i < nombre.length(); i++) {
-            if (Character.isUpperCase(nombre.charAt(i)) || !Character.isLetter(nombre.charAt(i))) {
-                throw new PaqueteException("El resto de letras debe estar en minúsculas y ser letras");
+            if (!(Character.isLowerCase(nombre.charAt(i)) || Character.isSpaceChar(nombre.charAt(i)))) {
+                throw new PaqueteException("El resto de caracteres debe estar en minúsculas y ser letras");
             }
         }
         this.nombre = nombre;

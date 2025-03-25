@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class EmpresaApp {
     static List<Ruta> rutas = new ArrayList<>();
@@ -24,7 +23,7 @@ public class EmpresaApp {
             Paquete paquete4 = new Paquete("Bermudín", "Peccary", 1,
                     LocalDateTime.of(2024, 10, 22, 13, 55));
             // Creamos las rutas
-            Ruta ruta = new Ruta("Ruta mediterránea");
+            Ruta ruta = new Ruta("Ruta mediterranea");
             Ruta ruta1 = new Ruta("Ruta del bacalao");
             // Añadimos los paquetes a las rutas
             ruta.registrarPaquete(paquete);
@@ -37,11 +36,14 @@ public class EmpresaApp {
             registrarRuta(ruta1);
             // Llamamos al método para mostrar los paquetes de una ruta
             System.out.println(listarPaquetesRuta(ruta));
+            System.out.println();
             // Llamamos al método para ver el próximo paquete en salir de una ruta
-            System.out.println("La próxima ruta en salir es la ruta con id "
+            System.out.println("El próximo paquete en salir es el paquete con id "
                     + proximoPaqueteAEntregar(ruta).getNumeroSeguimiento());
+            System.out.println();
             // Llamamos al método para avisar si hay paquetes en la ruta que lleven más de 1 día
             System.out.println(avisarDePaquetes());
+            System.out.println();
             // Llamamos al método para combinar rutas
             System.out.println(combinarRutas(ruta, ruta1));
 
@@ -89,7 +91,7 @@ public class EmpresaApp {
     public static List<Ruta> avisarDePaquetes() throws PaqueteException {
         return Optional.of(rutas.stream().filter(r -> r.getPaquetes().stream()
                         .anyMatch(p -> Duration.between(p.getFechaRecepcion(), LocalDateTime.now()).toHours() > 24))
-                .toList()).filter(l -> !l.isEmpty()).orElseThrow(() -> new PaqueteException("No hay resultados"));
+                .toList()).orElseThrow(() -> new PaqueteException("No hay resultados"));
     }
 
     // Hacemos un método para combinar los paquetes de dos rutas
