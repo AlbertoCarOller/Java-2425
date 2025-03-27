@@ -55,6 +55,8 @@ public class Proyecto {
         if (!participantes.add(participante)) {
             throw new ProyectoException("El participante ya forma parte del proyecto");
         }
+        // Comprobamos con mensaje que esté correcto
+        System.out.println("Se ha registrado al participante " + participante.getNombre());
     }
 
     // Hacemos un método para añadir tareas de manera indefinida a al proyecto
@@ -70,6 +72,8 @@ public class Proyecto {
             throw new ProyectoException("Alguna de esas tareas ya está registrada");
         }
         this.tareas.addAll(Arrays.asList(tareas));
+        // Comprobamos con mensaje que esté correcto
+        System.out.println("Las tareas se ha registrado con éxito");
     }
 
     // Hacemos un método para asignar una tarea a un participante
@@ -85,6 +89,8 @@ public class Proyecto {
         }
         tarea.setEstado(Estado.EN_PROGRESO);
         participante.setTareaAsignada(tarea);
+        // Comprobamos con mensaje que esté correcto
+        System.out.println("La tarea " + tarea.getTitulo() + " se le ha añadido a " + participante.getNombre());
     }
 
     // Hacemos un método para completar una tarea de un participante
@@ -101,6 +107,8 @@ public class Proyecto {
         tarea.setFechaFinalizacion(LocalDateTime.now());
         participante.setTareaAsignada(null);
         participante.setTareasCompletas(participante.getTareasCompletas() + 1);
+        // Comprobamos con mensaje que esté correcto
+        System.out.println(participante.getNombre() + " ha completado la tarea " + tarea.getTitulo());
     }
 
     // Hacemos un método para obtener una lista de tareas del proyecto ordenadas por estado
@@ -145,6 +153,7 @@ public class Proyecto {
         }
         if (participante.getTareaAsignada() == null) {
             participantes.remove(participante);
+            System.out.println("Se ha eliminado el participante " + participante.getNombre());
         } else {
             Tarea tareaAsignada;
             tareaAsignada = participante.getTareaAsignada();
@@ -157,6 +166,13 @@ public class Proyecto {
                 participanteAMeter.setTareaAsignada(null);
                 participanteAMeter.setTareaAsignada(tareaAsignada);
                 participantes.remove(participante);
+                System.out.println("Se ha eliminado el participante " + participante.getNombre() + "\ny su tarea " +
+                        tareaAsignada.getTitulo() + " ha sido asignada a " + participanteAMeter.getNombre());
+
+            } else {
+                participanteAMeter.setTareaAsignada(tareaAsignada);
+                System.out.println("Se ha eliminado el participante " + participante.getNombre() + "\ny su tarea " +
+                        tareaAsignada.getTitulo() + " ha sido asignada a " + participanteAMeter.getNombre());
             }
         }
     }

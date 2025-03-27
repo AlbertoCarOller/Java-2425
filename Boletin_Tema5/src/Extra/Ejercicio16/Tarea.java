@@ -73,9 +73,16 @@ public class Tarea {
     // Hacemos un toString
     @Override
     public String toString() {
-        return String.format("Título: %s, Descripción: %s, Estado: %s, Fecha finalización: %s, Fecha asignación: %s",
-                this.titulo, this.descripcion, this.estado,
-                this.fechaFinalizacion.format(DateTimeFormatter.ofPattern("yyyy/MM/dd, HH:mm")),
-                this.fechaAsignacion.format(DateTimeFormatter.ofPattern("yyyy/MM/dd, HH:mm")));
+        if (this.fechaFinalizacion != null) {
+            return String.format("Título: %s, Descripción: %s, Estado: %s, Fecha finalización: %s, Fecha asignación: %s",
+                    this.titulo, this.descripcion, this.estado,
+                    this.fechaFinalizacion.format(DateTimeFormatter.ofPattern("yyyy/MM/dd, HH:mm")),
+                    this.fechaAsignacion.format(DateTimeFormatter.ofPattern("yyyy/MM/dd, HH:mm")));
+
+        } else {
+            return String.format("Título: %s, Descripción: %s, Estado: %s, Fecha finalización: Sin finalizar, Fecha asignación: %s",
+                    this.titulo, this.descripcion, this.estado,
+                    this.fechaAsignacion.format(DateTimeFormatter.ofPattern("yyyy/MM/dd, HH:mm")));
+        }
     }
 }
