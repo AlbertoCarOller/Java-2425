@@ -16,6 +16,7 @@ public class AcademiaApp {
             Estudiante estudiante4 = new Estudiante("Víctor");
             Estudiante estudiante5 = new Estudiante("Antonio");
             Estudiante estudiante6 = new Estudiante("Ventisca");
+            // TODO: Terminar el main
 
         } catch (EstudianteException e) {
             System.out.println(e.getMessage());

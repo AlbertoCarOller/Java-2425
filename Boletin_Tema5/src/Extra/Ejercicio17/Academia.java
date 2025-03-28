@@ -67,7 +67,7 @@ public class Academia {
                         (v1, v2) -> v1, LinkedHashMap::new));
     }
 
-    // Hacemos un método para registrar un curso
+    // Hacemos un método para registrar un curso en la academia
     public void registrarCurso(String curso) throws EstudianteException {
         if (!Character.isUpperCase(curso.charAt(0))) {
             throw new EstudianteException("La primera letra debe estar en mayúsculas");
