@@ -119,7 +119,7 @@ public class EstacionMetereologica {
         if (!this.sensores.contains(sensor)) {
             throw new EstacionException("La estación no tiene el sensor");
         }
-        if (this.metrosAltitud != estacionMetereologica.metrosAltitud) {
+        if (Math.abs(this.metrosAltitud - estacionMetereologica.metrosAltitud) > 50) {
             throw new EstacionException("Las estaciones no tienen los mismos metros de altitud");
         }
         this.sensores.remove(sensor);
@@ -136,6 +136,6 @@ public class EstacionMetereologica {
                     } catch (EstacionException e) {
                         throw new RuntimeException(e.getMessage());
                     }
-                }));
+                }, (v1, v2) -> v1, LinkedHashMap::new));
     }
 }
