@@ -115,7 +115,7 @@ public class Academia {
 
     // Hacemos un método para obtener los estudiantes que estén en dos cursos a la vez
     public List<Estudiante> estudiantesCoincidentesEnCursosV1(String curso1, String curso2) throws EstudianteException {
-        return Optional.of(cursos.keySet().stream().filter(c -> c.equalsIgnoreCase(curso1) || c.equalsIgnoreCase(curso2))
+        return Optional.of(cursos.keySet().stream().filter(c -> c.equalsIgnoreCase(curso1))
                         .flatMap(c -> cursos.get(c).stream())
                         .filter(e -> cursos.get(curso1).contains(e) && cursos.get(curso2).contains(e)).toList())
                 .orElseThrow(() -> new EstudianteException("No se han encontrado resultados"));
