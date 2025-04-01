@@ -61,6 +61,13 @@ public class Academia {
         }
     }
 
+    // Hacemos un método para registrar un grupo
+    public void registrarGrupo(GrupoMusical grupoMusical) throws EstudianteMusicalException {
+        if (!grupos.add(grupoMusical)) {
+            throw new EstudianteMusicalException("El grupo ya está registrado el grupo");
+        }
+    }
+
     // Hacemos un método para que un alumno realiza una audición
     public void realizarAudicion(AlumnoMusical alumnoMusical, Audicion audicion) throws EstudianteMusicalException {
         if (!alumnos.contains(alumnoMusical)) {
