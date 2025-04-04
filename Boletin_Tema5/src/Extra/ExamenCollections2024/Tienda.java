@@ -104,7 +104,7 @@ public class Tienda {
      */
     public Set<Producto> productosUltimoAnno() {
         /*return categorias.stream().flatMap(c -> c.getProductos().stream()).distinct()
-                .filter(p -> ChronoUnit.DAYS.between(p.getFechaIncorporacion(), LocalDate.now()) <= 365)
+                .filter(p -> ChronoUnit.DAYS.between(LocalDate.now() ,p.getFechaIncorporacion()) <= 365)
                 .collect(Collectors.toSet());*/
         return categorias.stream().flatMap(c -> c.getProductos().stream()).distinct()
                 .filter(p -> !p.getFechaIncorporacion().isBefore(LocalDate.now().minusYears(1)))
