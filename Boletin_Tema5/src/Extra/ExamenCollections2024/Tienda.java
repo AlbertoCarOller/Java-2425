@@ -1,6 +1,7 @@
 package Extra.ExamenCollections2024;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -102,6 +103,9 @@ public class Tienda {
      * @return
      */
     public Set<Producto> productosUltimoAnno() {
+        /*return categorias.stream().flatMap(c -> c.getProductos().stream()).distinct()
+                .filter(p -> ChronoUnit.DAYS.between(p.getFechaIncorporacion(), LocalDate.now()) <= 365)
+                .collect(Collectors.toSet());*/
         return categorias.stream().flatMap(c -> c.getProductos().stream()).distinct()
                 .filter(p -> !p.getFechaIncorporacion().isBefore(LocalDate.now().minusYears(1)))
                 .collect(Collectors.toSet());
