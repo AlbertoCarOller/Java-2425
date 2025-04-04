@@ -29,12 +29,12 @@ public class Frase {
 
     public void setTexto(String texto) throws FraseException {
         for (int i = 0; i < texto.length(); i++) {
-            if (!Character.isAlphabetic(texto.charAt(i)) && !Character.isSpaceChar(texto.charAt(i))) {
-                throw new FraseException("La frase debe estar compuesta por letras y/o espacios también");
+            if (!Character.isLetter(texto.charAt(i)) && !Character.isSpaceChar(texto.charAt(i))) {
+                throw new FraseException("El caracter " + texto.charAt(i) + " no está permitido");
             }
-            if (texto.isBlank()) {
-                throw new FraseException("La frase no puede estar compuesta solo por espacios");
-            }
+        }
+        if (texto.isBlank()) {
+            throw new FraseException("La frase no puede estar compuesta solo por espacios");
         }
         this.texto = texto;
     }
@@ -48,8 +48,8 @@ public class Frase {
             throw new FraseException("La película debe empezar en mayúsculas");
         }
         for (int i = 1; i < pelicula.length(); i++) {
-            if (!Character.isAlphabetic(pelicula.charAt(i)) && !Character.isSpaceChar(pelicula.charAt(i))) {
-                throw new FraseException("La frase debe estar compuesta por letras y/o espacios también");
+            if (!Character.isLetter(pelicula.charAt(i)) && !Character.isSpaceChar(pelicula.charAt(i))) {
+                throw new FraseException("El caracter " + texto.charAt(i) + " no está permitido");
             }
             if (pelicula.isBlank()) {
                 throw new FraseException("La frase no puede estar compuesta solo por espacios");
@@ -67,8 +67,8 @@ public class Frase {
             throw new FraseException("La película debe empezar en mayúsculas");
         }
         for (int i = 1; i < actor.length(); i++) {
-            if (!Character.isAlphabetic(actor.charAt(i)) && !Character.isSpaceChar(actor.charAt(i))) {
-                throw new FraseException("La frase debe estar compuesta por letras y/o espacios también");
+            if (!Character.isLetter(actor.charAt(i)) && !Character.isSpaceChar(actor.charAt(i))) {
+                throw new FraseException("El caracter " + texto.charAt(i) + " no está permitido");
             }
             if (actor.isBlank()) {
                 throw new FraseException("La frase no puede estar compuesta solo por espacios");

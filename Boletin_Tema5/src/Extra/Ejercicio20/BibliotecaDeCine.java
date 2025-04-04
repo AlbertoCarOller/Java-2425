@@ -10,8 +10,8 @@ public class BibliotecaDeCine {
     // Creamos los atributos
     private Map<String, Set<Frase>> frases;
 
-    // Creamos el cosntructor
-    public BibliotecaDeCine(Map<String, Set<Frase>> frases) {
+    // Creamos el constructor
+    public BibliotecaDeCine() {
         this.frases = new HashMap<>();
     }
 
@@ -132,7 +132,7 @@ public class BibliotecaDeCine {
      */
     public Set<Frase> frasesUltimoAno() throws FraseException {
         Set<Frase> frasesUltimo = frases.keySet().stream().flatMap(c -> frases.get(c).stream())
-                .distinct().filter(f -> Duration.between(f.getFechaIncorporacion(), LocalDate.now()).toDays() <= 365)
+                .distinct().filter(f -> !f.getFechaIncorporacion().isBefore(LocalDate.now().minusYears(1)))
                 .collect(Collectors.toSet());
         if (frasesUltimo.isEmpty()) {
             throw new FraseException("No se han encontrado frases de este año");
@@ -258,6 +258,13 @@ public class BibliotecaDeCine {
                 .filter(m -> !m.isEmpty()).orElseThrow(() -> new FraseException("No hay frases"));
     }
 
+    /**
+     * Hacemos un método que va a devolver un String con el nombre de las distintas películas
+     * en las que aparece las frases
+     *
+     * @return
+     * @throws FraseException
+     */
     public String peliculasRepresentadas() throws FraseException {
         return Optional.of(frases.keySet().stream().flatMap(c -> frases.get(c).stream())
                         .distinct().map(Frase::getPelicula).distinct()
