@@ -176,6 +176,12 @@ public class PlataformaCriticas {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)).keySet());
     }
 
+    /**
+     * Hacemos un método que va a hacer un mapa para posteriormente ordenar de mayor a menor
+     * las veces que aparece un género (mediante el counting()) y se va a quedar con la key,
+     * que es en este caso los géneros y lo pasamos a una lista, manteniendo así el orden
+     * @return lista de géneros ordenados de mayor a menor
+     */
     public List<String> mapaGenerosV2() {
         return peliculas.stream().collect(Collectors.groupingBy(Pelicula::getGenero, Collectors.counting()))
                 .entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue().reversed())
