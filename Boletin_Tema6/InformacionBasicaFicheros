@@ -1,0 +1,75 @@
+Clases más utilizadas:
+
+FileReader (java.io):
+    -> Sirve para leer archivos de texto (char por char).
+    -> No es eficiente para grandes volúmenes de datos, se suele envolver con BufferedReader.
+    -> No tiene buffer interno.
+
+FileWriter (java.io):
+    -> Sirve para escribir texto directamente a un fichero (char por char).
+    -> No es eficiente para grandes volúmenes de datos, se suele envolver con BufferedWriter.
+    -> No tiene auto flush.
+    -> Puede lanzar 'IOException al escribir'.
+    -> No tiene buffer interno
+
+BufferedReader (java.io):
+    -> Permite leer líneas completas de texto, no carácter a carácter.
+    -> Tiene el método .readLine() que es muy útil (lee línea por línea).
+    -> Necesita otro Reader como base. No sabe por sí mismo abrir archivos, necesita un
+       lector que ya esté leyendo de algún sitio, como un FileReader, InputStreamReader, etc.
+
+BufferedWriter (java.io):
+    -> Escribe texto (caracteres) en un destino (como un archivo), pero con un buffer intermedio.
+    -> Así no accede al disco cada vez que escribes un carácter.
+    -> Puedes usar .write(), .newLine(), .flush() y .close().
+
+PrintWriter (java.io):
+    -> Muy cómodo para escribir texto formateado, como si usaras System.out.
+    -> Tiene un buffer interno (se puede combinar BufferedWriter).
+    -> Hace flush automáticamente con el método '.println()'.
+    -> No lanza excepciones en métodos como '.print()'.
+
+InputStream (java.io):
+    -> Es la base de toda entrada en bytes.
+    -> Se usan con archivos binarios (imágenes, audio, etc.).
+
+OutputStream (java.io):
+    -> Es la base de toda salida en bytes.
+    -> Se usan con archivos binarios (imágenes, audio, etc.).
+
+InputStreamReader (java.io):
+    -> Sirve de puente entre byte streams y character streams.
+    -> Convierte bytes en caracteres (por ejemplo, para leer texto de un InputStream).
+    -> Para leer contenido de texto de ficheros de imagen, audio, etc.
+
+OutputStreamWriter (java.io):
+    -> Sirve de puente entre byte streams y character streams.
+    -> Convierte caracteres en bytes (cuando escribes texto a un OutputStream).
+    -> Para escribir contenido de texto de ficheros de imagen, audio, etc.
+
+RandomAccessFile (java.io):
+    -> Permite leer y escribir en cualquier parte del archivo (no solo de principio a fin).
+    -> Útil para archivos grandes o que necesitas actualizar en partes.
+    -> ✔️ Ficheros binarios (lo más habitual): como imágenes, datos serializados, etc.
+    -> ✔️ Ficheros de texto, pero no es la forma más cómoda. Para texto se suelen preferir BufferedReader,
+       FileReader, PrintWriter, etc.
+
+File (java.io):
+    -> Representa archivos y directorios en el sistema de archivos.
+    -> Te permite crear, eliminar, renombrar archivos y directorios,
+       así como consultar su existencia, atributos y metadatos (como tamaño, permisos, etc.).
+
+Path (java.nio):
+    -> Representa una ruta de archivo o directorio en el sistema de archivos.
+    -> Proporciona una forma más moderna, flexible y potente de trabajar con archivos y directorios que File.
+
+Paths (java.nio):
+    -> Es una clase de ayuda que proporciona métodos estáticos para crear instancias de Path.
+    -> No se usa directamente para representar rutas, sino que es una forma de obtener instancias de Path a
+       partir de cadenas de texto que representan rutas.
+
+Files (java.nio):
+    -> Es una clase de utilidad que proporciona una gran cantidad de métodos estáticos para realizar operaciones
+       con archivos, directorios y rutas.
+    -> Cuando necesitas realizar operaciones avanzadas como leer o escribir archivos, copiar, mover,
+       eliminar archivos, comprobar permisos, etc.

@@ -12,7 +12,7 @@ public class Ataque {
     // Creamos el constructor
     public Ataque(String nombre, int kiNecesario, int nivelPerfeccion, int dano) throws DBException {
         this.nombre = nombre;
-        setKiNecesario(kiNecesario);
+        this.kiNecesario = kiNecesario;
         setNivelPerfeccion(nivelPerfeccion);
         setDano(dano);
     }
@@ -20,13 +20,6 @@ public class Ataque {
     // Hacemos los get y set
     public String getNombre() {
         return nombre;
-    }
-
-    public void setKiNecesario(int kiNecesario) throws DBException {
-        if (kiNecesario < 1) {
-            throw new DBException("No es un ki válido");
-        }
-        this.kiNecesario = kiNecesario;
     }
 
     public int getNivelPerfeccion() {

@@ -14,7 +14,7 @@ public class EjercicioPradera {
             out.write(cabecera);
             // Hacemos un array de bytes de los 3 colores, que forman un pixel
             byte[] pixel = new byte[3];
-            // Invertimos lo colores, recorriendo los pixeles de la imagen mientras haya, es decir que no sea -1
+            // Invertimos lo colores, recorriendo los píxeles de la imagen mientras haya, es decir que no sea -1
             while (rd.read(pixel) != -1) {
                 for (int i = 0; i < pixel.length; i++) {
                     // '~' operador para negar los bytes, es decir se invierten
