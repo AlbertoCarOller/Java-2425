@@ -1,0 +1,18 @@
+Información Expresiones Regulares:
+    * Es una secuencia de caracteres que forma un patrón de búsqueda, sirve para validar,
+      buscar o reemplazar texto.
+    * Las expresiones regulares se utilizan y guardan como un String.
+
+Clases:
+    * Pattern:
+        -> Almacena la expresión regular
+        -> Es la clase que representa una expresión regular compilada.
+        -> Antes de usar una expresión regular en Java, tienes que compilarla con Pattern.compile(...).
+        -> Es inmutable y reutilizable, lo que significa que puedes usarla varias veces sin tener que volver
+           a compilar.
+
+    * Matcher:
+        -> Esta clase se usa para hacer la comprobación real sobre un texto.
+        -> Se obtiene a partir de un Pattern, con el método matcher(texto).
+        -> Permite utilizar métodos como '.matches()', que comprueba si el texto coincide con el patrón.
+        -> Es como decir: “Usa esta regla (pattern) y dime si se cumple en este texto”.
