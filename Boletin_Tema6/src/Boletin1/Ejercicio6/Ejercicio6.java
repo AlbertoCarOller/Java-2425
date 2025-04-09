@@ -14,7 +14,7 @@ public class Ejercicio6 {
             //System.out.println(mostrarArchivosYPeso("Boletin_Tema6/src/Boletin1"));
             mostrarArchivosYPesoV2("Boletin_Tema6/src/Boletin1");
 
-        } catch (Ejercicio6Exception | RuntimeException e) {
+        } catch (Ejercicio6Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -38,7 +38,7 @@ public class Ejercicio6 {
                     }
 
                 } catch (IOException e) {
-                    throw new RuntimeException(e.getMessage());
+                    return Map.entry(p, 0L);
                 }
             }).map(m -> {
                 if (Files.isDirectory(m.getKey())) {
@@ -70,7 +70,7 @@ public class Ejercicio6 {
                         return String.format("Nombre: %s, Tamaño: %.2f", p.getFileName(), (double) Files.size(p) / 1024);
 
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        return "Error";
                     }
 
                 } else {
