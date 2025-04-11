@@ -218,6 +218,9 @@ public class Juego {
         if (ataqueP1.getNivelPerfeccion() == 0) {
             throw new DBException("No se puede lanzar el ataque");
         }
+        if (p1.getNivelKi() < ataqueP1.getKiNecesario()) {
+            throw new DBException("No hay ki necesario para lanzar el ataque");
+        }
         if (ataqueP1.getDano() >= p2.getNivelVida()) {
             p2.setNivelVida(0);
             System.out.println(p2.getNombre() + " ha muerto");

@@ -44,6 +44,10 @@ public class Ataque {
         this.dano = dano;
     }
 
+    public int getKiNecesario() {
+        return kiNecesario;
+    }
+
     // Hacemos un equals
     @Override
     public boolean equals(Object o) {

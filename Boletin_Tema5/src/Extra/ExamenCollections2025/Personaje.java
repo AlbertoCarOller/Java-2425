@@ -57,6 +57,10 @@ public class Personaje {
         return nivelVida;
     }
 
+    public int getNivelKi() {
+        return nivelKi;
+    }
+
     // Hacemos un equals
     @Override
     public boolean equals(Object o) {
