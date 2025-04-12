@@ -191,6 +191,9 @@ public class Juego {
      * @throws DBException
      */
     public Ataque ataqueMasDañino(Personaje p1, Personaje p2) throws DBException {
+        if (p2.getNivelVida() == 0) {
+            throw new DBException(p2.getNombre() + " está muerto");
+        }
         return p1.getAtaques().stream().max(Comparator.comparingInt(Ataque::getDano))
                 .orElseThrow(() -> new DBException("No hay ataques añadidos"));
 
@@ -257,8 +260,8 @@ public class Juego {
      * @return mapa de razas
      */
     public Map<TRaza, List<Personaje>> devuelveMapaRazas() {
-        return personajes.stream().map(p -> Map.entry(p.getRaza(), p))
-                .collect(Collectors.groupingBy(Map.Entry::getKey,
-                        Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
+        return Arrays.stream(TRaza.values()).map(r -> Map.entry(r,
+                        personajes.stream().filter(p -> p.getRaza() == r).toList()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }
