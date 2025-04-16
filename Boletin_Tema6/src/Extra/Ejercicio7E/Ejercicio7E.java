@@ -20,6 +20,11 @@ public class Ejercicio7E {
         }
     }
 
+    /**
+     * Hacemos un método que va a imprimir las fechas válidas dentro del archivo
+     * especificado
+     * @throws Ejercicio7EException
+     */
     public static void validarFechas() throws Ejercicio7EException {
         try {
             Path fichero = Path.of("Boletin_Tema6/src/Extra/Ejercicio7E/Fechas.txt");

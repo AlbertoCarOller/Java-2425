@@ -4,7 +4,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,7 +44,9 @@ public class Ejercicio3E {
                     Pattern pattern = Pattern.compile("^[0-9]{8}[A-Z]$");
                     Matcher matcher = pattern.matcher(s);
                     if (matcher.matches()) {
-                        return true;
+                        if (dniCorrecto(Integer.parseInt(s.substring(0, 8)) % 23, s.charAt(s.length() - 1))) {
+                            return true;
+                        }
                     }
                     return false;
                 }).forEach(pw::println);
@@ -51,5 +55,22 @@ public class Ejercicio3E {
         } catch (IOException | InvalidPathException e) {
             throw new Ejercicio3EExcepcion(e.getMessage());
         }
+    }
+
+    /**
+     * Este método va a hacer un mapa con el resto correspondiente y con
+     * las letras que corresponda a cada letra y va a comprobar
+     * que sea correcta la letra con el dni
+     *
+     * @return boolean
+     * @throws Ejercicio3EExcepcion
+     */
+    public static boolean dniCorrecto(int resto, char letra) {
+        String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+        Map<Integer, Character> mapaDni = new HashMap<>();
+        for (int i = 0; i < letras.length(); i++) {
+            mapaDni.put(i, letras.charAt(i));
+        }
+        return mapaDni.get(resto) == letra;
     }
 }

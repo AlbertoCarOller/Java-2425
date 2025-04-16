@@ -36,7 +36,7 @@ public class Ejercicio15E {
                 List<Pattern> comprobaciones = new ArrayList<>();
                 Pattern pattern = Pattern.compile("^(0[1-9]|[12][0-9]|3[0-1])[-/](0[1-9]|1[0-2])[-/](19[0-9]{2}" +
                         "|20([0-1][0-9]|2[0-5]))$");
-                Pattern pattern1 = Pattern.compile("^[67]\\d{8}");
+                Pattern pattern1 = Pattern.compile("^[67]\\d{8}$");
                 comprobaciones.add(pattern);
                 comprobaciones.add(pattern1);
                 Matcher matcher;
