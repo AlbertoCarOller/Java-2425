@@ -108,9 +108,9 @@ public class Ejercicio18E {
             try (BufferedReader br = new BufferedReader(new FileReader(leerlo.toFile()));
                  PrintWriter pwV = new PrintWriter(new FileWriter(escribirleV.toFile()));
                  PrintWriter pwI = new PrintWriter(new FileWriter(escribirleI.toFile()))) {
-                List<Pattern> comprobaciones = List.of(Pattern.compile("^\\p{Lu}\\p{Ll}{2,}$"),
-                        Pattern.compile("^\\p{Lu}\\p{Ll}{2,}$"),
-                        Pattern.compile("^\\p{Lu}\\p{Ll}{2,}$"), Pattern.compile("^[1-9][0-9]$"),
+                List<Pattern> comprobaciones = List.of(Pattern.compile("^\\p{Lu}\\p{Ll}{2,}$", Pattern.UNICODE_CHARACTER_CLASS),
+                        Pattern.compile("^\\p{Lu}\\p{Ll}{2,}$", Pattern.UNICODE_CHARACTER_CLASS),
+                        Pattern.compile("^\\p{Lu}\\p{Ll}{2,}$", Pattern.UNICODE_CHARACTER_CLASS), Pattern.compile("^[1-9][0-9]$"),
                         Pattern.compile("^[MF]$"),
                         Pattern.compile("^[0-9]{8}[A-Z]$"),
                         Pattern.compile("^[a-z][a-z._-]{2,}@(gmail\\.com|outlook\\.com|hotmail\\.(es|com))$"));

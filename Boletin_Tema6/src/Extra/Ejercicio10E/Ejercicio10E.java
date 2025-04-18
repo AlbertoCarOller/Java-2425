@@ -38,7 +38,7 @@ public class Ejercicio10E {
                 }
                 ficherosDirectorios.stream().filter(s -> {
                     Pattern pattern = Pattern.compile("^\\p{Lu}\\p{Ll}{2,} \\p{Lu}\\p{Ll}{2,} \\p{Lu}\\p{Ll}{2,}" +
-                            " (0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(19[0-9]{2}|20([01][0-9]|2[0-5]))");
+                            " (0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(19[0-9]{2}|20([01][0-9]|2[0-5]))", Pattern.UNICODE_CHARACTER_CLASS);
                     Matcher matcher = pattern.matcher(s);
                     if (matcher.matches()) {
                         return true;

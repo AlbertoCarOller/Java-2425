@@ -1,0 +1,22 @@
+{
+  "limpio.json": [
+    {"fecha": "30-04-2025", "temperatura": "23.2C"},
+    {"fecha": "27-04-2025", "temperatura": "20.8C"},
+    {"fecha": "26-04-2025", "temperatura": "21.6C"},
+    {"fecha": "24-04-2025", "temperatura": "18.2C"},
+    {"fecha": "22-04-2025", "temperatura": "22.5C"},
+    {"fecha": "20-04-2025", "temperatura": "17.9C"},
+    {"fecha": "18-04-2025", "temperatura": "15.8C"},
+    {"fecha": "15-04-2025", "temperatura": "19.5C"},
+    {"fecha": "14-04-2025", "temperatura": "21.4C"},
+    {"fecha": "12-04-2025", "temperatura": "2.5C"},
+    {"fecha": "11-04-2025", "temperatura": "17.8C"},
+    {"fecha": "07-04-2025", "temperatura": "20.0C"},
+    {"fecha": "06-04-2025", "temperatura": "19.9C"},
+    {"fecha": "05-04-2025", "temperatura": "25.2C"},
+    {"fecha": "04-04-2025", "temperatura": "-10.5C"},
+    {"fecha": "03-04-2025", "temperatura": "21.0C"},
+    {"fecha": "02-04-2025", "temperatura": "18.7C"},
+    {"fecha": "01-04-2025", "temperatura": "23.5C"},
+  ]
+}
