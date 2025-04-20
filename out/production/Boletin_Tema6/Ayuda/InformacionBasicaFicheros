@@ -4,13 +4,15 @@ FileReader (java.io):
     -> Sirve para leer archivos de texto (char por char).
     -> No es eficiente para grandes volúmenes de datos, se suele envolver con BufferedReader.
     -> No tiene buffer interno.
+    -> Creando un array de caracteres puede tener un búfer.
 
 FileWriter (java.io):
     -> Sirve para escribir texto directamente a un fichero (char por char).
     -> No es eficiente para grandes volúmenes de datos, se suele envolver con BufferedWriter.
     -> No tiene auto flush.
     -> Puede lanzar 'IOException al escribir'.
-    -> No tiene buffer interno
+    -> No tiene buffer interno.
+    -> Creando un array de caracteres puede tener un búfer.
 
 BufferedReader (java.io):
     -> Permite leer líneas completas de texto, no carácter a carácter.
