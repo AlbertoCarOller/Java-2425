@@ -3,7 +3,6 @@ package Extra.Ejercicio22E;
 import java.io.*;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,48 +32,55 @@ public class Ejercicio22E {
             try (BufferedReader br = new BufferedReader(new FileReader(leerlo.toFile()));
                  PrintWriter pwV = new PrintWriter(new FileWriter(escribirV.toFile()));
                  PrintWriter pwI = new PrintWriter(new FileWriter(escribirI.toFile()))) {
-                List<Pattern> comprobaciones = List.of(Pattern.compile("^\\p{Lu}\\p{Ll}{2,}$", Pattern.UNICODE_CHARACTER_CLASS),
-                        Pattern.compile("^[1-9][0-9]$"));
-                String linea;
+                // Pattern para validar el nombre y apellidos
+                Pattern nombreYApellidos = Pattern.compile("^\\p{Lu}\\p{Ll}+$");
+                // Pattern para validar la edad
+                Pattern edad = Pattern.compile("^[1-9][0-9]$");
                 Matcher matcher;
+                String linea;
                 while ((linea = br.readLine()) != null) {
-                    boolean alMenosUn = false;
-                    StringBuilder sb = new StringBuilder(linea.trim());
+                    StringBuilder sb = new StringBuilder(linea);
                     String[] partes = linea.trim().split(" ");
-                    Pattern pattern = Pattern.compile("^[A-za-z]*[p\\p{Z}\\p{S}\\p{P}\\p{N}]+[a-z]*$");
-                    boolean primeraVezPuntuacion = true;
+                    // Esto nos indicará si al menos hay un fallo
+                    boolean alMenosUn = false;
+                    // Si no hay 4 partes, se añadirá un error
                     if (partes.length != 4) {
-                        sb.append("\nNo están las 4 bloques de información");
+                        sb.append("\nNo hay 4 partes");
                         alMenosUn = true;
                     }
-                    for (int i = 0; i < comprobaciones.size(); i++) {
-                        boolean match = false;
-                        for (int j = 0; j < partes.length; j++) {
-                            Matcher matcher1 = pattern.matcher(partes[j]);
-                            Matcher matcher2 = comprobaciones.get(1).matcher(partes[j]);
-                            if (matcher1.matches() && primeraVezPuntuacion && !matcher2.matches()) {
-                                sb.append("\nHay signos de puntuación, espacios, símbolos no permitidos o números");
+                    // Recorremos las partes de la línea
+                    for (int i = 0; i < partes.length; i++) {
+                        // En caso de que sea una de las 3 primeras partes utilizaremos el patter del nombre y apellidos
+                        if (i <= 2) {
+                            matcher = nombreYApellidos.matcher(partes[i]);
+                            // Si no hay match miramos cuál será la parte concreta para mostrar un mensaje personalizado
+                            if (!matcher.matches()) {
                                 alMenosUn = true;
-                                primeraVezPuntuacion = false;
-                            }
-                            matcher = comprobaciones.get(i).matcher(partes[j]);
-                            if (matcher.matches()) {
-                                match = true;
-                            }
-                        }
-                        if (!match) {
-                            alMenosUn = true;
-                            if (i == 0) {
-                                sb.append("\nEl nombre y apellidos no están");
+                                if (i == 0) {
+                                    sb.append("\nEl nombre está mal");
 
-                            } else {
-                                sb.append("\nLa edad no es correcta o no está");
+                                } else if (i == 1) {
+                                    sb.append("\nEl primer apellido está mal");
+
+                                } else {
+                                    sb.append("\nEl segundo apellido está mal");
+                                }
+                            }
+
+                            // Si es mayor a 2 corresponde a la parte de la edad
+                        } else {
+                            matcher = edad.matcher(partes[i]);
+                            if (!matcher.matches()) {
+                                alMenosUn = true;
+                                sb.append("\nLa edad no es correcta");
                             }
                         }
                     }
+                    // Si hay al menos un fallo se imprimirá en 'InvalidosInfo.txt'
                     if (alMenosUn) {
                         pwI.println(sb);
 
+                        // En caso de que no haya ningún fallo se imprimirá en 'ValidosInfo.txt'
                     } else {
                         pwV.println(sb);
                     }
