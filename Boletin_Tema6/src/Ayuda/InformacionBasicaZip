@@ -1,0 +1,14 @@
+ZipOutputStream (java.util.zip):
+    -> ZipOutputStream es como una mochila acumulativa del contenido de entradas.
+    -> El contenido de las entradas (ZipEntry) se comprimen y meten dentro de
+       esta "carpeta".
+    -> Cada entrada enviada (putNextEntry) deberá cerrarse (closeEntry) cada vez
+       que se asocie el contenido del fichero original con la entrada activa
+       dentro de la "mochila" o "carpeta" (copy).
+
+ZipEntry (java.util.zip):
+    -> Es la entrada que posteriormente se pasará al ZipOutputStream,
+       esta entrada es como un "archivo" que guardará el contenido
+       de un fichero original al hacer el copy y cerrar la entrada.
+    -> Recibirá por parámetros el nombre del archivo del que va a
+       contener su información comprimida.

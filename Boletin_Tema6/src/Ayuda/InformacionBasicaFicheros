@@ -5,6 +5,7 @@ FileReader (java.io):
     -> No es eficiente para grandes volúmenes de datos, se suele envolver con BufferedReader.
     -> No tiene buffer interno.
     -> Creando un array de caracteres puede tener un búfer.
+    -> No crea el fichero automáticamente, en caso de que no exista, lanzará exception.
 
 FileWriter (java.io):
     -> Sirve para escribir texto directamente a un fichero (char por char).
@@ -13,23 +14,28 @@ FileWriter (java.io):
     -> Puede lanzar 'IOException al escribir'.
     -> No tiene buffer interno.
     -> Creando un array de caracteres puede tener un búfer.
+    -> Crea el fichero en caso de que no exista.
 
 BufferedReader (java.io):
     -> Permite leer líneas completas de texto, no carácter a carácter.
     -> Tiene el método .readLine() que es muy útil (lee línea por línea).
     -> Necesita otro Reader como base. No sabe por sí mismo abrir archivos, necesita un
        lector que ya esté leyendo de algún sitio, como un FileReader, InputStreamReader, etc.
+    -> Depende directamente del FileReader, por lo que también lanzará exception en caso de
+       que no exista el fichero.
 
 BufferedWriter (java.io):
     -> Escribe texto (caracteres) en un destino (como un archivo), pero con un buffer intermedio.
     -> Así no accede al disco cada vez que escribes un carácter.
     -> Puedes usar .write(), .newLine(), .flush() y .close().
+    -> Crea el fichero en caso de que no exista gracias a FileWriter.
 
 PrintWriter (java.io):
     -> Muy cómodo para escribir texto formateado, como si usaras System.out.
     -> Tiene un buffer interno (se puede combinar BufferedWriter).
     -> Hace flush automáticamente con el método '.println()'.
     -> No lanza excepciones en métodos como '.print()'.
+    -> Crea un fichero automáticamente en caso de que este no exista.
 
 InputStream (java.io):
     -> Es la base de toda entrada en bytes.
@@ -55,6 +61,8 @@ RandomAccessFile (java.io):
     -> ✔️ Ficheros binarios (lo más habitual): como imágenes, datos serializados, etc.
     -> ✔️ Ficheros de texto, pero no es la forma más cómoda. Para texto se suelen preferir BufferedReader,
        FileReader, PrintWriter, etc.
+    -> Depende el modo, si se usa el modo lectura ("r") lanzará exception, en caso de que se
+       use lectura y escritura ("rw") sí se crea el fichero en caso de que no exista.
 
 File (java.io):
     -> Representa archivos y directorios en el sistema de archivos.

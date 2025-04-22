@@ -86,6 +86,7 @@ public class Ejercicio22E {
                     }
                 }
             }
+            //TODO: hacer el código más dividido y más visible
 
         } catch (InvalidPathException | IOException e) {
             throw new Ejercicio22EExcepcion(e.getMessage());

@@ -1,4 +1,4 @@
-package Ayuda.EjerciciosDeApoyo.Ejercicio2A;
+package Ayuda.EjerciciosDeApoyo;
 
 public class RespaldoBasicoException extends Exception {
     public RespaldoBasicoException(String message) {

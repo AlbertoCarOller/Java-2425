@@ -1,4 +1,4 @@
-package Ayuda.EjerciciosDeApoyo.Ejercicio2A;
+package Ayuda.EjerciciosDeApoyo;
 
 import java.io.*;
 import java.nio.file.InvalidPathException;
