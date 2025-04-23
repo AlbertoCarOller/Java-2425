@@ -10,7 +10,7 @@ import java.util.zip.ZipOutputStream;
 public class PracticaZip {
     public static void main(String[] args) {
         try {
-            comprimirEnZip(); // Llamamos al método
+            comprimirEnZip();
 
         } catch (PracticaZipException e) {
             System.out.println(e.getMessage());
@@ -33,15 +33,19 @@ public class PracticaZip {
             Files.createFile(archivoZip);
             // Esto es un flujo de los ficheros que queremos comprimir en un archivo ZIP
             try (Stream<Path> flujo = Files.walk(directorio); // .walk() y .list() listan ficheros, directorios, etc.
-                    /* ZipOutputStream es como una mochila la cual va guardando y comprimiendo dentro de ella
+                    /* ZipOutputStream es como una "mochila" la cual va guardando y comprimiendo dentro de ella
                      * los archivos especificados, acepta por parámetros Files.newOutputStream, esto nos
                      * permitirá escribir dentro de esta, se acumulará dentro de archivoZip */
                  ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(archivoZip))) {
                 // TODO: preguntar porque el uso del filter evita el 'AccessDeniedException'
                 flujo.filter(Files::isRegularFile).forEach(p -> {
                     /* Creamos una entrada de zip con el nombre del archivo a comprimir, la única forma de
-                     * meter el archivo en ZipOutputStream es creando una entrada ZipEntry */
-                    ZipEntry zipEntry = new ZipEntry(p.getFileName().toString());
+                     * meter el archivo en ZipOutputStream es creando una entrada ZipEntry, si metemos
+                     * solo el nombre, la entrada solo corresponderá a un fichero con el tal nombre,
+                     * para mantener una estructura completa necesitamos la ruta completa, relativice
+                     * te da un path que va de un directorio base que en este caso es 'ArchivosAComprimir'
+                     * hasta p (que son los path dentro del archivo base) */
+                    ZipEntry zipEntry = new ZipEntry(directorio.relativize(p).toString());
                     try {
                         // Enviamos al ZipOutputStream la entrada ZipEntry
                         zipOutputStream.putNextEntry(zipEntry);

@@ -72,6 +72,8 @@ File (java.io):
 Path (java.nio):
     -> Representa una ruta de archivo o directorio en el sistema de archivos.
     -> Proporciona una forma más moderna, flexible y potente de trabajar con archivos y directorios que File.
+    -> Los Path tienen un método no estático llamado .relativice() que te da la ruta relativa entre un Path
+       origen y otro destino.
 
 Paths (java.nio):
     -> Es una clase de ayuda que proporciona métodos estáticos para crear instancias de Path.
