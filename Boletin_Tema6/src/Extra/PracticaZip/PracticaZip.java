@@ -31,13 +31,16 @@ public class PracticaZip {
             Path archivoZip = Path.of("Boletin_Tema6/src/Extra/PracticaZip/archivos.zip");
             Files.deleteIfExists(archivoZip);
             Files.createFile(archivoZip);
-            // Esto es un flujo de los ficheros que queremos comprimir en un archivo ZIP
-            try (Stream<Path> flujo = Files.walk(directorio); // .walk() y .list() listan ficheros, directorios, etc.
+            /* Esto es un flujo de los ficheros que queremos comprimir en un archivo ZIP.
+             * .walk() y .list() listan ficheros, directorios, etc. Hay una diferencia aparte
+             * de la recursividad entre estas dos, si bien walk lo hace de forma recursiva,
+             * también incluye al directorio base, pero list no, aunque sí los archivos dentro
+             * de este */
+            try (Stream<Path> flujo = Files.walk(directorio);
                     /* ZipOutputStream es como una "mochila" la cual va guardando y comprimiendo dentro de ella
                      * los archivos especificados, acepta por parámetros Files.newOutputStream, esto nos
                      * permitirá escribir dentro de esta, se acumulará dentro de archivoZip */
                  ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(archivoZip))) {
-                // TODO: preguntar porque el uso del filter evita el 'AccessDeniedException'
                 flujo.filter(Files::isRegularFile).forEach(p -> {
                     /* Creamos una entrada de zip con el nombre del archivo a comprimir, la única forma de
                      * meter el archivo en ZipOutputStream es creando una entrada ZipEntry, si metemos

@@ -1,4 +1,4 @@
-package Ayuda.EjerciciosDeApoyo;
+package Ayuda.EjerciciosApoyoFicheros;
 
 import java.io.*;
 import java.nio.file.InvalidPathException;
@@ -28,7 +28,6 @@ public class RespaldoBasico {
     /**
      * En este método probamos el funcionamiento de FileReader con un
      * buffer propio creado
-     *
      * @throws RespaldoBasicoException
      */
     public static void fileReaderP() throws RespaldoBasicoException {
