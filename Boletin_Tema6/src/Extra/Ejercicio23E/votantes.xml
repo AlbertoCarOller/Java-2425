@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<votantes>
+    <votante dni="88888888A">
+        <nombre>Alberto Carmona</nombre>
+        <telefono>987152748</telefono>
+        <fecha>04/01/2009</fecha>
+    </votante>
+    <votante dni="29971536I">
+        <nombre>Antonio Rodríguez</nombre>
+        <telefono>771539074</telefono>
+        <fecha>10/04/1988</fecha>
+    </votante>
+</votantes>

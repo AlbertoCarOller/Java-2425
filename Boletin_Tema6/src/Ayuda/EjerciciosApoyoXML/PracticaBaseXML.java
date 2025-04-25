@@ -55,11 +55,12 @@ public class PracticaBaseXML {
             /* Normaliza el documento completo al igual que el método anterior, pero no
              * empieza por el nodo raíz, sino que se aplica al documento completo directamente */
             doc.normalize();
-            // getElementsByTagName() lista los nodos con ese nombre, devuelve una lista de nodos
+            // getElementsByTagName() lista los nodos con ese nombre, devuelve una lista de nodos, busca hasta el final
             NodeList personas = doc.getElementsByTagName("persona");
             // En este caso con .item() cogemos el primer elemento de la lista de nodos
             Node primeraPersona = personas.item(0);
-            // .getChildNodes() lista los nodos hijos de un nodo, devuelve una lista de nodos (con nombre y edad)
+            /* .getChildNodes() lista los nodos hijos de un nodo, devuelve una lista de nodos (con nombre y edad)
+             busca hijos directos */
             NodeList nodosPersona = primeraPersona.getChildNodes();
             // Recorremos la lista de los nodos hijos de persona e imprimimos su nombre y contenido
             for (int i = 0; i < nodosPersona.getLength(); i++) {

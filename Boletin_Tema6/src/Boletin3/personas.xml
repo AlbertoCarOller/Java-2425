@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<personas>
+    <persona dni="98716396P">
+        <nombre>Atisbedo</nombre>
+        <telefono>698173450</telefono>
+        <fecha>25/04/2025</fecha>
+    </persona>
+    <persona dni="89876525T">
+        <nombre>Respicio</nombre>
+        <telefono>789163860</telefono>
+        <fecha>25/04/2025</fecha>
+    </persona>
+    <persona dni="89876525O">
+        <nombre>Chelu</nombre>
+        <telefono>676512387</telefono>
+        <fecha>25/04/2025</fecha>
+    </persona>
+    <persona dni="29867189W">
+        <nombre>Antonio</nombre>
+        <telefono>698762788</telefono>
+        <fecha>25/04/2025</fecha>
+    </persona>
+    <persona dni="98615379L">
+        <nombre>Bermudo</nombre>
+        <telefono>786153996</telefono>
+        <fecha>25/04/2025</fecha>
+    </persona>
+</personas>
