@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<peliculas>
+    <pelicula codigo="P400">
+        <titulo>Sech</titulo>
+        <genero>musical</genero>
+        <duracion>6</duracion>
+    </pelicula>
+    <pelicula codigo="P303">
+        <titulo>La milla verde</titulo>
+        <genero>fantasía</genero>
+        <duracion>1.75</duracion>
+    </pelicula>
+    <pelicula codigo="P957">
+        <titulo>El ascenso de Bermudo 2</titulo>
+        <genero>comedia</genero>
+        <duracion>3.2</duracion>
+    </pelicula>
+    <pelicula codigo="P888">
+        <titulo>Alberto Mobilario</titulo>
+        <genero>No Mobilario</genero>
+        <duracion>3.4</duracion>
+    </pelicula>
+</peliculas>

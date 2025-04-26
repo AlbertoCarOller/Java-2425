@@ -4,10 +4,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -15,6 +18,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,8 +30,10 @@ import java.util.stream.Stream;
 public class Ejercicio23E {
     public static void main(String[] args) {
         try {
-            crearXML(validarLineas()); // Llamamos al método
+            // Llamamos a los métodos
+            crearXML(validarLineas());
             modificarDniPersona("Alberto Carmona", "88888888A");
+            mostrarVotantesMayoresEdad();
 
         } catch (Ejercicio23Exception e) {
             System.out.println(e.getMessage());
@@ -59,6 +68,45 @@ public class Ejercicio23E {
     }
 
     /**
+     * Este método va a crear un DocumentBuilder para así facilitar esta parte del código
+     * ya que siempre es la misma
+     *
+     * @return el DocumentBuilder
+     * @throws Ejercicio23Exception
+     */
+    public static DocumentBuilder crearDocumentBuilder() throws Ejercicio23Exception {
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        try {
+            return documentBuilderFactory.newDocumentBuilder();
+
+        } catch (ParserConfigurationException e) {
+            throw new Ejercicio23Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método guarda los cambios realizados o la creación del nuevo Document
+     * en el archivo especificado, este método es simplemente para optimizar, ya que
+     * el proceso siempre es el mismo
+     *
+     * @param doc          el Document
+     * @param archivoFinal el archivo destino (final)
+     * @throws Ejercicio23Exception
+     */
+    public static void guardarCambios(Document doc, Path archivoFinal) throws Ejercicio23Exception {
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource domSource = new DOMSource(doc);
+            StreamResult streamResult = new StreamResult(archivoFinal.toFile());
+            transformer.transform(domSource, streamResult);
+
+        } catch (TransformerException e) {
+            throw new Ejercicio23Exception(e.getMessage());
+        }
+    }
+
+    /**
      * Este método crea el archivo XML a partir de los elementos escritos
      * en las líneas correctas
      *
@@ -70,9 +118,7 @@ public class Ejercicio23E {
             // Path del archivo XML a crear
             Path archivoXML = Path.of("Boletin_Tema6/src/Extra/Ejercicio23E/votantes.xml");
             // Creamos un nuevo Document para poder crear los nodos a partir de las líneas correctas
-            DocumentBuilderFactory dBFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dB = dBFactory.newDocumentBuilder();
-            Document doc = dB.newDocument();
+            Document doc = crearDocumentBuilder().newDocument();
             // Creamos el nodo padre
             Element root = doc.createElement("votantes");
             // Lo añadimos al árbol de nodos
@@ -97,11 +143,8 @@ public class Ejercicio23E {
                 doc.getDocumentElement().appendChild(votante);
             });
             // Guardamos los cambios realizados y creamos el documento XML
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource domSource = new DOMSource(doc);
-            StreamResult streamResult = new StreamResult(archivoXML.toFile());
-            transformer.transform(domSource, streamResult);
+            guardarCambios(doc, archivoXML);
+
 
         } catch (Exception e) {
             throw new Ejercicio23Exception(e.getMessage());
@@ -121,9 +164,7 @@ public class Ejercicio23E {
             // Ubicación del archivo XML
             Path archivoXML = Path.of("Boletin_Tema6/src/Extra/Ejercicio23E/votantes.xml");
             // Parseamos el archivo XML a un Document para poder manipularlo
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document doc = documentBuilder.parse(archivoXML.toFile());
+            Document doc = crearDocumentBuilder().parse(archivoXML.toFile());
             // Recorremos los nodos hijos del nodo padre
             NodeList hijosRoot = doc.getDocumentElement().getChildNodes();
             // Nos servirá para dejar de recorrer una vez encontrado el votante o en caso de que no lanzar excepción
@@ -149,21 +190,55 @@ public class Ejercicio23E {
                     }
                 }
             }
-            // Guardamos los cambios realizados
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource domSource = new DOMSource(doc);
-            StreamResult streamResult = new StreamResult(archivoXML.toFile());
-            transformer.transform(domSource, streamResult);
-
             if (!encontrado) {
                 throw new Ejercicio23Exception("No se ha podido encontrar al votante");
             }
+            // Guardamos los cambios realizados
+            guardarCambios(doc, archivoXML);
 
         } catch (Exception e) {
             throw new Ejercicio23Exception(e.getMessage());
         }
     }
 
-    //TODO: método para mostrar por pantalla los votantes mayores de edad y optimizar código (meta personal)
+    /**
+     * Este método va a mostrar por pantalla el nombre de los votantes que
+     * sean mayor de edad
+     *
+     * @throws Ejercicio23Exception
+     */
+    public static void mostrarVotantesMayoresEdad() throws Ejercicio23Exception {
+        try {
+            // El archivo XML que vamos a leer
+            Path archivoXML = Path.of("Boletin_Tema6/src/Extra/Ejercicio23E/votantes.xml");
+            // Lo transformamos a un Document para poder leerlo
+            Document doc = crearDocumentBuilder().parse(archivoXML.toFile());
+            // Obtenemos un NodeList con los votantes
+            NodeList votantes = doc.getDocumentElement().getChildNodes();
+            List<String> mayoresEdad = new ArrayList<>();
+            // Recorremos los votantes en busca de los mayores de edad
+            for (int i = 0; i < votantes.getLength(); i++) {
+                if (votantes.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                    // Transformamos el nodo en un elemento para poder trabajar mejor con él
+                    Element votante = (Element) votantes.item(i);
+                    // Cogemos la fecha del votante
+                    Element fecha = (Element) votante.getElementsByTagName("fecha").item(0);
+                    /* Transformamos la fecha de un String a un LocalDate especificándole al .parse()
+                     * cuál es el formato de la fecha que se le ha pasado */
+                    LocalDate fechaNacimiento = LocalDate.parse(fecha.getTextContent(),
+                            DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                    // Si han pasado 18 años o más desde la 'fechaNacimiento' hasta la fecha actual entra
+                    if (Math.abs(ChronoUnit.YEARS.between(LocalDate.now(), fechaNacimiento)) >= 18) {
+                        // Se añade a la lista el nombre del votante que cumpla la condición
+                        mayoresEdad.add(votante.getElementsByTagName("nombre").item(0).getTextContent());
+                    }
+                }
+            }
+            // Imprimimos por pantalla los nombres de los votantes que son mayores de edad
+            mayoresEdad.forEach(System.out::println);
+
+        } catch (InvalidPathException | SAXException | IOException e) {
+            throw new Ejercicio23Exception(e.getMessage());
+        }
+    }
 }
