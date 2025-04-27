@@ -1,0 +1,4 @@
+ID: 1122, Nombre: Ana Gómez, Fecha de Nacimiento: 30/02/1995, Correo: ana.gomez@dominio
+ID: 1234, Nombre: Juan Pérez, Fecha de Nacimiento: 15/08/1985, Correo: juan.perez@dominio.com
+ID: 5678, Nombre: María, Fecha de Nacimiento: 25/13/1990, Correo: maria@dominio
+ID: 0011, Nombre: Pedro Martínez, Fecha de Nacimiento: 10/10/1999, Correo: pedro.martinez@dominio.com

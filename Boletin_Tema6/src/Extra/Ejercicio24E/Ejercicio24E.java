@@ -18,14 +18,14 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Ejercicio24E {
     public static void main(String[] args) {
         try {
             crearPeliculas();
             anadirPeliculaXML(new Pelicula("P888", "Alberto Mobilario", "No Mobilario", 3.4));
+            eliminarPeliculasPorGenero();
 
         } catch (PeliculaException e) {
             System.out.println(e.getMessage());
@@ -45,6 +45,28 @@ public class Ejercicio24E {
             return documentBuilderFactory.newDocumentBuilder();
 
         } catch (ParserConfigurationException e) {
+            throw new PeliculaException(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método guarda los cambios realizados o la creación del nuevo Document
+     * en el archivo especificado, este método es simplemente para optimizar, ya que
+     * el proceso siempre es el mismo
+     *
+     * @param doc          el Document
+     * @param archivoFinal el archivo destino (final)
+     * @throws Ejercicio23Exception
+     */
+    public static void guardarCambios(Document doc, Path archivoFinal) throws PeliculaException {
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource domSource = new DOMSource(doc);
+            StreamResult streamResult = new StreamResult(archivoFinal.toFile());
+            transformer.transform(domSource, streamResult);
+
+        } catch (TransformerException e) {
             throw new PeliculaException(e.getMessage());
         }
     }
@@ -121,17 +143,56 @@ public class Ejercicio24E {
             // Añadimos al nodo padre la película
             doc.getDocumentElement().appendChild(peliculaElement);
             // Guardamos los cambios
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource domSource = new DOMSource(doc);
-            StreamResult streamResult = new StreamResult(archivoXML.toFile());
-            transformer.transform(domSource, streamResult);
+            guardarCambios(doc, archivoXML);
 
 
-        } catch (InvalidPathException | SAXException | IOException | TransformerException e) {
+        } catch (InvalidPathException | SAXException | IOException e) {
             throw new PeliculaException(e.getMessage());
         }
     }
 
-    //TODO: terminar los métodos del ejercicio y optimizar el código
+    /**
+     * Este método va a eliminar las películas que cumplan con
+     * el regex especificado, más concretamente el género de las
+     * películas que cumplan con el regex
+     *
+     * @throws PeliculaException
+     */
+    public static void eliminarPeliculasPorGenero() throws PeliculaException {
+        try {
+            // Ubicación del archivo XML
+            Path archivoXML = Path.of("Boletin_Tema6/src/Extra/Ejercicio24E/peliculas.xml");
+            // Parseamos el archivo XML a un Document para poder manipularlo
+            Document doc = crearDocumentBuilder().parse(archivoXML.toFile());
+            // Obtenemos una lista de nodos con las películas
+            // TODO: preguntar por qué usar directamente doc.getChildNodes(); no me elimina el nodo
+            NodeList peliculas = doc.getDocumentElement().getChildNodes();
+            // Nos creamos una lista de nodos con los nodos a eliminar, ya que no se pueden eliminar directamente
+            List<Node> nodosAEliminar = new ArrayList<>();
+            // Recorremos las películas
+            for (int i = 0; i < peliculas.getLength(); i++) {
+                // Si es un nodo de tipo elemento entra
+                if (peliculas.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                    Element pelicula = (Element) peliculas.item(i);
+                    // Si el género de la película coincide con el regex especificado entra
+                    if (pelicula.getElementsByTagName("genero").item(0).getTextContent()
+                            .matches("^\\p{L}+ \\p{L}+$")) {
+                        /* No se puede eliminar directamente, ya que NodeList está unido directamente
+                         * al árbol de nodos, es decir cuando eliminas un nodo del árbol de nodos
+                         * también se elimina del NodeList, ya que este es como una "ventana viva"
+                         * del DOM */
+                        //doc.getDocumentElement().removeChild(peliculas.item(i));
+                        nodosAEliminar.add(peliculas.item(i));
+                    }
+                }
+            }
+            // Eliminamos las películas del DOM que coincidan con el regex
+            nodosAEliminar.forEach(e -> doc.getDocumentElement().removeChild(e));
+            // Guardamos los cambios
+            guardarCambios(doc, archivoXML);
+
+        } catch (InvalidPathException | SAXException | IOException e) {
+            throw new PeliculaException(e.getMessage());
+        }
+    }
 }
