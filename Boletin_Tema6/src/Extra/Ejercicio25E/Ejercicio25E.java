@@ -79,7 +79,7 @@ public class Ejercicio25E {
                 sb.append("\nEl nombre no es correcto");
                 break;
             case 2:
-                sb.append("\nLa fecha de naciemiento no es correcta");
+                sb.append("\nLa fecha de nacimiento no es correcta");
                 break;
             case 3:
                 sb.append("\nEl correo no es válido");

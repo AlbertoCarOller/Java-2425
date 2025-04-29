@@ -1,0 +1,5 @@
+ID: 1122, Nombre: Ana Gómez, Fecha de Nacimiento: 30/02/1995, Correo: ana.gomez@dominio
+El correo no es válido
+ID: 5678, Nombre: María, Fecha de Nacimiento: 25/13/1990, Correo: maria@dominio
+La fecha de nacimiento no es correcta
+El correo no es válido

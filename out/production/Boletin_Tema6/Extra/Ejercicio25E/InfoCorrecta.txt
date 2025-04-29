@@ -1,0 +1,2 @@
+ID: 1234, Nombre: Juan Pérez, Fecha de Nacimiento: 15/08/1985, Correo: juan.perez@dominio.com
+ID: 0011, Nombre: Pedro Martínez, Fecha de Nacimiento: 10/10/1999, Correo: pedro.martinez@dominio.com

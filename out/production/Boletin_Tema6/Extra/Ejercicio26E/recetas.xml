@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<recetario>
+    <receta id="R001">
+        <nombre>Ensalada César</nombre>
+        <ingredientes>Lechuga, Pollo, Pan tostado, Queso parmesano, Salsa César</ingredientes>
+        <tiempoPreparacion>15 minutos</tiempoPreparacion>
+        <dificultad>Fácil</dificultad>
+    </receta>
+
+    <receta id="R002">
+        <nombre>Pizza Margarita</nombre>
+        <ingredientes>Masa, Tomate, Mozzarella, Albahaca</ingredientes>
+        <tiempoPreparacion>25 minutos</tiempoPreparacion>
+        <dificultad>Media</dificultad>
+    </receta>
+
+    <receta id="X003">
+        <nombre>Pasta</nombre>
+        <ingredientes>Tomate, Ajo, Aceite</ingredientes>
+        <tiempoPreparacion>30</tiempoPreparacion>
+        <dificultad>Alta</dificultad>
+    </receta>
+
+    <receta id="R004">
+        <nombre>Arroz con Leche</nombre>
+        <ingredientes>Arroz, Leche, Azúcar, Canela</ingredientes>
+        <tiempoPreparacion>60 minutos</tiempoPreparacion>
+        <dificultad>Fácil</dificultad>
+    </receta>
+
+    <receta id="R005">
+        <nombre>H</nombre>
+        <ingredientes>Harina, Agua</ingredientes>
+        <tiempoPreparacion>10 minutos</tiempoPreparacion>
+        <dificultad>Fácil</dificultad>
+    </receta>
+
+    <receta id="R006">
+        <nombre>Tarta de Manzana</nombre>
+        <ingredientes>Manzana, Azúcar, Harina, Mantequilla</ingredientes>
+        <tiempoPreparacion>noventa minutos</tiempoPreparacion>
+        <dificultad>Media</dificultad>
+    </receta>
+
+    <receta id="R007">
+        <nombre>Paella</nombre>
+        <ingredientes>Arroz, Marisco, Pollo, Verduras</ingredientes>
+        <tiempoPreparacion>45 minutos</tiempoPreparacion>
+        <dificultad>Difícil</dificultad>
+    </receta>
+</recetario>
