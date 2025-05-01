@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <recetario>
     <receta id="R001">
         <nombre>Ensalada César</nombre>
@@ -47,5 +47,11 @@
         <ingredientes>Arroz, Marisco, Pollo, Verduras</ingredientes>
         <tiempoPreparacion>45 minutos</tiempoPreparacion>
         <dificultad>Difícil</dificultad>
+    </receta>
+    <receta id="R409">
+        <nombre>Chelu a la brasa</nombre>
+        <ingredientes>Chelu y carbón</ingredientes>
+        <tiempoPreparacion>200 minutos</tiempoPreparacion>
+        <dificultad>Fácil</dificultad>
     </receta>
 </recetario>

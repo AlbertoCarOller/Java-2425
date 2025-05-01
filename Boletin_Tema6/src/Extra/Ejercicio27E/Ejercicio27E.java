@@ -8,21 +8,33 @@ import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 public class Ejercicio27E {
     public static void main(String[] args) {
         // Creamos una lista de pacientes
-        Set<Paciente> pacientes = Set.of(new Paciente("P303", "Antonio Rodríguez", 37,
+        List<Paciente> pacientes = List.of(new Paciente("P303", "Antonio Rodríguez", 37,
                 "anton.io@gmail.com", 79.5, 1.72), new Paciente("P999",
                 "Alberto Carmona", 20, "alberto@gmail.com", 80,
                 1.77), new Paciente("X808", "Alberto Rivero", 25,
                 "river_p@hotmail.com", 78.8, 1.69));
+        try {
+            crearXML(validarPacientes(pacientes));
+
+        } catch (Ejercicio27EException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -43,6 +55,28 @@ public class Ejercicio27E {
     }
 
     /**
+     * Este método guarda los cambios realizados o la creación del nuevo Document
+     * en el archivo especificado, este método es simplemente para optimizar, ya que
+     * el proceso siempre es el mismo
+     *
+     * @param doc          el Document
+     * @param archivoFinal el archivo destino (final)
+     * @throws Ejercicio27EException
+     */
+    public static void guardarCambios(Document doc, Path archivoFinal) throws Ejercicio27EException {
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource domSource = new DOMSource(doc);
+            StreamResult streamResult = new StreamResult(archivoFinal.toFile());
+            transformer.transform(domSource, streamResult);
+
+        } catch (TransformerException e) {
+            throw new Ejercicio27EException(e.getMessage());
+        }
+    }
+
+    /**
      * Este método validará el formato de los atributos de cada paciente,
      * los pacientes que tengan uno o más campos inválidos se escribirán
      * dentro de un documento .txt con su respectivo/s motivo/S
@@ -57,15 +91,14 @@ public class Ejercicio27E {
             Files.deleteIfExists(escribirInvalidos);
             /* Recorremos los pacientes en busca de los correctos e incorrectos, se devolverá una lista
              * de los correctos y los no correctos  */
-            return pacientes.stream().filter(p -> {
-                boolean alMenosUn = false;
+            return Optional.of(pacientes.stream().filter(p -> {
                 StringBuilder sb = new StringBuilder();
                 sb.append(p.getId()).append(" | ").append(p.getNombreCompleto()).append(" | ").append(p.getEdad())
                         .append(" | ").append(p.getCorreoElectronico()).append(" | ").append(p.getPeso())
                         .append(" | ").append(p.getAltura()).append("\n");
                 // Llamamos al método que se va a encargar de filtrar y adjuntar los mensajes
                 return appendMensaje(escribirInvalidos, sb, p);
-            }).toList();
+            }).toList()).filter(l -> !l.isEmpty()).orElseThrow(() -> new Ejercicio27EException("No hay pacientes válidos"));
 
         } catch (IOException | RuntimeException e) {
             throw new Ejercicio27EException(e.getMessage());
@@ -99,15 +132,15 @@ public class Ejercicio27E {
             ninguno = false;
             sb.append("-> La edad no es correcta\n");
         }
-        if (!p.getCorreoElectronico().matches("^[a-z][a-z._-]@(gmail\\.com|hotmail\\.(es|com))$")) {
+        if (!p.getCorreoElectronico().matches("^[a-z][a-z._-]+@(gmail\\.com|hotmail\\.(es|com))$")) {
             ninguno = false;
             sb.append("-> El correo no es válido\n");
         }
-        if (String.valueOf(p.getPeso()).matches("^([1-9]|[123456789][0-9]|1\\d{2})\\.[0-9]{2}$")) {
+        if (!String.valueOf(p.getPeso()).matches("^([1-9]|[123456789][0-9]|1\\d{2})\\.[0-9]{1,2}$")) {
             ninguno = false;
             sb.append("-> El peso no es correcto\n");
         }
-        if (String.valueOf(p.getAltura()).matches("^(1\\.([0-9]|[0-9][1-9])|2\\.([0-5]|[0-9][1-9]))$")) {
+        if (!String.valueOf(p.getAltura()).matches("^(1\\.([0-9]|[0-9][1-9])|2\\.([0-5]|[0-9][1-9]))$")) {
             ninguno = false;
             sb.append("-> La altura no es correcta\n");
         }
@@ -127,21 +160,42 @@ public class Ejercicio27E {
     }
 
     public static void crearXML(List<Paciente> pacientesValidos) throws Ejercicio27EException {
-        // Path del archivo XML (donde quiero que se cree)
-        Path archivoXML = Path.of("Boletin_Tema6/src/Extra/Ejercicio27E/pacientes.xml");
-        Document doc = crearDocumentBuilder().newDocument();
-        // Recorremos los pacientes válidos
-        pacientesValidos.forEach(p -> {
-            // Nos creamos los nodos correspondientes de cada paciente
-            Element paciente = doc.createElement("paciente");
-            paciente.setAttribute("id", p.getId());
-            Element nombreCompleto = doc.createElement("nombreCompleto");
-            nombreCompleto.setTextContent(p.getNombreCompleto());
-            Element edad = doc.createElement("edad");
-            edad.setTextContent(String.valueOf(p.getEdad()));
-            Element correoElectronico = doc.createElement("correoElectronico");
-            correoElectronico.setTextContent(p.getCorreoElectronico());
-            // TODO: terminar el método y probar su funcionamiento
-        });
+        try {
+            // Path del archivo XML (donde quiero que se cree)
+            Path archivoXML = Path.of("Boletin_Tema6/src/Extra/Ejercicio27E/pacientes.xml");
+            Document doc = crearDocumentBuilder().newDocument();
+            // Creamos el nodo raíz, IMPORTANTE
+            Element root = doc.createElement("pacientes");
+            doc.appendChild(root);
+            // Recorremos los pacientes válidos
+            pacientesValidos.forEach(p -> {
+                // Nos creamos los nodos correspondientes de cada paciente
+                Element paciente = doc.createElement("paciente");
+                paciente.setAttribute("id", p.getId());
+                Element nombreCompleto = doc.createElement("nombreCompleto");
+                nombreCompleto.setTextContent(p.getNombreCompleto());
+                Element edad = doc.createElement("edad");
+                edad.setTextContent(String.valueOf(p.getEdad()));
+                Element correoElectronico = doc.createElement("correoElectronico");
+                correoElectronico.setTextContent(p.getCorreoElectronico());
+                Element peso = doc.createElement("peso");
+                peso.setTextContent(String.valueOf(p.getPeso()));
+                Element altura = doc.createElement("altura");
+                altura.setTextContent(String.valueOf(p.getAltura()));
+                // Añadimos los nodos al nodo padre
+                paciente.appendChild(nombreCompleto);
+                paciente.appendChild(edad);
+                paciente.appendChild(correoElectronico);
+                paciente.appendChild(peso);
+                paciente.appendChild(altura);
+                // Añadimos el nodo del paciente como hijo del nodo padre
+                root.appendChild(paciente);
+            });
+            // Guardamos los cambios
+            guardarCambios(doc, archivoXML);
+
+        } catch (InvalidPathException e) {
+            throw new Ejercicio27EException(e.getMessage());
+        }
     }
 }

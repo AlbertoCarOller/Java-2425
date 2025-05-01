@@ -1,7 +1,6 @@
 package Extra.Ejercicio26E;
 
 import Extra.Ejercicio23E.Ejercicio23Exception;
-import Extra.Ejercicio24E.PeliculaException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

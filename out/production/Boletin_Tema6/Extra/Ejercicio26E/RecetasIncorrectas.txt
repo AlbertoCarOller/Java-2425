@@ -6,3 +6,11 @@ X003 | Pasta | Tomate, Ajo, Aceite | 30 | Alta
 R005 | H | Harina, Agua | 10 minutos | Fácil
 -> El tiempo de preparación no es correcto
 R006 | Tarta de Manzana | Manzana, Azúcar, Harina, Mantequilla | noventa minutos | Media
+-> El id no es correcto
+-> El tiempo de preparación no es correcto
+-> La dificultad no es correcta
+X003 | Pasta | Tomate, Ajo, Aceite | 30 | Alta
+-> El nombre no es correcto
+R005 | H | Harina, Agua | 10 minutos | Fácil
+-> El tiempo de preparación no es correcto
+R006 | Tarta de Manzana | Manzana, Azúcar, Harina, Mantequilla | noventa minutos | Media

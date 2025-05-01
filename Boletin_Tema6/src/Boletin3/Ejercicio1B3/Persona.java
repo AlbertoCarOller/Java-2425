@@ -1,4 +1,4 @@
-package Boletin3;
+package Boletin3.Ejercicio1B3;
 
 import java.time.LocalDate;
 import java.util.Objects;

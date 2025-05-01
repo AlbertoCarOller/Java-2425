@@ -2,3 +2,7 @@ R001 | Ensalada César | Lechuga, Pollo, Pan tostado, Queso parmesano, Salsa Cé
 R002 | Pizza Margarita | Masa, Tomate, Mozzarella, Albahaca | 25 minutos | Media
 R004 | Arroz con Leche | Arroz, Leche, Azúcar, Canela | 60 minutos | Fácil
 R007 | Paella | Arroz, Marisco, Pollo, Verduras | 45 minutos | Difícil
+R001 | Ensalada César | Lechuga, Pollo, Pan tostado, Queso parmesano, Salsa César | 15 minutos | Fácil
+R002 | Pizza Margarita | Masa, Tomate, Mozzarella, Albahaca | 25 minutos | Media
+R004 | Arroz con Leche | Arroz, Leche, Azúcar, Canela | 60 minutos | Fácil
+R007 | Paella | Arroz, Marisco, Pollo, Verduras | 45 minutos | Difícil

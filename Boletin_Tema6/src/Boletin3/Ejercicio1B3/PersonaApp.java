@@ -1,4 +1,4 @@
-package Boletin3;
+package Boletin3.Ejercicio1B3;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

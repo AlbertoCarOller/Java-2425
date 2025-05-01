@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<pacientes>
+    <paciente id="P303">
+        <nombreCompleto>Antonio Rodríguez</nombreCompleto>
+        <edad>37</edad>
+        <correoElectronico>anton.io@gmail.com</correoElectronico>
+        <peso>79.5</peso>
+        <altura>1.72</altura>
+    </paciente>
+    <paciente id="P999">
+        <nombreCompleto>Alberto Carmona</nombreCompleto>
+        <edad>20</edad>
+        <correoElectronico>alberto@gmail.com</correoElectronico>
+        <peso>80.0</peso>
+        <altura>1.77</altura>
+    </paciente>
+</pacientes>
