@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<menu>
+    <dia nombre="Lunes">
+        <plato>
+            <nombre>Lentejas</nombre>
+            <precio>6.5</precio>
+            <calorias>550</calorias>
+        </plato>
+        <plato>
+            <nombre>Hamburguesa</nombre>
+            <precio>8.0</precio>
+            <calorias>800</calorias>
+        </plato>
+    </dia>
+    <dia nombre="Martes">
+        <plato>
+            <nombre>Ensalada César</nombre>
+            <precio>5.5</precio>
+            <calorias>420</calorias>
+        </plato>
+        <plato>
+            <nombre>Pizza</nombre>
+            <precio>7.5</precio>
+            <calorias>750</calorias>
+        </plato>
+    </dia>
+</menu>

@@ -205,7 +205,7 @@ public class Ejercicio3B3 {
                 throw new Ejercicio3B3Exception("La descripción no es correcta");
             }
             Element descripcion = doc.createElement("description");
-            descripcion.setTextContent("\n" + description + "\n");
+            descripcion.setTextContent("\n\t\t\t" + description + "\n\t\t");
             if (!calories.matches("^[1-9][0-9]{1,3}$")) {
                 throw new Ejercicio3B3Exception("Las calorías no tienen un formato correcto");
             }
@@ -222,9 +222,12 @@ public class Ejercicio3B3 {
             food.appendChild(calorias);
             food.appendChild(doc.createTextNode("\n\t"));
             // Añadimos la comida al nodo principal
-            food.appendChild(doc.createTextNode("\t"));
+            /* IMPORTANTE: Antes me estaba dando problemas, ya que estaba insertando la tabulación y espacio dentro de
+             * del nodo food directamente ne vez de fuera */
+            doc.getDocumentElement().appendChild(doc.createTextNode("\t"));
             doc.getDocumentElement().appendChild(food);
-            food.appendChild(doc.createTextNode("\n"));
+            doc.getDocumentElement().appendChild(doc.createTextNode("\n"));
+            //doc.insertBefore(doc.createTextNode("\n"), doc.getDocumentElement()); -> No se puede insertar directamente en doc
             // Guardamos los cambios
             guardarCambios(doc, archivoXML);
 
