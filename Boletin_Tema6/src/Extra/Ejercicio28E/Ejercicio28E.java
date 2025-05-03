@@ -27,14 +27,13 @@ public class Ejercicio28E {
             Path descargasOrdenadas = Path.of("Boletin_Tema6/src/Extra/Ejercicio28E/DescargasOrdenadas");
             Path imagenes = Path.of(descargasOrdenadas + "/Imagenes");
             Path textos = Path.of(descargasOrdenadas + "/Textos");
-            /*Files.deleteIfExists(descargasOrdenadas); -> No moverá los archivos en caso de
+            /* Files.deleteIfExists(descargasOrdenadas); -> No moverá los archivos en caso de
              * que el directorio no esté vacío, habría problemas entonces */
-            Files.createDirectories(imagenes);
-            Files.createDirectories(textos);
             try (Stream<Path> flujo = Files.walk(descargas)) {
                 flujo.filter(Files::isRegularFile).forEach(p -> {
                     if (p.toFile().getName().matches("^[A-Za-z0-9]+\\.txt$")) {
                         try {
+                            Files.createDirectories(textos);
                             Files.move(p, Path.of(textos + "/" + p.toFile().getName()));
 
                         } catch (IOException e) {
@@ -42,6 +41,7 @@ public class Ejercicio28E {
                         }
                     } else if (p.toFile().getName().matches("^[A-Za-z0-9]+\\.(jpg|jpeg)$")) {
                         try {
+                            Files.createDirectories(imagenes);
                             Files.move(p, Path.of(imagenes + "/" + p.toFile().getName()));
 
                         } catch (IOException e) {

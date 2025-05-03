@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<breakfast_menu>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><breakfast_menu>
     <food id="1">
         <name>Tostada con tomate y café</name>
         <price>1,70€</price>
@@ -43,12 +42,12 @@
         </description>
         <calories>950</calories>
     </food>
-    <food>
-        <name>Antonio a la brasa</name>
-        <price>90,5€</price>
-        <description>
-            Antonio pasado por la brasa a 180 grados
-        </description>
-        <calories>700</calories>
-    </food>
-</breakfast_menu>
+<food>
+		<name>Antonio a la brasa</name>
+		<price>90,5€</price>
+		<description>
+Antonio pasado por la brasa a 180 grados
+</description>
+		<calories>700</calories>
+		
+</food></breakfast_menu>

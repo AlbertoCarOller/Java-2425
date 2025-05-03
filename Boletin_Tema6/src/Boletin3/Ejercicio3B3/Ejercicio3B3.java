@@ -32,7 +32,7 @@ public class Ejercicio3B3 {
             anadirID();
             anadirPlatoXML("Antonio a la brasa", "90,5€",
                     "Antonio pasado por la brasa a 180 grados", "700");
-            eliminarPlatosAltosEnCalorias();
+            //eliminarPlatosAltosEnCalorias();
 
         } catch (Ejercicio3B3Exception e) {
             System.out.println(e.getMessage());
@@ -66,14 +66,27 @@ public class Ejercicio3B3 {
      * @throws Ejercicio27EException
      */
     public static void guardarCambios(Document doc, Path archivoFinal) throws Ejercicio3B3Exception {
+        // Quitamos los nodos de texto, sigue sin identarse correctamente con este proceso, pero sí mejor
+        // TODO: probar a hacerlo de forma manual
+        /*NodeList recorrido = doc.getDocumentElement().getChildNodes();
+        List<Node> nodosTextos = new ArrayList<>();
+        for (int i = 0; i < recorrido.getLength(); i++) {
+            if (recorrido.item(i).getNodeType() == Node.TEXT_NODE) {
+                nodosTextos.add(recorrido.item(i));
+            }
+        }
+        nodosTextos.forEach(n -> doc.getDocumentElement().removeChild(n));*/
         try {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource domSource = new DOMSource(doc);
             StreamResult streamResult = new StreamResult(archivoFinal.toFile());
             transformer.transform(domSource, streamResult);
-            // Sirve para identar, es decir que la estructura sea correcta
+            // Sirve para decir que el documento debe tener saltos de línea y espacios
             //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            //Aplica 4 espacios por cada nivel de identación, HAY QUE TENER CUIDADO CON LOS SALTOS DE LÍNEA EXISTENTE
+            //transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
 
         } catch (TransformerException e) {
             throw new Ejercicio3B3Exception(e.getMessage());
@@ -94,8 +107,11 @@ public class Ejercicio3B3 {
             for (int i = 0; i < comidas.getLength(); i++) {
                 if (comidas.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     Element comida = (Element) comidas.item(i);
-                    if (comida.getElementsByTagName("price").item(0).getTextContent().matches("^[0-4]([.,])\\d{2}€$")) {
-                        System.out.println("-> " + comida.getElementsByTagName("name").item(0).getTextContent());
+                    // .strip() funciona igual que el .trim()
+                    if (comida.getElementsByTagName("price").item(0).getTextContent().strip()
+                            // Con matches ^ y $ no es necesario, solo con find para saber donde está el principio y final
+                            .matches("[0-4][.,]\\d{2}€")) {
+                        System.out.println("-> " + comida.getElementsByTagName("name").item(0).getTextContent().strip());
                     }
                 }
             }
@@ -117,6 +133,7 @@ public class Ejercicio3B3 {
             Document doc = crearDocumentBuilder().parse(archivoXML.toFile());
             NodeList foodList = doc.getDocumentElement().getChildNodes();
             for (int i = 0; i < foodList.getLength(); i++) {
+                // Esta comprobación es innecesaria, ya que .getDocumentElement() devuelve todos elementos
                 if (foodList.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     Element food = (Element) foodList.item(i);
                     if (Integer.parseInt(food.getElementsByTagName("calories").item(0).getTextContent())
@@ -145,7 +162,8 @@ public class Ejercicio3B3 {
             for (int i = 0; i < comidas.getLength(); i++) {
                 if (comidas.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     Element comida = (Element) comidas.item(i);
-                    comida.setAttribute("id", String.valueOf(++valorID));
+                    comida.setAttribute("id", String.valueOf(++valorID)); /* -> i + 1 no cambia el valor de i
+                     no es viable, ya que puede haber nodos de texto entre medio*/
                 }
             }
             guardarCambios(doc, archivoXML);
@@ -194,12 +212,19 @@ public class Ejercicio3B3 {
             Element calorias = doc.createElement("calories");
             calorias.setTextContent(calories);
             // Append sobre los atributos
+            food.appendChild(doc.createTextNode("\n\t\t"));
             food.appendChild(nombre);
+            food.appendChild(doc.createTextNode("\n\t\t"));
             food.appendChild(precio);
+            food.appendChild(doc.createTextNode("\n\t\t"));
             food.appendChild(descripcion);
+            food.appendChild(doc.createTextNode("\n\t\t"));
             food.appendChild(calorias);
+            food.appendChild(doc.createTextNode("\n\t"));
             // Añadimos la comida al nodo principal
+            food.appendChild(doc.createTextNode("\t"));
             doc.getDocumentElement().appendChild(food);
+            food.appendChild(doc.createTextNode("\n"));
             // Guardamos los cambios
             guardarCambios(doc, archivoXML);
 
@@ -208,6 +233,12 @@ public class Ejercicio3B3 {
         }
     }
 
+    /**
+     * Este método elimina los platos con más de calorías, se consideran altos
+     * en calorías los que tengan más de 500 calorías
+     *
+     * @throws Ejercicio3B3Exception
+     */
     public static void eliminarPlatosAltosEnCalorias() throws Ejercicio3B3Exception {
         try {
             Path archivoXML = Path.of("Boletin_Tema6/src/Boletin3/Ejercicio3B3/desayuno.xml");
