@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><menu>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu>
     <dia nombre="Lunes">
         <plato codigo="1001">
             <nombre>Lentejas</nombre>
@@ -10,19 +11,14 @@
             <precio>8.0</precio>
             <calorias>800</calorias>
         </plato>
-    	<plato>
-			<nombre>Antonio a la vegana</nombre>
-			<precio>48.5</precio>
-			<calorias>550</calorias>
-		</plato>
-	</dia>
+    </dia>
     <dia nombre="Martes">
-        <plato codigo="1003">
+        <plato codigo="1006">
             <nombre>Ensalada César</nombre>
             <precio>5.5</precio>
             <calorias>420</calorias>
         </plato>
-        <plato codigo="1004">
+        <plato codigo="1007">
             <nombre>Pizza</nombre>
             <precio>7.5</precio>
             <calorias>750</calorias>

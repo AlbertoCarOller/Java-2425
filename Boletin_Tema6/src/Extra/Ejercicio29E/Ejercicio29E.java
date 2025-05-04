@@ -1,6 +1,5 @@
 package Extra.Ejercicio29E;
 
-import Extra.Ejercicio23E.Ejercicio23Exception;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -31,11 +30,10 @@ public class Ejercicio29E {
     }
 
     /**
-     * Este método va a crear un DocumentBuilder para así facilitar esta parte del código
+     * Este método va a crear un DocumentBuilder para así facilitar esta parte del código,
      * ya que siempre es la misma
-     *
-     * @return el DocumentBuilder
-     * @throws Ejercicio23Exception
+     * @return
+     * @throws Ejercicio29EException
      */
     public static DocumentBuilder crearDocumentBuilder() throws Ejercicio29EException {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -49,9 +47,7 @@ public class Ejercicio29E {
 
     /**
      * Este método imprime el título ubicado en la cabeza del html
-     *
-     * @throws Ejercicio29EException en caso de que el Path sea inválido
-     *                               o al parsear haya algún otro tipo de error
+     * @throws Ejercicio29EException
      */
     public static void imprimirTitulo() throws Ejercicio29EException {
         try {
@@ -67,10 +63,8 @@ public class Ejercicio29E {
 
     /**
      * Este método va a contar el número de párrafos del documento completo
-     *
-     * @return el número total de párrafos
-     * @throws Ejercicio29EException en caso de que el Path no sea válido o haya
-     *                               algún problema al parsear
+     * @return el número de párrafos
+     * @throws Ejercicio29EException
      */
     public static int contarParrafos() throws Ejercicio29EException {
         try {
@@ -87,9 +81,7 @@ public class Ejercicio29E {
 
     /**
      * Este método va a imprimir los enlaces y su contenido de texto
-     *
-     * @throws Ejercicio29EException en caso de Path inválido o problema
-     *                               al parsear
+     * @throws Ejercicio29EException
      */
     public static void imprimirEnlacesYContenido() throws Ejercicio29EException {
         try {
@@ -109,9 +101,7 @@ public class Ejercicio29E {
     /**
      * Este método imprime los títulos de los libros que están en un
      * artículo destacado
-     *
-     * @throws Ejercicio29EException si el Path es inválido o hay problemas
-     *                               al parsear
+     * @throws Ejercicio29EException
      */
     public static void imprimirTitulosDeLibrosDestacados() throws Ejercicio29EException {
         try {
@@ -132,9 +122,7 @@ public class Ejercicio29E {
 
     /**
      * Este método va a mostrar el pie de página <footer></footer>
-     *
-     * @throws Ejercicio29EException en caso de que el Path sea inválido
-     *                               o que al parsear haya error
+     * @throws Ejercicio29EException
      */
     public static void mostrarElPieDePagina() throws Ejercicio29EException {
         try {
@@ -149,9 +137,7 @@ public class Ejercicio29E {
 
     /**
      * Este método va a mostrar los géneros del menú lateral
-     *
-     * @throws Ejercicio29EException si el Path es inválido
-     *                               o hay algún error al parsear
+     * @throws Ejercicio29EException
      */
     public static void mostrarGenerosMenuLateral() throws Ejercicio29EException {
         try {
@@ -178,9 +164,7 @@ public class Ejercicio29E {
 
     /**
      * Este método muestra el título y el autor del libro
-     *
-     * @throws Ejercicio29EException si el Path es inválido
-     *                               o falla al parsear
+     * @throws Ejercicio29EException
      */
     public static void mostrarTituloYAutorLibro() throws Ejercicio29EException {
         try {

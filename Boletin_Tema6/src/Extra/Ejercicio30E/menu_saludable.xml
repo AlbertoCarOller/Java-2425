@@ -5,11 +5,7 @@
             <precio>6.5</precio>
             <calorias>550</calorias>
         </plato>
-        <plato codigo="1002">
-            <nombre>Hamburguesa</nombre>
-            <precio>8.0</precio>
-            <calorias>800</calorias>
-        </plato>
+        
     	<plato>
 			<nombre>Antonio a la vegana</nombre>
 			<precio>48.5</precio>
@@ -22,10 +18,6 @@
             <precio>5.5</precio>
             <calorias>420</calorias>
         </plato>
-        <plato codigo="1004">
-            <nombre>Pizza</nombre>
-            <precio>7.5</precio>
-            <calorias>750</calorias>
-        </plato>
+        
     </dia>
 </menu>
