@@ -1,5 +1,7 @@
 package Boletin3.Ejercicio4B3;
 
+import org.xml.sax.SAXException;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -85,15 +87,15 @@ public class Ejercicio4B3 {
                 flujo.forEach(l -> {
                     Matcher matcher = pattern.matcher(l);
                     String lineaNueva = l;
-                    if (matcher.find()) {
-                        /* El replaceAll() remplaza lo coincidente con el regex, por lo pasado por
-                         * parámetros, hay que tener en cuenta que también se pueden utiliza grupos
-                         * de captura, en este caso estamos diciendo que se sustituya por el grupo 1
-                         * el cual debe expresarse mediante $, IMPORTANTE TENER CUIDADO CON LO QUE
-                         * SE REMPLAZA, SE REMPLAZA CON EL REGEX COMPLETO QUE COINCIDA, en este caso
-                         * para no perder la palabra sin el número, solamente cojo la palabra ($1)*/
-                        lineaNueva = matcher.replaceAll("$1");
-                    }
+                    /* El replaceAll() remplaza lo coincidente con el regex, por lo pasado por
+                     * parámetros, hay que tener en cuenta que también se pueden utilizar grupos
+                     * de captura, en este caso estamos diciendo que se sustituya por el grupo 1
+                     * el cual debe expresarse mediante $, IMPORTANTE TENER CUIDADO CON LO QUE
+                     * SE REMPLAZA, SE REMPLAZA CON EL REGEX COMPLETO QUE COINCIDA, en este caso
+                     * para no perder la palabra sin el número, solamente cojo la palabra ($1)*/
+                    lineaNueva = matcher.replaceAll("$1");
+                    // Método sobrecargado .replaceAll()
+                    //lineaNueva = matcher.replaceAll(m -> m.group(1));
                     pw.println(lineaNueva);
                 });
             }
@@ -111,8 +113,15 @@ public class Ejercicio4B3 {
                  PrintWriter pw = new PrintWriter(new FileWriter(escribirle.toFile()))) {
                 flujo.forEach(l -> {
                     String[] partes = l.trim().split("\\s+");
-                    StringBuilder lineaNueva = new StringBuilder();
+                    //StringBuilder lineaNueva = new StringBuilder();
                     if (partes.length != 0) {
+                        /* Pattern.UNICODE_CHARACTER_CLASS acepta las palabras con tilde, el método
+                         * sobrecargado acepta una función (expresiones lambda), hace "find" cada
+                         * vez que encuentra una coincidencia en la línea y por cada coincidencia
+                         * va a reemplazar el grupo 1 que es la primera letra a mayúsculas */
+                        Pattern pattern = Pattern.compile("\\b(\\p{L})", Pattern.UNICODE_CHARACTER_CLASS);
+                        Matcher matcher = pattern.matcher(l);
+                        String lineaNueva = matcher.replaceAll(m -> m.group(1).toUpperCase());
                         for (int i = 0; i < partes.length; i++) {
                             /* Tenemos que comprobar que no esté ese String (parte) vacía o con espacios
                              * ya que al hacer .charAt(0) soltará una excepción ya que se está accediendo
@@ -122,8 +131,8 @@ public class Ejercicio4B3 {
                                  * letra debe ser sustituida por la misma, pero en mayúsculas, replace no es
                                  * una opción, ya que sustituye todas las coincidencias, en este caso con el
                                  * replaceAll() no, gracias al regex, le indicamos con ^ que debe ser la primera */
-                                lineaNueva.append(partes[i].replaceAll("^\\p{L}", String.valueOf(Character
-                                        .toUpperCase(partes[i].charAt(0))))).append(" ");
+                                /*lineaNueva.append(partes[i].replaceAll("^\\p{L}+", String.valueOf(Character
+                                        .toUpperCase(partes[i].charAt(0))))).append(" ");*/
                             }
                         }
                         pw.println(lineaNueva);
@@ -166,6 +175,7 @@ public class Ejercicio4B3 {
             try (BufferedReader br = new BufferedReader(new FileReader(leerlo.toFile()))) {
                 String linea;
                 while ((linea = br.readLine()) != null) {
+                    // En este caso he entendido por frase como cada línea
                     String[] partes = linea.split("\\s+");
                     if (partes.length < 15 && !linea.isBlank() && !linea.isEmpty()) {
                         System.out.println(linea);
