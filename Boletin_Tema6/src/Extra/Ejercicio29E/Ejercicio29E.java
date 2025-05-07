@@ -12,6 +12,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Ejercicio29E {
     public static void main(String[] args) {
@@ -19,6 +21,7 @@ public class Ejercicio29E {
             imprimirTitulo();
             System.out.println("Hay " + contarParrafos() + " párrafos");
             imprimirEnlacesYContenido();
+            System.out.println("Destacados:");
             imprimirTitulosDeLibrosDestacados();
             mostrarElPieDePagina();
             mostrarGenerosMenuLateral();
@@ -32,6 +35,7 @@ public class Ejercicio29E {
     /**
      * Este método va a crear un DocumentBuilder para así facilitar esta parte del código,
      * ya que siempre es la misma
+     *
      * @return
      * @throws Ejercicio29EException
      */
@@ -47,6 +51,7 @@ public class Ejercicio29E {
 
     /**
      * Este método imprime el título ubicado en la cabeza del html
+     *
      * @throws Ejercicio29EException
      */
     public static void imprimirTitulo() throws Ejercicio29EException {
@@ -63,6 +68,7 @@ public class Ejercicio29E {
 
     /**
      * Este método va a contar el número de párrafos del documento completo
+     *
      * @return el número de párrafos
      * @throws Ejercicio29EException
      */
@@ -81,6 +87,7 @@ public class Ejercicio29E {
 
     /**
      * Este método va a imprimir los enlaces y su contenido de texto
+     *
      * @throws Ejercicio29EException
      */
     public static void imprimirEnlacesYContenido() throws Ejercicio29EException {
@@ -101,6 +108,7 @@ public class Ejercicio29E {
     /**
      * Este método imprime los títulos de los libros que están en un
      * artículo destacado
+     *
      * @throws Ejercicio29EException
      */
     public static void imprimirTitulosDeLibrosDestacados() throws Ejercicio29EException {
@@ -108,9 +116,11 @@ public class Ejercicio29E {
             Path archivoXHTML = Path.of("Boletin_tema6/src/Extra/Ejercicio29E/libros.html");
             Document doc = crearDocumentBuilder().parse(archivoXHTML.toFile());
             NodeList articulos = doc.getDocumentElement().getElementsByTagName("article");
+            Pattern pattern = Pattern.compile("\\bdestacado\\b");
             for (int i = 0; i < articulos.getLength(); i++) {
                 Element articulo = (Element) articulos.item(i);
-                if (articulo.getAttribute("class").equals("destacado")) {
+                Matcher matcher = pattern.matcher(articulo.getAttribute("class"));
+                if (matcher.find()) {
                     System.out.println(articulo.getElementsByTagName("h3").item(0).getTextContent());
                 }
             }
@@ -122,6 +132,7 @@ public class Ejercicio29E {
 
     /**
      * Este método va a mostrar el pie de página <footer></footer>
+     *
      * @throws Ejercicio29EException
      */
     public static void mostrarElPieDePagina() throws Ejercicio29EException {
@@ -137,6 +148,7 @@ public class Ejercicio29E {
 
     /**
      * Este método va a mostrar los géneros del menú lateral
+     *
      * @throws Ejercicio29EException
      */
     public static void mostrarGenerosMenuLateral() throws Ejercicio29EException {
@@ -146,7 +158,7 @@ public class Ejercicio29E {
             NodeList menus = doc.getElementsByTagName("nav");
             for (int i = 0; i < menus.getLength(); i++) {
                 Element menu = (Element) menus.item(i);
-                if (menu.getAttribute("id").matches("generos")) {
+                if (menu.getAttribute("id").matches("(?i)generOs")) {
                     Element anteMenu = ((Element) menu.getElementsByTagName("ul").item(0));
                     NodeList opciones = anteMenu.getChildNodes();
                     for (int j = 0; j < opciones.getLength(); j++) {
@@ -164,6 +176,7 @@ public class Ejercicio29E {
 
     /**
      * Este método muestra el título y el autor del libro
+     *
      * @throws Ejercicio29EException
      */
     public static void mostrarTituloYAutorLibro() throws Ejercicio29EException {

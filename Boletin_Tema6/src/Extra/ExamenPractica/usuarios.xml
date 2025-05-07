@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<usuarios>
+    <usuario>
+        <nombre>Antonio Rodríguez</nombre>
+        <correo>olitecno@gmail.com</correo>
+        <dni>23987164K</dni>
+    </usuario>
+    <usuario>
+        <nombre>Alberto Carmona</nombre>
+        <correo>alberto@gmail.com</correo>
+        <dni>12343645P</dni>
+    </usuario>
+    <usuario>
+        <nombre>Alberto Rivero</nombre>
+        <correo>alberto.riv@gmail.com</correo>
+        <dni>67987152M</dni>
+    </usuario>
+</usuarios>

@@ -12,6 +12,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.ArrayList;
@@ -86,18 +87,26 @@ public class ExamenSimpsons {
             Path directorioDestino = Path.of("Boletin_Tema6/src/Extra/ExamenSimpsons/Directorio");
             try (Stream<Path> flujo = Files.list(directorioInicio)) {
                 flujo.filter(p -> {
-                    try {
+                    try (FileReader fr = new FileReader(p.toFile())) {
                         Pattern pattern = Pattern.compile("^(?i)copiar");
                         if (Files.isRegularFile(p)) {
-                            Matcher matcher = pattern.matcher(Files.readString(p));
+                            // Creamos un buffer con capacidad de 6 caracteres
+                            char[] buffer = new char[6];
+                            /* Si devuelve -1 al intentar leer los 6 primeros caracteres significa que no está la
+                             * palabra completa y ni siquiera tendrá 6 caracteres el fichero */
+                            if (fr.read(buffer) == -1) {
+                                return false;
+                            }
+                            // new String(buffer) se crea un String a partir del buffer de 6 caracteres
+                            Matcher matcher = pattern.matcher(new String(buffer));
                             if (Files.size(p) > 1024 && p.toFile().getName().matches(".+\\.txt")
-                                    && matcher.find()) {
+                                    && matcher.matches()) {
                                 return true;
                             }
                         }
                         return false;
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        return false;
                     }
                 }).forEach(p -> {
                     try {
@@ -109,7 +118,6 @@ public class ExamenSimpsons {
                         Files.copy(p, destino, StandardCopyOption.REPLACE_EXISTING);
 
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
                     }
                 });
             }
@@ -199,7 +207,8 @@ public class ExamenSimpsons {
                 Element capitulo = (Element) capitulos.item(i);
                 Element sinopsis = (Element) capitulo.getElementsByTagName("sinopsis").item(0);
                 Matcher matcher = pattern.matcher(sinopsis.getTextContent());
-                sinopsis.setTextContent(matcher.replaceAll(m -> "**" + m.group(1) + "**"));
+                //sinopsis.setTextContent(matcher.replaceAll(m -> "**" + m.group(1) + "**"));
+                sinopsis.setTextContent(matcher.replaceAll( "**" + "$1" + "**"));
             }
             // Guardamos los cambios
             DOMSource domSource = new DOMSource(doc);

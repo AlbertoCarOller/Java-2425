@@ -16,3 +16,8 @@ Clases:
         -> Se obtiene a partir de un Pattern, con el método matcher(texto).
         -> Permite utilizar métodos como '.matches()', que comprueba si el texto coincide con el patrón.
         -> Es como decir: “Usa esta regla (pattern) y dime si se cumple en este texto”.
+
+Importante a tener en cuenta:
+    * \\b:
+        -> Esto son fronteras entre palabras o caracteres de letras.
+        -> No habrá frontera cuando haya [A-Za-z0-9_] tendrás que cambiar de esto para que sí haya.
