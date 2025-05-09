@@ -1,0 +1,3 @@
+Usuario: chelu.garcia, LOGINS: 0
+Usuario: ana.perez, LOGINS: 1
+Usuario: antonio.oliveira, LOGINS: 1

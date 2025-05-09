@@ -1,0 +1,7 @@
+[08:00:00] ana.perez LOGIN
+[08:15:32] ana.perez UPLOAD archivo1.txt
+[08:16:01] ana.perez DOWNLOAD reporte.pdf
+[08:20:15] ana.perez LOGOUT
+[08:20:20] antonio.oliveira LOGIN
+[10:20:30] antonio.oliveira LOGOUT
+[12:40:40] chelu.garcia DELETE
