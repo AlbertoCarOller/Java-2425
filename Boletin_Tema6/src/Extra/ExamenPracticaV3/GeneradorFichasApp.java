@@ -47,73 +47,67 @@ public class GeneradorFichasApp {
             List<Videojuego> videojuegosList = new ArrayList<>();
             for (int i = 0; i < videojuegos.getLength(); i++) {
                 Element videojuego = (Element) videojuegos.item(i);
-                String id = videojuego.getAttribute("id");
-                if (id.isEmpty()) {
-                    System.out.println("El videojuego " + (i + 1) + " no tiene id");
-                    continue;
+                Videojuego videojuegoCreado = crearVideojuego(videojuego, i);
+                if (videojuegoCreado != null) {
+                    videojuegosList.add(videojuegoCreado);
                 }
-                Node titulo = null;
-                NodeList tituloList = videojuego.getElementsByTagName("titulo");
-                if (tituloList.getLength() < 1) {
-                    System.out.println("El videojuego " + (i + 1) + " no tiene título");
-                    continue;
-
-                } else {
-                    titulo = tituloList.item(0);
-                }
-                Node desarrollador = null;
-                NodeList desarrolladorList = videojuego.getElementsByTagName("desarrollador");
-                if (desarrolladorList.getLength() < 1) {
-                    System.out.println("El videojuego " + (i + 1) + " no tiene desarrollador");
-                    continue;
-
-                } else {
-                    desarrollador = desarrolladorList.item(0);
-                }
-                Node lanzamiento = null;
-                NodeList lanzamientoList = videojuego.getElementsByTagName("lanzamiento");
-                if (lanzamientoList.getLength() < 1) {
-                    System.out.println("El videojuego " + (i + 1) + " no tiene lanzamiento");
-                    continue;
-
-                } else {
-                    lanzamiento = lanzamientoList.item(0);
-                }
-                Node plataforma = null;
-                NodeList plataformaList = videojuego.getElementsByTagName("plataforma");
-                if (plataformaList.getLength() < 1) {
-                    System.out.println("El videojuego " + (i + 1) + " no tiene plataformas");
-                    continue;
-
-                } else {
-                    plataforma = plataformaList.item(0);
-                }
-                Node genero = null;
-                NodeList generoList = videojuego.getElementsByTagName("genero");
-                if (generoList.getLength() < 1) {
-                    System.out.println("El videojuego " + (i + 1) + " no tiene genero");
-                    continue;
-
-                } else {
-                    genero = generoList.item(0);
-                }
-                String descripcion = "";
-                NodeList descripcionList = videojuego.getElementsByTagName("descripcion");
-                if (descripcionList.getLength() < 1) {
-                    System.out.println("El videojuego " + (i + 1) + " no tiene descripcion");
-
-                } else {
-                    descripcion = descripcionList.item(0).getTextContent();
-                }
-                videojuegosList.add(new Videojuego(id, titulo.getTextContent(), desarrollador.getTextContent(),
-                        Integer.parseInt(lanzamiento.getTextContent()), plataforma.getTextContent(), genero.getTextContent(),
-                        descripcion));
             }
             return videojuegosList;
 
         } catch (InvalidPathException | ParserConfigurationException | SAXException | IOException e) {
             throw new GeneradorFichasException(e.getMessage());
         }
+    }
+
+    /**
+     * Transforma el Element que se le pasa por parámetros a un objeto
+     *
+     * @param videojuegoE el Element videojuego a transformar
+     * @param i           el índice del for
+     * @return el objeto Videojuego
+     */
+    public static Videojuego crearVideojuego(Element videojuegoE, int i) {
+        String id = videojuegoE.getAttribute("id");
+        if (id.isEmpty()) {
+            System.out.println("El videojuego " + (i + 1) + " no tiene id");
+            return null;
+        }
+        Node titulo = videojuegoE.getElementsByTagName("titulo").item(0);
+        if (titulo == null) {
+            System.out.println("El videojuego " + (i + 1) + " no tiene título");
+            return null;
+        }
+        Node desarrollador = videojuegoE.getElementsByTagName("desarrollador").item(0);
+        if (desarrollador == null) {
+            System.out.println("El videojuego " + (i + 1) + " no tiene desarrollador");
+            return null;
+        }
+        Node lanzamiento = videojuegoE.getElementsByTagName("lanzamiento").item(0);
+        if (lanzamiento == null) {
+            System.out.println("El videojuego " + (i + 1) + " no tiene lanzamiento");
+            return null;
+        }
+        Node plataforma = videojuegoE.getElementsByTagName("plataforma").item(0);
+        if (plataforma == null) {
+            System.out.println("El videojuego " + (i + 1) + " no tiene plataformas");
+            return null;
+        }
+        Node genero = videojuegoE.getElementsByTagName("genero").item(0);
+        if (genero == null) {
+            System.out.println("El videojuego " + (i + 1) + " no tiene genero");
+            return null;
+        }
+        String descripcionE = "";
+        Node descripcion = videojuegoE.getElementsByTagName("descripcion").item(0);
+        if (descripcion == null) {
+            System.out.println("El videojuego " + (i + 1) + " no tiene descripción");
+
+        } else {
+            descripcionE = descripcion.getTextContent();
+        }
+        return new Videojuego(id, titulo.getTextContent(), desarrollador.getTextContent(),
+                Integer.parseInt(lanzamiento.getTextContent()), plataforma.getTextContent(),
+                genero.getTextContent(), descripcionE);
     }
 
     /**
@@ -126,12 +120,9 @@ public class GeneradorFichasApp {
         Pattern pattern = Pattern.compile("\\bPEGI:\\s?(\\d{1,2})\\b");
         videojuegos.forEach(v -> {
             Matcher matcher = pattern.matcher(v.getDescripcion());
-            if (matcher.find()) {
-                System.out.println("Videojuego: " + v.getTitulo() + " PEGI: " + matcher.group(1));
-
-            } else {
-                System.out.println("El videojuego " + v.getTitulo() + " no tiene PEGI");
-            }
+            String s = matcher.find() ? "Videojuego: " + v.getTitulo() + " PEGI: " + matcher.group(1)
+                    : "El videojuego " + v.getTitulo() + " no tiene PEGI";
+            System.out.println(s);
         });
     }
 
@@ -182,7 +173,7 @@ public class GeneradorFichasApp {
      * Muestra por pantalla la información básica especificada
      *
      * @param videojuegos una lista con todos los videojuegos
-     * @param fichas una lista con todas las fichas
+     * @param fichas      una lista con todas las fichas
      */
     public static void mostrarInformacionPorConsola(List<Videojuego> videojuegos, List<Path> fichas) {
         System.out.println("Número total de videojuegos: " + videojuegos.size());
@@ -190,5 +181,4 @@ public class GeneradorFichasApp {
         System.out.println("Nombres de ficheros generados: ");
         fichas.forEach(p -> System.out.println(p.toFile().getName()));
     }
-    // TODO: optimizar el código
 }

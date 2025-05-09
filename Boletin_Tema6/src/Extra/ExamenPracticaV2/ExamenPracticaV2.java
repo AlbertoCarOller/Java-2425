@@ -1,7 +1,18 @@
 package Extra.ExamenPracticaV2;
 
 import Extra.ExamenPractica.ExamenPracticaException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +33,10 @@ public class ExamenPracticaV2 {
         try {
             copiarFicherosValidos();
             normalizarFicheros();
-            System.out.println(usuariosLogins());
+            crearResumenFichero(usuariosLogins());
+            contarAdminYUsuarios();
+            crearXMLModificado();
+            System.out.println("Dominio que más se repite: " + obtenerEmailMasComun());
 
         } catch (ExamenPracticaV2Exception e) {
             System.out.println(e.getMessage());
@@ -161,7 +176,13 @@ public class ExamenPracticaV2 {
         }
     }
 
-    // TODO: comentar este método y terminar el resto de métodos
+    /**
+     * Este método va a guardar los usuarios con el número de logins de
+     * todos los usuarios de los ficheros válidos
+     *
+     * @return un mapa con el nombre del usuario y el número de logins
+     * @throws ExamenPracticaV2Exception
+     */
     public static Map<String, Integer> usuariosLogins() throws ExamenPracticaV2Exception {
         try {
             Map<String, Integer> usuariosConLogins = new HashMap<>();
@@ -187,6 +208,127 @@ public class ExamenPracticaV2 {
             return usuariosConLogins;
 
         } catch (InvalidPathException e) {
+            throw new ExamenPracticaV2Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método va a crear el directorio de resúmen
+     * junto con un fichero que contendrá cada usuario
+     * con el número de LOGINS
+     *
+     * @param usuarioLogins
+     * @throws ExamenPracticaV2Exception
+     */
+    public static void crearResumenFichero(Map<String, Integer> usuarioLogins) throws ExamenPracticaV2Exception {
+        try {
+            Path directorioResumen = Path.of("Boletin_Tema6/src/Extra/ExamenPracticaV2/resumen");
+            if (!Files.exists(directorioResumen)) {
+                Files.createDirectory(directorioResumen);
+            }
+            Path ficheroResumen = Path.of("Boletin_Tema6/src/Extra/ExamenPracticaV2/resumen/resumenUsuarios.txt");
+            try (PrintWriter pw = new PrintWriter(new FileWriter(ficheroResumen.toFile()))) {
+                usuarioLogins.keySet().forEach(u -> pw.println("Usuario: " + u + ", LOGINS: " + usuarioLogins.get(u)));
+            }
+
+        } catch (InvalidPathException | IOException e) {
+            throw new ExamenPracticaV2Exception(e.toString());
+        }
+    }
+
+    /**
+     * Este método cuenta los usuarios que hay en el XML y los usuarios
+     * que son admins
+     *
+     * @throws ExamenPracticaV2Exception
+     */
+    public static void contarAdminYUsuarios() throws ExamenPracticaV2Exception {
+        try {
+            Path archivoXML = Path.of("Boletin_Tema6/src/Extra/ExamenPracticaV2/usuarios.xml");
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(archivoXML.toFile());
+            NodeList usuarios = doc.getDocumentElement().getElementsByTagName("usuario");
+            int contadorUsuarios = 0;
+            int contadorAdmins = 0;
+            for (int i = 0; i < usuarios.getLength(); i++) {
+                contadorUsuarios++;
+                Element usuario = (Element) usuarios.item(i);
+                Node rol = usuario.getElementsByTagName("rol").item(0);
+                if (rol != null) {
+                    Element rolE = (Element) rol;
+                    if (rolE.getTextContent().matches("(?i)admin")) {
+                        contadorAdmins++;
+                    }
+                }
+            }
+            System.out.println("Contador usuarios: " + contadorUsuarios);
+            System.out.println("Contador admins: " + contadorAdmins);
+
+        } catch (InvalidPathException | IOException | ParserConfigurationException | SAXException e) {
+            throw new ExamenPracticaV2Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método va a crear un nuevo fichero XML a partir del fichero XML original
+     * modificando el nombre (espacios por '-')
+     *
+     * @throws ExamenPracticaV2Exception
+     */
+    public static void crearXMLModificado() throws ExamenPracticaV2Exception {
+        try {
+            Path archivoXMLModificado = Path.of("Boletin_Tema6/src/Extra/ExamenPracticaV2/usuarios_modificados.xml");
+            Path archivoXML = Path.of("Boletin_Tema6/src/Extra/ExamenPracticaV2/usuarios.xml");
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(archivoXML.toFile());
+            NodeList nombres = doc.getDocumentElement().getElementsByTagName("nombre");
+            for (int i = 0; i < nombres.getLength(); i++) {
+                Element nombre = (Element) nombres.item(i);
+                nombre.setTextContent(nombre.getTextContent().replaceAll("\\s", "-"));
+            }
+            DOMSource domSource = new DOMSource(doc);
+            StreamResult streamResult = new StreamResult(archivoXMLModificado.toFile());
+            TransformerFactory.newInstance().newTransformer().transform(domSource, streamResult);
+
+        } catch (InvalidPathException | ParserConfigurationException | SAXException | IOException |
+                 TransformerException e) {
+            throw new ExamenPracticaV2Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método va a devolver el dominio de correo que más se repite
+     * en todos los usuarios
+     *
+     * @return el dominio que más se repite
+     * @throws ExamenPracticaV2Exception
+     */
+    public static String obtenerEmailMasComun() throws ExamenPracticaV2Exception {
+        try {
+            Path archivoXML = Path.of("Boletin_Tema6/src/Extra/ExamenPracticaV2/usuarios.xml");
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(archivoXML.toFile());
+            NodeList correos = doc.getDocumentElement().getElementsByTagName("email");
+            Pattern pattern = Pattern.compile("@([a-z.]+)$");
+            Map<String, Integer> correosVeces = new HashMap<>();
+            // Recorremos todos los correos
+            for (int i = 0; i < correos.getLength(); i++) {
+                Element correo = (Element) correos.item(i);
+                Matcher matcher = pattern.matcher(correo.getTextContent());
+                // Si se encuentra un correo entra (esto es simplemente para poder utilizar el group)
+                if (matcher.find()) {
+                    // Si el dominio no está en el mapa se añade, con valor de 1, porque se ha encontrado
+                    if (!correosVeces.containsKey(matcher.group(1))) {
+                        correosVeces.put(matcher.group(1), 1);
+
+                        // Si se encuentra en el mapa se añade 1 al valor que ya tenía
+                    } else {
+                        correosVeces.replace(matcher.group(1), correosVeces.get(matcher.group(1)) + 1);
+                    }
+                }
+            }
+            // Devolvemos el dominio que se repita más de una vez
+            return correosVeces.keySet().stream().max(Comparator.comparingInt(correosVeces::get))
+                    .orElseThrow(() -> new ExamenPracticaV2Exception("No hay emails"));
+
+        } catch (InvalidPathException | ParserConfigurationException | SAXException | IOException e) {
             throw new ExamenPracticaV2Exception(e.getMessage());
         }
     }
