@@ -1,0 +1,7 @@
+[08:00:00] usuario_oculto LOGIN
+[08:15:32] usuario_oculto UPLOAD archivo1.txt
+[08:16:01] usuario_oculto DOWNLOAD reporte.pdf
+[08:20:15] usuario_oculto LOGOUT
+[08:20:20] usuario_oculto LOGIN
+[10:20:30] usuario_oculto LOGOUT
+[12:40:40] usuario_oculto ELIMINADO

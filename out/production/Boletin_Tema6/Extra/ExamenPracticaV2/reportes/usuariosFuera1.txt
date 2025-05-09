@@ -1,0 +1,4 @@
+[09:10:05] julio.castillo UPLOAD informe.docx
+[09:12:30] julio.castillo DOWNLOAD datos.csv
+[09:14:00] julio.castillo DELETE informe.docx
+[09:15:00] julio.castillo LOGOUT
