@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<usuarios>
+    <usuario>
+        <nombre>pedro.lopez</nombre>
+        <hora>[10:00:00] [11:15:00]</hora>
+        <accion>LOGIN LOGOUT</accion>
+    </usuario>
+    <usuario>
+        <nombre>lucia.marquez</nombre>
+        <hora>[10:30:00]</hora>
+        <accion>DELETE</accion>
+    </usuario>
+    <usuario>
+        <nombre>invitado</nombre>
+        <hora>[10:45:00] [09:00:00]</hora>
+        <accion>LOGIN VIEW</accion>
+    </usuario>
+    <usuario>
+        <nombre>elena.sanchez</nombre>
+        <hora>[11:00:00]</hora>
+        <accion>DELETE</accion>
+    </usuario>
+    <usuario>
+        <nombre>admin</nombre>
+        <hora>[07:00:00] [07:30:00] [09:00:00]</hora>
+        <accion>LOGIN DELETE DELETE</accion>
+    </usuario>
+    <usuario>
+        <nombre>user1</nombre>
+        <hora>[08:00:00]</hora>
+        <accion>VIEW</accion>
+    </usuario>
+    <usuario>
+        <nombre>user2</nombre>
+        <hora>[08:30:00]</hora>
+        <accion>LOGIN</accion>
+    </usuario>
+    <usuario>
+        <nombre>ana.perez</nombre>
+        <hora>[08:12:34] [09:15:00] [10:12:34]</hora>
+        <accion>LOGIN LOGOUT LOGIN</accion>
+    </usuario>
+    <usuario>
+        <nombre>root</nombre>
+        <hora>[08:15:10]</hora>
+        <accion>DELETE</accion>
+    </usuario>
+    <usuario>
+        <nombre>juan.gomez</nombre>
+        <hora>[08:45:00]</hora>
+        <accion>LOGIN</accion>
+    </usuario>
+</usuarios>

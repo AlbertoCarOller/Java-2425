@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><usuarios>
+    <usuario>
+        <nombre>Ana-Pérez</nombre>
+        <email>ana.perez@gmail.com</email>
+        <rol>admin</rol>
+    </usuario>
+    <usuario>
+        <nombre>Juan-García</nombre>
+        <email>juan.garcia@hotmail.com</email>
+        <rol>editor</rol>
+    </usuario>
+    <usuario>
+        <nombre>Lucía-Martínez</nombre>
+        <email>lucia.martinez@yahoo.com</email>
+        <rol>lector</rol>
+    </usuario>
+    <usuario>
+        <nombre>Carlos-Ruiz</nombre>
+        <email>carlos.ruiz@empresa.com</email>
+        <rol>editor</rol>
+    </usuario>
+    <usuario>
+        <nombre>Laura-Gómez</nombre>
+        <email>laura.gomez@gmail.com</email>
+        <rol>admin</rol>
+    </usuario>
+    <usuario>
+        <nombre>Diego-López</nombre>
+        <email>diego.lopez@gmail.com</email>
+        <rol>lector</rol>
+    </usuario>
+</usuarios>

@@ -1,0 +1,12 @@
+=========================
+INFORME DEL LIBRO DIGITAL
+=========================
+ID: BK102
+Título: 1984
+Autor: George Orwell
+Año de publicación: 1949
+Género: Distopía
+ISBN: 978-0-452-28423-4
+--------------------------
+Sinopsis: Un futuro totalitario. ISBN 978-0-452-28423-4
+==========================

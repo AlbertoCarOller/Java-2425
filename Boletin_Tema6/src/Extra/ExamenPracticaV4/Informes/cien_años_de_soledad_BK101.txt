@@ -1,0 +1,15 @@
+=========================
+INFORME DEL LIBRO DIGITAL
+=========================
+ID: BK101
+Título: Cien años de soledad
+Autor: Gabriel García Márquez
+Año de publicación: 1967
+Género: Realismo Mágico
+ISBN: : 978-84-376-0494-7
+--------------------------
+Sinopsis: 
+            Una saga familiar en el mítico pueblo de Macondo.
+            ISBN: 978-84-376-0494-7.
+        
+==========================

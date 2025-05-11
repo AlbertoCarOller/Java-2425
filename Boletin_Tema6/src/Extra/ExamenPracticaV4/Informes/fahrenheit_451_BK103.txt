@@ -1,0 +1,12 @@
+=========================
+INFORME DEL LIBRO DIGITAL
+=========================
+ID: BK103
+Título: Fahrenheit 451
+Autor: Ray Bradbury
+Año de publicación: 1953
+Género: Ciencia Ficción
+ISBN: No tiene ISBN
+--------------------------
+Sinopsis: No tiene sinopsis
+==========================

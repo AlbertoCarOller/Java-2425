@@ -1,0 +1,5 @@
+LOGIN [08:12:34] ana.perez
+DELETE [08:15:10] root
+LOGIN [08:45:00] juan.gomez
+VIEW [09:00:00] invitado
+LOGOUT [09:15:00] ana.perez

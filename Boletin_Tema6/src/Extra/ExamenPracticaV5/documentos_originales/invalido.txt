@@ -1,0 +1,3 @@
+LOGOUT [10:00:00] maria.gomez
+LOGOUT [10:10:00] pedro.lopez
+LOGOUT [10:20:00] lucia.marquez

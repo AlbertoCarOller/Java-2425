@@ -1,0 +1,12 @@
+=========================
+INFORME DEL LIBRO DIGITAL
+=========================
+ID: BK108
+Título: La pasión de Bermucristo
+Autor: Bermudín
+Año de publicación: 1999
+Género: Drama
+ISBN: No tiene ISBN
+--------------------------
+Sinopsis: Bermucristo salvó la vida de todos los programadores del planeta
+==========================
