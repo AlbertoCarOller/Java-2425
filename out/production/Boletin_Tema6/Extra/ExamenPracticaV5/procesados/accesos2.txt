@@ -1,0 +1,5 @@
+LOGIN [10:00:00] pedro.lopez
+DELETE [10:30:00] lucia.marquez
+LOGIN [10:45:00] invitado
+DELETE [11:00:00] elena.sanchez
+LOGOUT [11:15:00] pedro.lopez

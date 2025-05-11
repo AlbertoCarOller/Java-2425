@@ -1,0 +1,5 @@
+LOGIN [07:00:00] admin
+DELETE [07:30:00] admin
+VIEW [08:00:00] user1
+LOGIN [08:30:00] user2
+DELETE [09:00:00] admin

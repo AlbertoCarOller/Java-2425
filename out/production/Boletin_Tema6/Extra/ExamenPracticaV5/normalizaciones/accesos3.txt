@@ -1,0 +1,5 @@
+LOGIN [07:00:00] usuario_oculto
+ELIMINADO [07:30:00] usuario_oculto
+VIEW [08:00:00] usuario_oculto
+LOGIN [08:30:00] usuario_oculto
+ELIMINADO [09:00:00] usuario_oculto
