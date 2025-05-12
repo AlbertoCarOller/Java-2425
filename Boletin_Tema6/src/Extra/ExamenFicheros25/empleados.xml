@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<empleados>
+    <empleado>
+        <nombre>Ana García</nombre>
+        <departamento>Ventas</departamento>
+        <edad>28</edad>
+    </empleado>
+    <empleado>
+        <nombre>Carlos Martínez</nombre>
+        <departamento>Recursos Humanos</departamento>
+        <edad>45</edad>
+    </empleado>
+    <empleado>
+        <nombre>Elena Fuentes</nombre>
+        <departamento>Confidencialidad</departamento>
+        <edad>31</edad>
+    </empleado>
+    <empleado>
+        <nombre>David López</nombre>
+        <departamento>Producción</departamento>
+        <edad>38</edad>
+    </empleado>
+    <empleado>
+        <nombre>Laura Pérez</nombre>
+        <departamento>Logística</departamento>
+        <edad>41</edad>
+    </empleado>
+</empleados>
