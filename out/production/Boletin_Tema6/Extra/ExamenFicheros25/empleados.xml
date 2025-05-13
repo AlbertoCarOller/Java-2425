@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <empleados>
-    <empleado departamento="Ventas">
+    <empleado departamento="Ventas&#13;">
         <nombre>Ana García</nombre>
         <edad>28</edad>
     </empleado>
-    <empleado departamento="Recursos Humanos">
+    <empleado departamento="Recursos Humanos&#13;">
         <nombre>Carlos Martínez</nombre>
         <edad>45</edad>
     </empleado>
-    <empleado departamento="Confidencialidad">
+    <empleado departamento="Confidencialidad&#13;">
         <nombre>Elena Fuentes</nombre>
         <edad>31</edad>
     </empleado>
-    <empleado departamento="Producción">
+    <empleado departamento="Producción&#13;">
         <nombre>David López</nombre>
         <edad>38</edad>
     </empleado>
-    <empleado departamento="Logística">
+    <empleado departamento="Logística&#13;">
         <nombre>Laura Pérez</nombre>
         <edad>41</edad>
     </empleado>

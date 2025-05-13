@@ -1,0 +1,20 @@
+Nombre: Ana García
+Departamento: Ventas
+Edad: 28
+
+Nombre: Carlos Martínez
+Departamento: Recursos Humanos
+Edad: 45
+
+Nombre: Elena Fuentes
+Departamento: Confidencialidad
+Edad: 31
+
+Nombre: David López
+Departamento: Producción
+Edad: 38
+
+Nombre: Laura Pérez
+Departamento: Logística
+Edad: 41
+

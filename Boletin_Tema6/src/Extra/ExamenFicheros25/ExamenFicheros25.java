@@ -239,13 +239,11 @@ public class ExamenFicheros25 {
             Element empleado = doc.createElement("empleado");
             Element nombre = doc.createElement("nombre");
             nombre.setTextContent(matcher.group("Nombre").trim());
-            Element departamento = doc.createElement("departamento");
-            departamento.setTextContent(matcher.group("Departamento").trim());
+            empleado.setAttribute("departamento", matcher.group("Departamento").trim());
             Element edad = doc.createElement("edad");
             edad.setTextContent(matcher.group("Edad"));
             // Añadimos los nodos al empleado
             empleado.appendChild(nombre);
-            empleado.appendChild(departamento);
             empleado.appendChild(edad);
             // Añadimos el nodo empleado al nodo padre (empleados)
             empleados.appendChild(empleado);

@@ -1,0 +1,53 @@
+{
+ "MensajesCodificadosValidos.json": [
+  {
+   "id": 1042,
+   "emisor": "ShadowX",
+   "receptor": "NightOwl",
+   "fecha": "21-04-2023",
+   "mensaje": "Inicio operación en zona 7, sin incidentes."
+  },
+  {
+   "id": 2043,
+   "emisor": "GhostFox",
+   "receptor": "IronHand",
+   "fecha": "22-04-2023",
+   "mensaje": "Objetivo visualizado, procediendo con cautela."
+  },
+  {
+   "id": 3099,
+   "emisor": "StormWolf",
+   "receptor": "NightOwl",
+   "fecha": "22-04-2023",
+   "mensaje": "Zona despejada. Continuamos patrullando."
+  },
+  {
+   "id": 9999,
+   "emisor": "NightOwl",
+   "receptor": "StormWolf",
+   "fecha": "31-02-2023",
+   "mensaje": "Fecha inválida."
+  },
+  {
+   "id": 7777,
+   "emisor": "Ares",
+   "receptor": "Hades",
+   "fecha": "15-05-2023",
+   "mensaje": "Fuego cruzado en el sector 4, bajas confirmadas."
+  },
+  {
+   "id": 8712,
+   "emisor": "GhostFox",
+   "receptor": "ShadowX",
+   "fecha": "23-04-2023",
+   "mensaje": "Código Omega ejecutado sin errores."
+  },
+  {
+   "id": 1000,
+   "emisor": "NightOwl",
+   "receptor": "ShadowX",
+   "fecha": "24-04-2023",
+   "mensaje": "Último mensaje del día."
+  }
+ ]
+}
