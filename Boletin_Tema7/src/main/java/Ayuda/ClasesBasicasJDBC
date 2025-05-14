@@ -1,0 +1,42 @@
+DriverManager:
+    -> Es la puerta de entrada.
+    -> Se usa para obtener la conexión con la base de datos,
+       mediante .getConnection("jdbc:mysql://localhost:3306/empresa", "usuario", "contraseña").
+       Esta te devuelve la Connection.
+
+Connection:
+    -> Representa una conexión abierta con la base de datos.
+    -> Desde ella se pueden crear sentencias, manejar transacciones y demás.
+    -> Es lo primero que se obtiene y se debe cerrar al final.
+    -> Se debe cerrar (.close).
+
+Statement:
+    -> Se usa para consultas simples sin parámetros.
+    -> La sentencia no se le pasa directamente (Si no que stmt.executeQuery("SELECT * FROM empleados"); devuelve
+       directamente el ResultSet).
+    -> Se debe cerrar (.close).
+        - Ejemplo:
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM empleados");
+
+PreparedStatement:
+    -> Se usa con consultas con parámetros (?), esta/s se le pasan posteriormente con ps.setInt(1, 5);.
+    -> Es más seguro que Statement porque escapa las sentencias SQL.
+    -> Se le pasa directamente la sentencia (conn.prepareStatement("SELECT * FROM usuarios WHERE nombre = ?");).
+    -> Se debe cerrar (.close).
+        - Ejemplo:
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM empleados WHERE id = ?");
+        ps.setInt(1, 5);
+        ResultSet rs = ps.executeQuery();
+
+ResultSet:
+    -> Representa el resultado de una consulta SELECT.
+    -> Permite recorrer los resultados fila por fila.
+    -> Se debe cerrar (.close).
+    -> Necesita .next() para empezar a dar valores
+        - Ejemplo:
+        while (rs.next()) {
+            String nombre = rs.getString("nombre");
+            int edad = rs.getInt("edad");
+            // ...
+        }
