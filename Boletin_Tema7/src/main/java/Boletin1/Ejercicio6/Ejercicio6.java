@@ -11,7 +11,7 @@ import java.util.Properties;
 public class Ejercicio6 {
     public static void main(String[] args) {
         try {
-            System.out.println("Proveedor: " + obtenerProveedor("1952 Alpine Renault 1300"));
+            System.out.println(obtenerVentas("Leslie"));
 
         } catch (Ejercicio6Exception e) {
             System.out.println(e.getMessage());
@@ -19,33 +19,42 @@ public class Ejercicio6 {
     }
 
     /**
-     * Este método va a buscar por el nombre del producto su respectivo
-     * proveedor
-     * @param nombreProducto el nombre del producto
-     * @return el nombre del proveedor
+     * Este método va a devolver un string con los nombres de los customers junto con
+     * el monto total de todas sus ventas
+     *
+     * @param nombreEmpleado el nombre del empleado que tiene esos customers
+     * @return el nombre de los customers y el monto total
      * @throws Ejercicio6Exception
      */
-    public static String obtenerProveedor(String nombreProducto) throws Ejercicio6Exception {
+    public static String obtenerVentas(String nombreEmpleado) throws Ejercicio6Exception {
         Properties properties = new Properties();
-        try (BufferedReader br = new BufferedReader(new FileReader(Path.of(
-                "Boletin_Tema7/src/main/java/Boletin1/Ejercicio6/ejercicio6.properties").toFile()))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(
+                Path.of("Boletin_Tema7/src/main/java/Boletin1/Ejercicio6/ejercicio6.properties").toFile()))) {
             properties.load(br);
             String url = properties.getProperty("db.url");
             String user = properties.getProperty("db.user");
             String password = properties.getProperty("db.password");
             try (Connection connection = DriverManager.getConnection(url, user, password)) {
-                PreparedStatement ps = connection.prepareStatement("select productVendor from products" +
-                        " where productName LIKE (?)");
-                ps.setString(1, nombreProducto);
+                /* En las consultas el WHERE siempre va antes que GROUP BY, agrupamos por el nombre,
+                 * porque seleccionamos el nombre de customer, lo ideal es agrupar por lo que selecciono
+                 * principalmente */
+                PreparedStatement ps = connection.prepareStatement("select customers.customerName, SUM(payments.amount)" +
+                        " from customers inner join employees ON customers.salesRepEmployeeNumber = employees.employeeNumber" +
+                        " inner join payments ON customers.customerNumber = payments.customerNumber" +
+                        " where employees.firstName LIKE (?) group by customers.customerName");
+                ps.setString(1, nombreEmpleado);
                 ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    return rs.getString(1);
+                StringBuilder sb = new StringBuilder();
+                while (rs.next()) {
+                    // Guardamos los nombres y el total en el StringBuilder
+                    sb.append("Customer: ".concat(rs.getString(1)).concat(", ")
+                            .concat("Monto total: ".concat(String.valueOf(rs.getDouble(2)))).concat("\n"));
                 }
+                return sb.toString();
             }
 
         } catch (InvalidPathException | IOException | SQLException e) {
             throw new Ejercicio6Exception(e.getMessage());
         }
-        return "No hay coincidencias";
     }
 }

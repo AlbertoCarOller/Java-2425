@@ -38,8 +38,10 @@ public class Ejercicio8 {
                 PreparedStatement ps = connection.prepareStatement("delete from productlines where" +
                         " productLine LIKE (?)");
                 ps.setString(1, "RANDOM_%");
+                long inicio = System.currentTimeMillis();
                 ps.executeUpdate();
-                System.currentTimeMillis();
+                long fin = System.currentTimeMillis();
+                System.out.println((fin - inicio) / 1000 + " segundos");
             }
 
         } catch (InvalidPathException | IOException | SQLException e) {

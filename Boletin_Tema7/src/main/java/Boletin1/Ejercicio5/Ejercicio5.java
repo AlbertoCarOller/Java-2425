@@ -1,5 +1,7 @@
 package Boletin1.Ejercicio5;
 
+import Boletin1.Ejercicio6.Ejercicio6Exception;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,7 +13,7 @@ import java.util.Properties;
 public class Ejercicio5 {
     public static void main(String[] args) {
         try {
-            System.out.println("Proveedor: " + obtenerProducto("Min Lin Diecast"));
+            System.out.println("Proveedor: " + obtenerProveedor("1952 Alpine Renault 1300"));
 
         } catch (Ejercicio5Exception e) {
             System.out.println(e.getMessage());
@@ -19,29 +21,27 @@ public class Ejercicio5 {
     }
 
     /**
-     * Este método va a devolver el nombre del producto que tiene
-     * como proveedor el nombre pasado por parámetros
-     *
-     * @param nombreProveedor es el nombre del proveedor del producto
-     * @return el nombre del producto con el proveedor especificado
-     * @throws Ejercicio5Exception
+     * Este método va a buscar por el nombre del producto su respectivo
+     * proveedor
+     * @param nombreProducto el nombre del producto
+     * @return el nombre del proveedor
+     * @throws Ejercicio6Exception
      */
-    public static String obtenerProducto(String nombreProveedor) throws Ejercicio5Exception {
+    public static String obtenerProveedor(String nombreProducto) throws Ejercicio5Exception {
         Properties properties = new Properties();
         try (BufferedReader br = new BufferedReader(new FileReader(Path.of(
-                "Boletin_Tema7/src/main/java/Boletin1/Ejercicio5/ejercicio5.properties").toFile()))) {
+                "Boletin_Tema7/src/main/java/Boletin1/Ejercicio6/ejercicio6.properties").toFile()))) {
             properties.load(br);
             String url = properties.getProperty("db.url");
             String user = properties.getProperty("db.user");
             String password = properties.getProperty("db.password");
             try (Connection connection = DriverManager.getConnection(url, user, password)) {
-                PreparedStatement ps = connection.prepareStatement("select * from products where" +
-                        " productVendor LIKE (?)");
-                ps.setString(1, nombreProveedor);
+                PreparedStatement ps = connection.prepareStatement("select productVendor from products" +
+                        " where productName LIKE (?)");
+                ps.setString(1, nombreProducto);
                 ResultSet rs = ps.executeQuery();
-                // Antes de poder obtener un campo del ResultSet, se debe llamar a .next() para comprobar que hay campos
                 if (rs.next()) {
-                    return rs.getString("productName");
+                    return rs.getString(1);
                 }
             }
 

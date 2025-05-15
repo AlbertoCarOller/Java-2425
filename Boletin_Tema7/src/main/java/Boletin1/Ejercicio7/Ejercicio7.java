@@ -35,6 +35,7 @@ public class Ejercicio7 {
             String password = properties.getProperty("db.password");
             try (Connection connection = DriverManager.getConnection(url, user, password)) {
                 // Se van a intentar crear 1000000 de Strings para posteriormente insertarlos
+                long inicio = System.currentTimeMillis();
                 for (int i = 0; i < 1000000; i++) {
                     String nombreCategoria = "RANDOM_";
                     // Se generan 8 números de los que va seguido el 'RANDOM_'
@@ -46,7 +47,8 @@ public class Ejercicio7 {
                     ps.setString(1, nombreCategoria);
                     ps.setString(2, String.valueOf(i));
                 }
-                System.out.println(System.currentTimeMillis());
+                long fin = System.currentTimeMillis();
+                System.out.println((fin - inicio) / 1000 + " segundos");
             }
 
         } catch (InvalidPathException | IOException | SQLException e) {
@@ -71,6 +73,7 @@ public class Ejercicio7 {
             String password = properties.getProperty("db.password");
             try (Connection connection = DriverManager.getConnection(url, user, password)) {
                 // Se van a intentar crear 1000000 de Strings para posteriormente insertarlos
+                long inicio = System.currentTimeMillis();
                 for (int i = 0; i < 1000000; i++) {
                     String nombreCategoria = "RANDOM_";
                     // Se generan 8 números de los que va seguido el 'RANDOM_'
@@ -78,10 +81,11 @@ public class Ejercicio7 {
                         nombreCategoria = nombreCategoria.concat(String.valueOf((int) (Math.random() * 9) + 1));
                     }
                     Statement st = connection.createStatement();
-                    st.executeUpdate("\"Insert into productlines (productLine, textDescription) values ("
+                    st.executeUpdate("Insert into productlines (productLine, textDescription) values ("
                             + nombreCategoria + ", " + i + ")");
                 }
-                System.out.println(System.currentTimeMillis());
+                long fin = System.currentTimeMillis();
+                System.out.println((fin - inicio) / 1000 + " segundos");
             }
 
         } catch (InvalidPathException | IOException | SQLException e) {
