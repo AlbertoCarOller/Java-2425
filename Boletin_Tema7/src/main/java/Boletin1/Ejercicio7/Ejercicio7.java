@@ -11,7 +11,8 @@ import java.util.Properties;
 public class Ejercicio7 {
     public static void main(String[] args) {
         try {
-            insetarCategoriasAleatorias();
+            //insetarCategoriasAleatorias();
+            insetarCategoriasAleatoriasV2();
 
         } catch (Ejercicio7Exception e) {
             System.out.println(e.getMessage());
@@ -36,7 +37,7 @@ public class Ejercicio7 {
             try (Connection connection = DriverManager.getConnection(url, user, password)) {
                 // Se van a intentar crear 1000000 de Strings para posteriormente insertarlos
                 long inicio = System.currentTimeMillis();
-                for (int i = 0; i < 1000000; i++) {
+                for (int i = 0; i < 50; i++) {
                     String nombreCategoria = "RANDOM_";
                     // Se generan 8 números de los que va seguido el 'RANDOM_'
                     for (int j = 0; j < 8; j++) {
@@ -72,9 +73,9 @@ public class Ejercicio7 {
             String user = properties.getProperty("db.user");
             String password = properties.getProperty("db.password");
             try (Connection connection = DriverManager.getConnection(url, user, password)) {
-                // Se van a intentar crear 1000000 de Strings para posteriormente insertarlos
+                // Se van a intentar crear 50 de Strings para posteriormente insertarlos
                 long inicio = System.currentTimeMillis();
-                for (int i = 0; i < 1000000; i++) {
+                for (int i = 0; i < 50; i++) {
                     String nombreCategoria = "RANDOM_";
                     // Se generan 8 números de los que va seguido el 'RANDOM_'
                     for (int j = 0; j < 8; j++) {
@@ -82,7 +83,7 @@ public class Ejercicio7 {
                     }
                     Statement st = connection.createStatement();
                     st.executeUpdate("Insert into productlines (productLine, textDescription) values ("
-                            + nombreCategoria + ", " + i + ")");
+                            + "'" + nombreCategoria + "'" + ", " + "'" +  i + "'" + ")");
                 }
                 long fin = System.currentTimeMillis();
                 System.out.println((fin - inicio) / 1000 + " segundos");
