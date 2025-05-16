@@ -49,7 +49,7 @@ public class Ejercicio7 {
                     ps.setString(2, String.valueOf(i));
                 }
                 long fin = System.currentTimeMillis();
-                System.out.println((fin - inicio) / 1000 + " segundos");
+                System.out.println((fin - inicio) + " milisegundos");
             }
 
         } catch (InvalidPathException | IOException | SQLException e) {
@@ -86,7 +86,7 @@ public class Ejercicio7 {
                             + "'" + nombreCategoria + "'" + ", " + "'" +  i + "'" + ")");
                 }
                 long fin = System.currentTimeMillis();
-                System.out.println((fin - inicio) / 1000 + " segundos");
+                System.out.println((fin - inicio) + " milisegundos");
             }
 
         } catch (InvalidPathException | IOException | SQLException e) {

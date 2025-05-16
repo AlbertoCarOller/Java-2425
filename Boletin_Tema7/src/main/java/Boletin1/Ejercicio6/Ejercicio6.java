@@ -38,10 +38,15 @@ public class Ejercicio6 {
                 /* En las consultas el WHERE siempre va antes que GROUP BY, agrupamos por el nombre,
                  * porque seleccionamos el nombre de customer, lo ideal es agrupar por lo que selecciono
                  * principalmente */
-                PreparedStatement ps = connection.prepareStatement("select customers.customerName, SUM(payments.amount)" +
-                        " from customers inner join employees ON customers.salesRepEmployeeNumber = employees.employeeNumber" +
-                        " inner join payments ON customers.customerNumber = payments.customerNumber" +
-                        " where employees.firstName LIKE (?) group by customers.customerName");
+                PreparedStatement ps = connection.prepareStatement(
+                        "select customers.customerName, sum(orderDetails.quantityOrdered *  orderDetails.priceEach)" +
+                                " from orderDetails" +
+                                " inner join orders ON orderDetails.orderNumber = orders.orderNumber" +
+                                " inner join customers ON orders.customerNumber = customers.customerNumber" +
+                                " inner join employees ON customers.salesRepEmployeeNumber = employees.employeeNumber" +
+                                " where employees.firstName like ?" +
+                                " group by customers.customerName");
+                // TODO: hacer cambios, multiplicar y obtener el total
                 ps.setString(1, nombreEmpleado);
                 ResultSet rs = ps.executeQuery();
                 StringBuilder sb = new StringBuilder();
