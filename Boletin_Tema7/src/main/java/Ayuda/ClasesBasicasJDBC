@@ -40,3 +40,20 @@ ResultSet:
             int edad = rs.getInt("edad");
             // ...
         }
+
+ScripReferencias:
+    -> Este scrip te permitirá ver las relaciones entre las tablas
+       las que dependen de otras y demás.
+    -> Script:
+        // Se seleccionan los nombres de las tablas, de las relaciones y de la tabla a la que se hace referencia
+        SELECT
+            TABLE_NAME,
+            CONSTRAINT_NAME,
+            REFERENCED_TABLE_NAME
+        // De una tabla de una base de datos ya existente que guarda esta información
+        FROM
+            INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+        // Cuando la base de datos sea la que estamos trabajando y filtrando por las foráneas
+        WHERE
+            TABLE_SCHEMA = 'classicmodels'
+            AND REFERENCED_TABLE_NAME IS NOT NULL;

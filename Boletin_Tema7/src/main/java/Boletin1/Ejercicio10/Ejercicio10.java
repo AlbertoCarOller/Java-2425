@@ -9,6 +9,8 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.sql.*;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Ejercicio10 {
     public static void main(String[] args) {
@@ -112,31 +114,334 @@ public class Ejercicio10 {
     }
 
     /**
-     * Este método va a actuar como menú y va a solicitar
-     * los datos correspondiente al usuario
+     * Este método va a mostrar todas las categorías de
+     * todos los productos
      *
+     * @param connection la conexión a la base de datos
      * @throws Ejercicio10Exception
      */
-    public static void mostrarMenuPreguntas(Connection connection) throws Ejercicio10Exception {
-        // Solicitamos los datos al usuario
-        String codigoProducto = MiEntradaSalida.solicitarCadena("Introduce el código del producto");
-        String nombreProducto = MiEntradaSalida.solicitarCadena("Introduce el nombre del producto");
-        String categoriaProducto = MiEntradaSalida.solicitarCadena("Introduce la categoría del producto");
-        String escalaProducto = MiEntradaSalida.solicitarCadena("Introduce la escala del producto");
-        String proveedorProducto = MiEntradaSalida.solicitarCadena("Introduce el proveedor del producto");
-        String descripcionProducto = MiEntradaSalida.solicitarCadena("Introduce la descripción del producto");
-        int cantidadStockProducto = MiEntradaSalida.solicitarEntero("Introduce la cantidad en stock del producto");
-        double precioCompraProducto = MiEntradaSalida.solicitarDoublePositivo("Introduce el precio de compra" +
-                " del producto");
-        double msrpProducto = MiEntradaSalida.solicitarDoublePositivo("Introduce el msrp del producto");
-        // Insertamos el nuevo producto a la base de datos
-        insertarNuevoProducto(codigoProducto, nombreProducto, categoriaProducto, escalaProducto, proveedorProducto,
-                descripcionProducto, cantidadStockProducto, precioCompraProducto, msrpProducto, connection);
-        // Solicitamos y comprobamos la existencia del número del cliente
-        int numCliente = -1;
-        // Mientras el número del cliente no sea correcto se seguirá solicitando
-        while (!validarNumCliente(numCliente, connection)) {
-            numCliente = MiEntradaSalida.solicitarEntero("Introduce el número del cliente");
+    public static void mostrarCategorias(Connection connection) throws Ejercicio10Exception {
+        try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select productLine from products");
+            while (rs.next()) {
+                System.out.println(rs.getString(1));
+            }
+
+        } catch (SQLException e) {
+            throw new Ejercicio10Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método va a validar que la categoría
+     * introducida por parámetros existe
+     *
+     * @param categoria  el nombre de la categoría a validar
+     * @param connection la conexión con la base de datos
+     * @return si es correcta o no
+     * @throws Ejercicio10Exception
+     */
+    public static boolean validarCategoria(String categoria, Connection connection) throws Ejercicio10Exception {
+        try {
+            PreparedStatement ps = connection.prepareStatement("select productCode from products " +
+                    "where productName like ?");
+            ps.setString(1, categoria);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+
+        } catch (SQLException e) {
+            throw new Ejercicio10Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método va a mostrar el nombre y precio de los productos
+     * que pertenezcan a la categoría en concreto
+     *
+     * @param categoria  la categoría de los productos
+     * @param connection la conexión a la base de datos
+     * @throws Ejercicio10Exception
+     */
+    public static void mostrarProductosCategoria(String categoria, Connection connection) throws Ejercicio10Exception {
+        try {
+            PreparedStatement ps = connection.prepareStatement("select productName, MSRP from products" +
+                    " where productLine like ?");
+            ps.setString(1, categoria);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                System.out.println("Producto: ".concat(rs.getString(1).concat(" ,Precio: ")
+                        .concat(String.valueOf(rs.getDouble(2)))));
+            }
+
+        } catch (SQLException e) {
+            throw new Ejercicio10Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método va a comprobar que el código del producto
+     * exista
+     *
+     * @param codigoProducto el código del producto a validar
+     * @param connection     la conexión a la base de datos
+     * @return si es válido o no
+     * @throws Ejercicio10Exception
+     */
+    public static boolean validarCodigoProducto(String codigoProducto, Connection connection) throws Ejercicio10Exception {
+        try {
+            PreparedStatement ps = connection.prepareStatement("select productName from products where" +
+                    " productCode like ?");
+            ps.setString(1, codigoProducto);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+
+        } catch (SQLException e) {
+            throw new Ejercicio10Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método va a validar si hay stock suficiente para el producto
+     * específico
+     *
+     * @param codigo     el código del producto
+     * @param unidades   las unidades solicitadas
+     * @param connection la conexión a la base de datos
+     * @return
+     * @throws Ejercicio10Exception
+     */
+    public static boolean validarUnidades(String codigo, int unidades, Connection connection) throws Ejercicio10Exception {
+        try {
+            PreparedStatement ps = connection.prepareStatement("select * from products where" +
+                    " productCode like ? AND quantityInStock <= ?");
+            ps.setString(1, codigo);
+            ps.setInt(2, unidades);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+
+        } catch (SQLException e) {
+            throw new Ejercicio10Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método va a restar el stock de productos disponibles
+     * del producto del cual se ha hecho el pedido
+     *
+     * @param codigo     el código del producto
+     * @param unidades   las unidades a restar
+     * @param connection la conexión a la base de datos
+     * @throws Ejercicio10Exception
+     */
+    public static void restarStock(String codigo, int unidades, Connection connection) throws Ejercicio10Exception {
+        try {
+            PreparedStatement ps = connection.prepareStatement("update products set quantityInStock =" +
+                    " quantityInStock - ? where productCode like ?");
+            ps.setInt(1, unidades);
+            ps.setString(2, codigo);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new Ejercicio10Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método va a crear el pedido que se va a ver
+     * reflejado en la base de datos
+     *
+     * @param numCliente el número del cliente
+     * @param connection la conexión a la base de datos
+     * @throws Ejercicio10Exception
+     */
+    public static int crearPedido(int numCliente, Connection connection) throws Ejercicio10Exception {
+        try {
+            // Obtenemos el 'orderNumber' mayor y le sumamos 1, ya que van consecutivo
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select MAX(orderNumber) from orders");
+            int orderNumberNuevo = 0;
+            if (rs.next()) {
+                orderNumberNuevo = rs.getInt(1) + 1;
+            }
+            // Creamos la order
+            PreparedStatement ps = connection.prepareStatement("insert into orders (orderNumber, orderDate," +
+                    " requiredDate, status, customerNumber) VALUES (?, CURRENT_DATE, CURRENT_DATE + 10 INTERVAL DAY," +
+                    " ?, ?)");
+            ps.setInt(1, orderNumberNuevo);
+            ps.setString(2, "in progress");
+            ps.setInt(3, numCliente);
+            ps.executeUpdate();
+            return orderNumberNuevo;
+
+        } catch (SQLException e) {
+            throw new Ejercicio10Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método va a crear los detalles del pedido
+     * del producto concreto
+     *
+     * @param orderNumber    el número del pedido
+     * @param codigoProducto el código del producto
+     * @param cantidad       la cantidad pedida del producto
+     * @param connection     la conexión a la base de datos
+     * @throws Ejercicio10Exception
+     */
+    public static void crearDetallesPedido(int orderNumber, String codigoProducto, int cantidad, Connection connection)
+            throws Ejercicio10Exception {
+        try {
+            // Obtenemos el precio del producto al que está en venta
+            PreparedStatement ps = connection.prepareStatement("select MSRP from products where productCode like ?");
+            ResultSet rs = ps.executeQuery();
+            double precioPorProducto = 0;
+            if (rs.next()) {
+                precioPorProducto = rs.getDouble(1);
+            }
+            PreparedStatement ps1 = connection.prepareStatement("insert into orderDetails (orderNumber, " +
+                    "productCode, quantityOrdered, priceEach, orderLineNumber) VALUES (?, ?, ?, ?, ?)");
+            ps1.setInt(1, orderNumber);
+            ps1.setString(2, codigoProducto);
+            ps1.setInt(3, cantidad);
+            ps1.setDouble(4, precioPorProducto);
+            ps1.setInt(5, (int) (Math.random() * 15) + 1);
+            ps1.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new Ejercicio10Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método va a actualizar el número de productos del
+     * pedido
+     *
+     * @param orderNumber   el número del pedido a actualizar
+     * @param cantidadNueva la cantidad nueva del producto
+     * @param connection    la conexión con la base de datos
+     * @throws Ejercicio10Exception
+     */
+    public static void actualizarPedidoDetalles(int orderNumber, int cantidadNueva, Connection connection)
+            throws Ejercicio10Exception {
+        try {
+            PreparedStatement ps = connection.prepareStatement("update orderdetails set quantityOrdered = ?" +
+                    " where orderNumber = ?");
+            ps.setInt(1, cantidadNueva);
+            ps.setInt(2, orderNumber);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new Ejercicio10Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método va a mostrar un menú, solicitando los
+     * datos necesarios y llamando a los métodos correspondientes
+     *
+     * @param connection la conexión a la base de datos
+     */
+    public static void mostrarMenuPreguntas(Connection connection) {
+        /* TODO: preguntar duda ¿En una transacción al trabajar en este caso con un pedido que aún no está creado
+         *   y hacer una consulta u obtener datos de este pedido que aún no se ve reflejado en la en la bd da problemas? */
+        try {
+            // Empezamos la transacción
+            connection.setAutoCommit(false);
+            // Solicitamos los datos
+            String codigoProducto = MiEntradaSalida.solicitarCadena("Introduce el código del producto");
+            String nombreProducto = MiEntradaSalida.solicitarCadena("Introduce el nombre del producto");
+            String categoriaProducto = MiEntradaSalida.solicitarCadena("Introduce la categoría del producto");
+            String escalaProducto = MiEntradaSalida.solicitarCadena("Introduce la escala del producto");
+            String proveedorProducto = MiEntradaSalida.solicitarCadena("Introduce el proveedor del producto");
+            String descripcionProducto = MiEntradaSalida.solicitarCadena("Introduce la descripción del producto");
+            int cantidadStockProducto = MiEntradaSalida.solicitarEntero("Introduce la cantidad en stock del producto");
+            double precioCompraProducto = MiEntradaSalida.solicitarDoublePositivo("Introduce el precio de compra" +
+                    " del producto");
+            double msrpProducto = MiEntradaSalida.solicitarDoublePositivo("Introduce el msrp del producto");
+            // Insertamos el nuevo producto a la base de datos
+            insertarNuevoProducto(codigoProducto, nombreProducto, categoriaProducto, escalaProducto, proveedorProducto,
+                    descripcionProducto, cantidadStockProducto, precioCompraProducto, msrpProducto, connection);
+            // Creamos la información del resumen del pedido
+            StringBuilder sb = new StringBuilder();
+            // Solicitamos y comprobamos la existencia del número del cliente
+            int numCliente = -1;
+            // Mientras el número del cliente no sea correcto se seguirá solicitando
+            while (!validarNumCliente(numCliente, connection)) {
+                numCliente = MiEntradaSalida.solicitarEntero("Introduce el número del cliente");
+            }
+            // Guardamos el código del cliente en el resumen
+            sb.append("Cliente: ").append(numCliente);
+            int op = 1;
+            // Mientras 'op' sea 1 continúa, la primera vez va a ser 1, después depende del usuario
+            while (op == 1) {
+                // Se solicita la categoría y se valida
+                String categoria = "";
+                // Mientras no sea correcta se seguirá solicitando
+                while (!validarCategoria(categoria, connection)) {
+                    // Mostramos las categorías de los productos
+                    mostrarCategorias(connection);
+                    categoria = MiEntradaSalida.solicitarCadena("Introduce la categoría del producto");
+                }
+                // Se añade la categoría al resumen
+                sb.append(", Categoría producto: ").append(categoria);
+                // Solicitamos el código del producto y comprobamos que sea válido
+                String codigo = "";
+                while (!validarCodigoProducto(codigo, connection)) {
+                    // Mostramos los productos de la categoría
+                    mostrarProductosCategoria(categoria, connection);
+                    codigo = MiEntradaSalida.solicitarCadena("Introduce el código del producto");
+                }
+                int cantidadPedida;
+                if (sb.toString().contains(codigo)) {
+                    // Obtenemos la cantidad de ese producto pedido hasta el momento mediante expresiones regulares
+                    Pattern pattern = Pattern.compile("\\b(?<Contenido>Código\\sproducto:\\s" + codigo + "," +
+                            " Cantidad:\\s)(?<Cantidad>\\d+)\\b", Pattern.UNICODE_CHARACTER_CLASS);
+                    Matcher matcher = pattern.matcher(sb);
+                    int cantidadAcumuladaProducto = 0;
+                    if (matcher.find()) {
+                        cantidadAcumuladaProducto = Integer.parseInt(matcher.group("Cantidad"));
+                    }
+                    int cantidadPedirAhora = MiEntradaSalida.solicitarEntero("Introduce la cantidad a pedir");
+                    while (!validarUnidades(codigo, cantidadAcumuladaProducto + cantidadPedirAhora, connection)) {
+                        cantidadPedirAhora = MiEntradaSalida.solicitarEntero("Introduce la cantidad a pedir");
+                    }
+                    // Guardamos la cantidad actualizada del producto pedido
+                    cantidadPedida = cantidadAcumuladaProducto + cantidadPedirAhora;
+                    // Hacemos una copia que no se va a modificar de 'cantidadPedida' para poder utilizarlo en el flujo
+                    int copiaCantidadPedida = cantidadPedida;
+                    // Actualizamos la cantidad del producto pedido
+                    sb = new StringBuilder(matcher.replaceAll(m -> m.group("Contenido")
+                            .concat(String.valueOf(copiaCantidadPedida))));
+                    // Restamos la cantidad nueva pedida del producto
+                    restarStock(codigo, cantidadPedirAhora, connection);
+                    // En caso de que no se haya pedido antes este producto entra
+                } else {
+                    do {
+                        cantidadPedida = MiEntradaSalida.solicitarEntero("Introduce la cantidad a pedir");
+                    } while (!validarUnidades(codigo, cantidadPedida, connection));
+                    sb.append(", Código producto: ").append(codigo).append(", Cantidad: ")
+                            .append(cantidadPedida).append("\n");
+                    // Restamos la cantidad de productos del stock
+                    restarStock(codigo, cantidadPedida, connection);
+                }
+                // Se le da la opción al usuario de pedir más productos
+                op = MiEntradaSalida.solicitarEnteroPositivo("Pulse 1 para hacer otro pedido");
+                // Creamos el pedido
+                int orderNumberNuevo = crearPedido(numCliente, connection);
+                // En caso de que no exista ese producto en el pedido se añade como pedido nuevo
+                if (!sb.toString().contains(codigoProducto)) {
+                    // Creamos los detalles del pedido
+                    crearDetallesPedido(orderNumberNuevo, codigoProducto, cantidadPedida, connection);
+                    // En caso de que exista el pedido, se actualizará la cantidad de productos del pedido
+                } else {
+                    actualizarPedidoDetalles(orderNumberNuevo, cantidadPedida, connection);
+                }
+                // TODO: hacer el commit
+            }
+            // TODO: cambiar auto-commit a true
+        } catch (Ejercicio10Exception | SQLException e) {
+            // TODO: hacer el rollback y cambiar el auto-commit a true
         }
     }
 }
