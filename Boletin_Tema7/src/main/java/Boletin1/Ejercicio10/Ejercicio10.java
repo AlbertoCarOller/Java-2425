@@ -359,7 +359,7 @@ public class Ejercicio10 {
             ps.setInt(1, orderNumber);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1);
+                return rs.getDouble(1);
 
             } else {
                 throw new Ejercicio10Exception("No se puede calcular el total del pedido");
