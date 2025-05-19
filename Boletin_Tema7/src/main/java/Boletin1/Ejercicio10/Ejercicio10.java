@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.sql.*;
-import java.util.Properties;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +16,7 @@ public class Ejercicio10 {
     public static void main(String[] args) {
         try (Connection connection = establecerConexion(Path.of(
                 "Boletin_Tema7/src/main/java/Boletin1/Ejercicio10/ejercicio10.properties"))) {
-            mostrarMenuPreguntas(connection);
+            menuPrincipal(connection);
 
         } catch (Ejercicio10Exception | SQLException e) {
             System.out.println(e.getMessage());
@@ -123,7 +123,7 @@ public class Ejercicio10 {
     public static void mostrarCategorias(Connection connection) throws Ejercicio10Exception {
         try {
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select productLine from products");
+            ResultSet rs = st.executeQuery("select DISTINCT productLine from products");
             while (rs.next()) {
                 System.out.println(rs.getString(1));
             }
@@ -145,7 +145,7 @@ public class Ejercicio10 {
     public static boolean validarCategoria(String categoria, Connection connection) throws Ejercicio10Exception {
         try {
             PreparedStatement ps = connection.prepareStatement("select productCode from products " +
-                    "where productName like ?");
+                    "where productLine like ?");
             ps.setString(1, categoria);
             ResultSet rs = ps.executeQuery();
             return rs.next();
@@ -165,7 +165,7 @@ public class Ejercicio10 {
      */
     public static void mostrarProductosCategoria(String categoria, Connection connection) throws Ejercicio10Exception {
         try {
-            PreparedStatement ps = connection.prepareStatement("select productName, MSRP from products" +
+            PreparedStatement ps = connection.prepareStatement("select DISTINCT productName, MSRP from products" +
                     " where productLine like ?");
             ps.setString(1, categoria);
             ResultSet rs = ps.executeQuery();
@@ -208,13 +208,13 @@ public class Ejercicio10 {
      * @param codigo     el código del producto
      * @param unidades   las unidades solicitadas
      * @param connection la conexión a la base de datos
-     * @return
+     * @return si es correcto el número de unidades o no
      * @throws Ejercicio10Exception
      */
     public static boolean validarUnidades(String codigo, int unidades, Connection connection) throws Ejercicio10Exception {
         try {
             PreparedStatement ps = connection.prepareStatement("select * from products where" +
-                    " productCode like ? AND quantityInStock <= ?");
+                    " productCode like ? AND quantityInStock >= ?");
             ps.setString(1, codigo);
             ps.setInt(2, unidades);
             ResultSet rs = ps.executeQuery();
@@ -260,13 +260,16 @@ public class Ejercicio10 {
             // Obtenemos el 'orderNumber' mayor y le sumamos 1, ya que van consecutivo
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select MAX(orderNumber) from orders");
-            int orderNumberNuevo = 0;
+            int orderNumberNuevo;
             if (rs.next()) {
                 orderNumberNuevo = rs.getInt(1) + 1;
+
+            } else {
+                throw new Ejercicio10Exception("No se ha podido obtener el 'orderNumber' mayor");
             }
             // Creamos la order
             PreparedStatement ps = connection.prepareStatement("insert into orders (orderNumber, orderDate," +
-                    " requiredDate, status, customerNumber) VALUES (?, CURRENT_DATE, CURRENT_DATE + 10 INTERVAL DAY," +
+                    " requiredDate, status, customerNumber) VALUES (?, CURRENT_DATE, CURRENT_DATE + INTERVAL 10 DAY," +
                     " ?, ?)");
             ps.setInt(1, orderNumberNuevo);
             ps.setString(2, "in progress");
@@ -294,10 +297,14 @@ public class Ejercicio10 {
         try {
             // Obtenemos el precio del producto al que está en venta
             PreparedStatement ps = connection.prepareStatement("select MSRP from products where productCode like ?");
+            ps.setString(1, codigoProducto);
             ResultSet rs = ps.executeQuery();
             double precioPorProducto = 0;
             if (rs.next()) {
                 precioPorProducto = rs.getDouble(1);
+
+            } else {
+                throw new Ejercicio10Exception("No de ha podido obtener el precio por producto");
             }
             PreparedStatement ps1 = connection.prepareStatement("insert into orderDetails (orderNumber, " +
                     "productCode, quantityOrdered, priceEach, orderLineNumber) VALUES (?, ?, ?, ?, ?)");
@@ -337,14 +344,53 @@ public class Ejercicio10 {
     }
 
     /**
-     * Este método va a mostrar un menú, solicitando los
-     * datos necesarios y llamando a los métodos correspondientes
+     * Este método va a devolver el total de lo que ha costado el pedido
+     * creado anteriormente
+     *
+     * @param orderNumber el número del pedido creado anteriormente
+     * @param connection  la conexión a la base de datos
+     * @return el total de este pedido
+     * @throws Ejercicio10Exception
+     */
+    public static double acumularTotal(int orderNumber, Connection connection) throws Ejercicio10Exception {
+        try {
+            PreparedStatement ps = connection.prepareStatement("select quantityOrdered * priceEach from" +
+                    " orderdetails where orderNumber = ?");
+            ps.setInt(1, orderNumber);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+
+            } else {
+                throw new Ejercicio10Exception("No se puede calcular el total del pedido");
+            }
+
+        } catch (SQLException e) {
+            throw new Ejercicio10Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método es un menú el cual va a preguntar al usuario
+     * si quiere crear un producto o hacer un pedido
      *
      * @param connection la conexión a la base de datos
      */
-    public static void mostrarMenuPreguntas(Connection connection) {
-        /* TODO: preguntar duda ¿En una transacción al trabajar en este caso con un pedido que aún no está creado
-         *   y hacer una consulta u obtener datos de este pedido que aún no se ve reflejado en la en la bd da problemas? */
+    public static void menuPrincipal(Connection connection) {
+        int op = MiEntradaSalida.seleccionarOpcion("Elija una opción:",
+                new String[]{"Crear producto", "Hacer pedido"});
+        switch (op) {
+            case 1 -> menuCrearProducto(connection);
+            case 2 -> menuPedido(connection);
+        }
+    }
+
+    /**
+     * Este es el menú de creación de productos
+     *
+     * @param connection la conexión a la base de datos
+     */
+    public static void menuCrearProducto(Connection connection) {
         try {
             // Empezamos la transacción
             connection.setAutoCommit(false);
@@ -362,6 +408,36 @@ public class Ejercicio10 {
             // Insertamos el nuevo producto a la base de datos
             insertarNuevoProducto(codigoProducto, nombreProducto, categoriaProducto, escalaProducto, proveedorProducto,
                     descripcionProducto, cantidadStockProducto, precioCompraProducto, msrpProducto, connection);
+            // Si ha salido bien, se hace un commit
+            connection.commit();
+            // Se cambia el auto-commit a true
+            connection.setAutoCommit(true);
+
+        } catch (SQLException | Ejercicio10Exception e) {
+            try {
+                // Si algo sale mal hacemos un rollback
+                connection.rollback();
+                // Se cambia el auto-commit a true
+                connection.setAutoCommit(true);
+                System.out.println(e.getMessage());
+
+            } catch (SQLException e1) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Este método va a mostrar un menú para la
+     * creación de un pedido, con sus respectas
+     * validaciones
+     *
+     * @param connection la conexión a la base de datos
+     */
+    public static void menuPedido(Connection connection) {
+        try {
+            // Empezamos la transacción
+            connection.setAutoCommit(false);
             // Creamos la información del resumen del pedido
             StringBuilder sb = new StringBuilder();
             // Solicitamos y comprobamos la existencia del número del cliente
@@ -373,6 +449,12 @@ public class Ejercicio10 {
             // Guardamos el código del cliente en el resumen
             sb.append("Cliente: ").append(numCliente);
             int op = 1;
+            // Creamos la acumulación de lo que sale cada pedido
+            double acumulacionPedido = 0;
+            // Creamos un mapa donde se va a guardar código del producto y el código del pedido
+            Map<String, Integer> codProductoPedido = new HashMap<>();
+            // La cantidad de productos acumulados del cliente
+            int cantidadAcumuladaProducto = 0;
             // Mientras 'op' sea 1 continúa, la primera vez va a ser 1, después depende del usuario
             while (op == 1) {
                 // Se solicita la categoría y se valida
@@ -386,24 +468,23 @@ public class Ejercicio10 {
                 // Se añade la categoría al resumen
                 sb.append(", Categoría producto: ").append(categoria);
                 // Solicitamos el código del producto y comprobamos que sea válido
-                String codigo = "";
-                while (!validarCodigoProducto(codigo, connection)) {
+                String codigoProducto = "";
+                while (!validarCodigoProducto(codigoProducto, connection)) {
                     // Mostramos los productos de la categoría
                     mostrarProductosCategoria(categoria, connection);
-                    codigo = MiEntradaSalida.solicitarCadena("Introduce el código del producto");
+                    codigoProducto = MiEntradaSalida.solicitarCadena("Introduce el código del producto");
                 }
                 int cantidadPedida;
-                if (sb.toString().contains(codigo)) {
+                if (sb.toString().contains(codigoProducto)) {
                     // Obtenemos la cantidad de ese producto pedido hasta el momento mediante expresiones regulares
-                    Pattern pattern = Pattern.compile("\\b(?<Contenido>Código\\sproducto:\\s" + codigo + "," +
-                            " Cantidad:\\s)(?<Cantidad>\\d+)\\b", Pattern.UNICODE_CHARACTER_CLASS);
+                    Pattern pattern = Pattern.compile(", (?<Contenido>Código\\sproducto:\\s" + codigoProducto + "," +
+                            "\\sCantidad:\\s)(?<Cantidad>\\d+), ", Pattern.UNICODE_CHARACTER_CLASS);
                     Matcher matcher = pattern.matcher(sb);
-                    int cantidadAcumuladaProducto = 0;
                     if (matcher.find()) {
                         cantidadAcumuladaProducto = Integer.parseInt(matcher.group("Cantidad"));
                     }
                     int cantidadPedirAhora = MiEntradaSalida.solicitarEntero("Introduce la cantidad a pedir");
-                    while (!validarUnidades(codigo, cantidadAcumuladaProducto + cantidadPedirAhora, connection)) {
+                    while (!validarUnidades(codigoProducto, cantidadAcumuladaProducto + cantidadPedirAhora, connection)) {
                         cantidadPedirAhora = MiEntradaSalida.solicitarEntero("Introduce la cantidad a pedir");
                     }
                     // Guardamos la cantidad actualizada del producto pedido
@@ -411,37 +492,63 @@ public class Ejercicio10 {
                     // Hacemos una copia que no se va a modificar de 'cantidadPedida' para poder utilizarlo en el flujo
                     int copiaCantidadPedida = cantidadPedida;
                     // Actualizamos la cantidad del producto pedido
-                    sb = new StringBuilder(matcher.replaceAll(m -> m.group("Contenido")
-                            .concat(String.valueOf(copiaCantidadPedida))));
+                    sb = new StringBuilder(matcher.replaceAll(m -> ", ".concat(m.group("Contenido"))
+                            .concat(String.valueOf(copiaCantidadPedida)).concat(", ")));
                     // Restamos la cantidad nueva pedida del producto
-                    restarStock(codigo, cantidadPedirAhora, connection);
+                    restarStock(codigoProducto, cantidadPedirAhora, connection);
                     // En caso de que no se haya pedido antes este producto entra
                 } else {
                     do {
                         cantidadPedida = MiEntradaSalida.solicitarEntero("Introduce la cantidad a pedir");
-                    } while (!validarUnidades(codigo, cantidadPedida, connection));
-                    sb.append(", Código producto: ").append(codigo).append(", Cantidad: ")
-                            .append(cantidadPedida).append("\n");
+                    } while (!validarUnidades(codigoProducto, cantidadPedida, connection));
+                    sb.append(", Código producto: ").append(codigoProducto).append(", Cantidad: ")
+                            .append(cantidadPedida);
                     // Restamos la cantidad de productos del stock
-                    restarStock(codigo, cantidadPedida, connection);
+                    restarStock(codigoProducto, cantidadPedida, connection);
                 }
-                // Se le da la opción al usuario de pedir más productos
-                op = MiEntradaSalida.solicitarEnteroPositivo("Pulse 1 para hacer otro pedido");
-                // Creamos el pedido
-                int orderNumberNuevo = crearPedido(numCliente, connection);
+                // Almacenamos el código del pedido a crear o a actualizar
+                int orderNumber;
                 // En caso de que no exista ese producto en el pedido se añade como pedido nuevo
-                if (!sb.toString().contains(codigoProducto)) {
+                if (!codProductoPedido.containsKey(codigoProducto)) {
+                    // Creamos el pedido y guardamos el número del pedido
+                    orderNumber = crearPedido(numCliente, connection);
                     // Creamos los detalles del pedido
-                    crearDetallesPedido(orderNumberNuevo, codigoProducto, cantidadPedida, connection);
+                    crearDetallesPedido(orderNumber, codigoProducto, cantidadPedida, connection);
+                    // Añadimos al resumen el código del pedido
+                    sb.append(", Código pedido: ").append(orderNumber);
+                    // Se guarda el código del producto y del pedido
+                    codProductoPedido.put(codigoProducto, orderNumber);
                     // En caso de que exista el pedido, se actualizará la cantidad de productos del pedido
                 } else {
-                    actualizarPedidoDetalles(orderNumberNuevo, cantidadPedida, connection);
+                    // Obtenemos el número del pedido, para así poder actualizar el número de productos pedidos
+                    orderNumber = codProductoPedido.get(codigoProducto);
+                    actualizarPedidoDetalles(orderNumber, cantidadPedida, connection);
                 }
-                // TODO: hacer el commit
+                // Se le suma el total del pedido creado
+                acumulacionPedido += acumularTotal(orderNumber, connection);
+                // Hacemos el commit, es decir este pedido ya se vería reflejado en la base de datos
+                connection.commit();
+                // Se le da la opción al usuario de pedir más productos
+                op = MiEntradaSalida.solicitarEnteroPositivo("Pulse 1 para hacer otro pedido," +
+                        " cualquier otro para terminar");
             }
-            // TODO: cambiar auto-commit a true
+            // Se le añade al resumen el total
+            sb.append("\n").append("\n").append("Total: ").append(acumulacionPedido);
+            // Imprimimos el resumen
+            System.out.println(sb);
+            // Cambiamos el auto-commit a true, una vez que ya se han realizado todos los pedidos de este cliente
+            connection.setAutoCommit(true);
         } catch (Ejercicio10Exception | SQLException e) {
-            // TODO: hacer el rollback y cambiar el auto-commit a true
+            try {
+                // En caso de que haya algún problema se hará un rollback
+                connection.rollback();
+                // Se cambia el auto-commit a true
+                connection.setAutoCommit(true);
+                System.out.println(e.getMessage());
+
+            } catch (SQLException e1) {
+                System.out.println(e1.getMessage());
+            }
         }
     }
 }
