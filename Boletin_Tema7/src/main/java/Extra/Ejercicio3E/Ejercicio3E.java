@@ -62,7 +62,7 @@ public class Ejercicio3E {
                     " = quantityInStock + ? where productLine like ?");
             ps.setInt(1, cantidad);
             ps.setString(2, categoria);
-            ps.executeUpdate();
+            System.out.println("Filas actualizadas: " + ps.executeUpdate());
 
         } catch (SQLException e) {
             throw new Ejercicio3EException(e.getMessage());
