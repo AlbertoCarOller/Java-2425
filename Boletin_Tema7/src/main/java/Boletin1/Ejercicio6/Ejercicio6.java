@@ -46,7 +46,6 @@ public class Ejercicio6 {
                                 " inner join employees ON customers.salesRepEmployeeNumber = employees.employeeNumber" +
                                 " where employees.firstName like ?" +
                                 " group by customers.customerName");
-                // TODO: hacer cambios, multiplicar y obtener el total
                 ps.setString(1, nombreEmpleado);
                 ResultSet rs = ps.executeQuery();
                 StringBuilder sb = new StringBuilder();
