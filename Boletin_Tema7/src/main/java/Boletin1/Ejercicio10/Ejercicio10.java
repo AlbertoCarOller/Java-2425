@@ -1,5 +1,6 @@
 package Boletin1.Ejercicio10;
 
+import Extra.Ejercicio4E.Ejercicio4EException;
 import utils.MiEntradaSalida;
 
 import java.io.BufferedReader;
@@ -299,7 +300,7 @@ public class Ejercicio10 {
             PreparedStatement ps = connection.prepareStatement("select MSRP from products where productCode like ?");
             ps.setString(1, codigoProducto);
             ResultSet rs = ps.executeQuery();
-            double precioPorProducto = 0;
+            double precioPorProducto;
             if (rs.next()) {
                 precioPorProducto = rs.getDouble(1);
 
@@ -392,8 +393,6 @@ public class Ejercicio10 {
      */
     public static void menuCrearProducto(Connection connection) {
         try {
-            // Empezamos la transacción
-            connection.setAutoCommit(false);
             // Solicitamos los datos
             String codigoProducto = MiEntradaSalida.solicitarCadena("Introduce el código del producto");
             String nombreProducto = MiEntradaSalida.solicitarCadena("Introduce el nombre del producto");
@@ -408,22 +407,9 @@ public class Ejercicio10 {
             // Insertamos el nuevo producto a la base de datos
             insertarNuevoProducto(codigoProducto, nombreProducto, categoriaProducto, escalaProducto, proveedorProducto,
                     descripcionProducto, cantidadStockProducto, precioCompraProducto, msrpProducto, connection);
-            // Si ha salido bien, se hace un commit
-            connection.commit();
-            // Se cambia el auto-commit a true
-            connection.setAutoCommit(true);
 
-        } catch (SQLException | Ejercicio10Exception e) {
-            try {
-                // Si algo sale mal hacemos un rollback
-                connection.rollback();
-                // Se cambia el auto-commit a true
-                connection.setAutoCommit(true);
-                System.out.println(e.getMessage());
-
-            } catch (SQLException e1) {
-                System.out.println(e.getMessage());
-            }
+        } catch (Ejercicio10Exception e) {
+            System.out.println("No se ha podido crear el producto, motivo: " + e.getMessage());
         }
     }
 
