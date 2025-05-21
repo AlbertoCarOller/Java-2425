@@ -1,13 +1,13 @@
 package Extra.Ejercicio4E;
 
+import utils.MiEntradaSalida;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 public class Ejercicio4E {
@@ -15,6 +15,7 @@ public class Ejercicio4E {
         try {
             Path properties = Path.of("Boletin_Tema7/src/main/java/Extra/Ejercicio4E/ejercicio4E.properties");
             try (Connection connection = establecerConexion(properties)) {
+                menuPrincipal(connection);
             }
         } catch (SQLException | Ejercicio4EException e) {
             System.out.println(e.getMessage());
@@ -91,7 +92,7 @@ public class Ejercicio4E {
     public static void actualizarFechaEnvioPedido(int codigoPedido, Connection connection) throws Ejercicio4EException {
         try {
             PreparedStatement ps = connection.prepareStatement("update orders set shippedDate = current_date where" +
-                    " = ?");
+                    " orderNumber = ?");
             ps.setInt(1, codigoPedido);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -122,11 +123,111 @@ public class Ejercicio4E {
         }
     }
 
+    /**
+     * Este método va a solicitar al usuario una serie de
+     * número de pedidos, se validarán, uno a uno, en caso
+     * de que alguno no sea válido, se lanzará excepción,
+     * se irán guardando en una lista
+     *
+     * @param connection la conexión con la base de datos
+     * @return una lista de los números del pedido
+     * @throws Ejercicio4EException
+     */
     public static void solicitarPedidos(Connection connection) throws Ejercicio4EException {
+        // Acumulamos los número de los pedidos
+        int numPedido;
+        boolean pedirMas = false;
+        mostrarPedidosSinEnviar(connection);
+        do {
+            numPedido = MiEntradaSalida.solicitarEntero("Introduce el número del pedido");
+            validacionPedido(numPedido, connection);
+            int op = MiEntradaSalida.seleccionarOpcion("Elija una opción", new String[]{"Introducir más" +
+                    " pedidos", "Terminar"});
+            switch (op) {
+                case 1 -> pedirMas = true;
+                case 2 -> pedirMas = false;
+            }
+        } while (pedirMas);
+    }
+
+    // -Tercera parte-
+
+    /**
+     * Este método va a obtener a partir del nombre de un cliente,
+     * el número de pedidos que ha realizado y el importe total
+     *
+     * @param nombreCliente el nombre del cliente
+     * @param connection    la conexión con la base de datos
+     * @throws Ejercicio4EException
+     */
+    public static void resumenPedido(String nombreCliente, Connection connection) throws Ejercicio4EException {
         try {
-            // Acumulamos los número de los pedidos
-            List<String> pedidosNum = new ArrayList<>();
-            // TODO: terminar ejercicio
+            // Obtenemos el número del cliente a partir de su nombre
+            PreparedStatement ps = connection.prepareStatement("select customerNumber from customers" +
+                    " where customerName like ?");
+            ps.setString(1, nombreCliente);
+            ResultSet rs = ps.executeQuery();
+            // El total de pedidos realizados
+            int totalPedidos = 0;
+            double importeTotalPedidos = 0;
+            if (rs.next()) {
+                // Almacenamos el número del cliente
+                int numCliente = rs.getInt(1);
+                PreparedStatement ps1 = connection.prepareStatement("select count(orderNumber) from" +
+                        " orders where customerNumber = ?");
+                ps1.setInt(1, numCliente);
+                ResultSet rs1 = ps1.executeQuery();
+                if (rs1.next()) {
+                    totalPedidos = rs1.getInt(1);
+                }
+                // Obtenemos los números de los pedidos para poder consultar los datos 'del orderDetails'
+                PreparedStatement ps3 = connection.prepareStatement("select orderNumber from orders" +
+                        " where customerNumber = ?");
+                ps3.setInt(1, numCliente);
+                ResultSet rs2 = ps3.executeQuery();
+                while (rs2.next()) {
+                    int orderNumber = rs2.getInt(1);
+                    // Obtenemos el importe total del pedido del cliente
+                    PreparedStatement ps4 = connection.prepareStatement("select (quantityOrdered * priceEach)" +
+                            " from orderDetails where orderNumber = ?");
+                    ps4.setInt(1, orderNumber);
+                    ResultSet rs3 = ps4.executeQuery();
+                    if (rs3.next()) {
+                        // Sumamos al importe total el importe del pedido repasado
+                        importeTotalPedidos += rs3.getDouble(1);
+                    }
+                }
+            }
+            // Mostramos el resumen con los datos pedidos
+            System.out.println("Nombre cliente: " + nombreCliente + ", Pedidos: " + totalPedidos +
+                    ", Importe total: " + importeTotalPedidos + " euros");
+
+        } catch (SQLException e) {
+            throw new Ejercicio4EException(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método va a mostrar un menú con 3 opciones,
+     * el usuario deberá de elegir y se llama a los
+     * métodos correspondientes
+     *
+     * @param connection la conexión a la base de datos
+     * @throws Ejercicio4EException
+     */
+    public static void menuPrincipal(Connection connection) throws Ejercicio4EException {
+        int op = MiEntradaSalida.seleccionarOpcion("Elija una opción", new String[]{"Actualizar fecha pedido",
+                "Actualizar fecha de varios pedidos", "Mostrar resumen pedidos"});
+        switch (op) {
+            case 1 -> {
+                int codigo = MiEntradaSalida.solicitarEntero("Introduce el código del pedido");
+                validacionPedido(codigo, connection);
+            }
+            case 2 -> solicitarPedidos(connection);
+            case 3 -> {
+                String nombreCliente = MiEntradaSalida.solicitarCadena("Introduce el nombre del cliente");
+                resumenPedido(nombreCliente, connection);
+            }
         }
     }
 }
