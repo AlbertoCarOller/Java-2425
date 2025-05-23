@@ -53,28 +53,21 @@ public class Ejercicio4E {
      * @return devuelve si es válido o no
      * @throws Ejercicio4EException
      */
-    public static void validacionPedido(int codigoPedido, Connection connection) throws Ejercicio4EException {
+    public static boolean validacionPedido(int codigoPedido, Connection connection) throws Ejercicio4EException {
         try {
             PreparedStatement ps = connection.prepareStatement("select shippedDate from orders where" +
                     " orderNumber = ?");
             ps.setInt(1, codigoPedido);
             ResultSet rs = ps.executeQuery();
-            // Esto nos indicará si es válido o no y se lanzará excepción si no lo es
-            boolean valido = false;
             // Si hay filas entra
             if (rs.next()) {
                 rs.getDate(1);
                 // Se comprueba si el campo 'shippedDate' es null, si es así, entra
                 if (rs.wasNull()) {
-                    valido = true;
-                    // Se actualiza la fecha del pedido
-                    actualizarFechaEnvioPedido(codigoPedido, connection);
+                    return true;
                 }
             }
-            // Si no es válido se lanzará excepción
-            if (!valido) {
-                throw new Ejercicio4EException("El pedido no es válido");
-            }
+            return false;
 
         } catch (SQLException e) {
             throw new Ejercicio4EException(e.getMessage());
@@ -95,6 +88,24 @@ public class Ejercicio4E {
                     " orderNumber = ?");
             ps.setInt(1, codigoPedido);
             ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new Ejercicio4EException(e.getMessage());
+        }
+    }
+
+    /**
+     * Este método va a acumular en el lote todas las sentencias
+     * para posteriormente se ejecuten todas las sentencias del
+     * lote
+     *
+     * @param codigoPedido el código del pedido
+     * @param ps           el PrepareStatement que va a contener todas las sentencias
+     * @throws Ejercicio4EException
+     */
+    public static void actualizarFechaEnvioPedidoLotes(int codigoPedido, PreparedStatement ps) throws Ejercicio4EException {
+        try {
+            ps.setInt(1, codigoPedido);
+            ps.addBatch();
         } catch (SQLException e) {
             throw new Ejercicio4EException(e.getMessage());
         }
@@ -134,20 +145,40 @@ public class Ejercicio4E {
      * @throws Ejercicio4EException
      */
     public static void solicitarPedidos(Connection connection) throws Ejercicio4EException {
-        // Acumulamos los número de los pedidos
-        int numPedido;
-        boolean pedirMas = false;
-        mostrarPedidosSinEnviar(connection);
-        do {
-            numPedido = MiEntradaSalida.solicitarEntero("Introduce el número del pedido");
-            validacionPedido(numPedido, connection);
-            int op = MiEntradaSalida.seleccionarOpcion("Elija una opción", new String[]{"Introducir más" +
-                    " pedidos", "Terminar"});
-            switch (op) {
-                case 1 -> pedirMas = true;
-                case 2 -> pedirMas = false;
+        try {
+            // Acumulamos los número de los pedidos
+            int numPedido;
+            boolean pedirMas = false;
+            connection.setAutoCommit(false);
+            try {
+                PreparedStatement ps = connection.prepareStatement("update orders set shippedDate = current_date where" +
+                        " orderNumber = ?");
+                mostrarPedidosSinEnviar(connection);
+                do {
+                    numPedido = MiEntradaSalida.solicitarEntero("Introduce el número del pedido");
+                    if (validacionPedido(numPedido, connection)) {
+                        actualizarFechaEnvioPedidoLotes(numPedido, ps);
+                    }
+                    int op = MiEntradaSalida.seleccionarOpcion("Elija una opción", new String[]{"Introducir más" +
+                            " pedidos", "Terminar"});
+                    switch (op) {
+                        case 1 -> pedirMas = true;
+                        case 2 -> pedirMas = false;
+                    }
+                } while (pedirMas);
+                // Ejecutamos todas las sentencias del lote
+                ps.executeBatch();
+                // Se guardan los cambios
+                connection.commit();
+                connection.setAutoCommit(true);
+
+            } catch (Ejercicio4EException e) {
+                connection.rollback();
+                connection.setAutoCommit(true);
             }
-        } while (pedirMas);
+        } catch (SQLException e) {
+            throw new Ejercicio4EException(e.getMessage());
+        }
     }
 
     // -Tercera parte-
@@ -221,7 +252,9 @@ public class Ejercicio4E {
         switch (op) {
             case 1 -> {
                 int codigo = MiEntradaSalida.solicitarEntero("Introduce el código del pedido");
-                validacionPedido(codigo, connection);
+                if (validacionPedido(codigo, connection)) {
+                    actualizarFechaEnvioPedido(codigo, connection);
+                }
             }
             case 2 -> solicitarPedidos(connection);
             case 3 -> {
