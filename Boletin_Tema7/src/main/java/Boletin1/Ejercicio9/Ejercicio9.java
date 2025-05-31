@@ -11,7 +11,7 @@ import java.util.Properties;
 public class Ejercicio9 {
     public static void main(String[] args) {
         try (Connection connection = establecerConexion(
-                Path.of("Boletin_Tema7/src/main/java/Boletin1/Ejercicio9/ejercicio9.properties"))) {
+                Path.of("Boletin_Tema7/src/main/resources/classicmodels.properties"))) {
             //borrarInformacionEmpleado("Atelier graphique", connection);
             borrarInformacionEmpleadoV2("La Rochelle Gifts", connection);
 

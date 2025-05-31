@@ -13,7 +13,7 @@ import java.util.Properties;
 public class Ejercicio7E {
     public static void main(String[] args) {
         try {
-            Path properties = Path.of("Boletin_Tema7/src/main/java/Extra/Ejercicio7E/ejercicio7E.properties");
+            Path properties = Path.of("Boletin_Tema7/src/main/resources/classicmodels.properties");
             try (Connection connection = establecerConexion(properties)) {
                 String ciudad = "";
                 do {

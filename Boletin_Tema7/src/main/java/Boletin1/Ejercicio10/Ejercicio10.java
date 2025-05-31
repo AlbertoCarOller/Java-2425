@@ -1,6 +1,4 @@
 package Boletin1.Ejercicio10;
-
-import Extra.Ejercicio4E.Ejercicio4EException;
 import utils.MiEntradaSalida;
 
 import java.io.BufferedReader;
@@ -16,7 +14,7 @@ import java.util.regex.Pattern;
 public class Ejercicio10 {
     public static void main(String[] args) {
         try (Connection connection = establecerConexion(Path.of(
-                "Boletin_Tema7/src/main/java/Boletin1/Ejercicio10/ejercicio10.properties"))) {
+                "Boletin_Tema7/src/main/resources/classicmodels.properties"))) {
             menuPrincipal(connection);
 
         } catch (Ejercicio10Exception | SQLException e) {

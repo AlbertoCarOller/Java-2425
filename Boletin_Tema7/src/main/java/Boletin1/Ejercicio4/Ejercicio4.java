@@ -36,7 +36,7 @@ public class Ejercicio4 {
     public static void mostrarProductosMinusculaValorLetra(int precio, char primeraLetra) throws Ejercicio4Exception {
         Properties properties = new Properties();
         try (BufferedReader br = new BufferedReader(new FileReader(Path.of(
-                "Boletin_Tema7/src/main/java/Boletin1/Ejercicio3/ejercicio3.properties").toFile()))) {
+                "Boletin_Tema7/src/main/resources/classicmodels.properties").toFile()))) {
             properties.load(br);
             String url = properties.getProperty("db.url");
             String usuario = properties.getProperty("db.user");

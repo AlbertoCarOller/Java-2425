@@ -30,7 +30,7 @@ public class Ejercicio5 {
     public static String obtenerProveedor(String nombreProducto) throws Ejercicio5Exception {
         Properties properties = new Properties();
         try (BufferedReader br = new BufferedReader(new FileReader(Path.of(
-                "Boletin_Tema7/src/main/java/Boletin1/Ejercicio6/ejercicio6.properties").toFile()))) {
+                "Boletin_Tema7/src/main/resources/classicmodels.properties").toFile()))) {
             properties.load(br);
             String url = properties.getProperty("db.url");
             String user = properties.getProperty("db.user");

@@ -15,7 +15,7 @@ import java.util.Properties;
 public class Ejercicio3E {
     public static void main(String[] args) {
         try {
-            Path properties = Path.of("Boletin_Tema7/src/main/java/Extra/Ejercicio3E/ejercicio3E.properties");
+            Path properties = Path.of("Boletin_Tema7/src/main/resources/classicmodels.properties");
             try (Connection connection = establecerConexion(properties)) {
                 int cantidad = MiEntradaSalida.solicitarEntero("Introduce la cantidad a sumar:");
                 String categoria = MiEntradaSalida.solicitarCadena("Introduce la categoría:");

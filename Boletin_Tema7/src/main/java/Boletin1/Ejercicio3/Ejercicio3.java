@@ -29,7 +29,7 @@ public class Ejercicio3 {
     public static void mostrarProductosValorLetra(int precio, String primeraLetra) throws Ejercicio3Exception {
         Properties properties = new Properties();
         try (BufferedReader br = new BufferedReader(new FileReader(Path.of(
-                "Boletin_Tema7/src/main/java/Boletin1/Ejercicio3/ejercicio3.properties").toFile()))) {
+                "Boletin_Tema7/src/main/resources/classicmodels.properties").toFile()))) {
             properties.load(br);
             String url = properties.getProperty("db.url");
             String usuario = properties.getProperty("db.user");

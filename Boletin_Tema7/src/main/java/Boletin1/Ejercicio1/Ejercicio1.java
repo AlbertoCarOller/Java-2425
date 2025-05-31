@@ -12,7 +12,7 @@ public class Ejercicio1 {
     public static void main(String[] args) {
         Properties properties = new Properties();
         try (BufferedReader br = new BufferedReader(new FileReader
-                (Path.of("Boletin_Tema7/src/main/java/Boletin1/ejercicio1.properties").toFile()))) {
+                (Path.of("Boletin_Tema7/src/main/resources/classicmodels.properties").toFile()))) {
             // Cargamos el contenido del properties
             properties.load(br);
             // Obtenemos los datos del .properties

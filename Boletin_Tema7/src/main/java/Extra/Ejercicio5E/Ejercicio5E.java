@@ -13,7 +13,7 @@ import java.util.Properties;
 public class Ejercicio5E {
     public static void main(String[] args) {
         try {
-            Path properties = Path.of("Boletin_Tema7/src/main/java/Extra/Ejercicio5E/ejercicio5E.properties");
+            Path properties = Path.of("Boletin_Tema7/src/main/resources/classicmodels.properties");
             try (Connection connection = establecerConexion(properties)) {
                 String ciudad = MiEntradaSalida.solicitarCadena("Introduce la ciudad donde se ubica la oficina");
                 obtenerEmpleadosOficina(ciudad, connection);

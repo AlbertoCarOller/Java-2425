@@ -12,7 +12,7 @@ public class Ejercicio2 {
     public static void main(String[] args) {
         Properties properties = new Properties();
         try (BufferedReader br = new BufferedReader(new FileReader
-                (Path.of("Boletin_Tema7/src/main/java/Boletin1/ejercicio2.properties").toFile()))) {
+                (Path.of("Boletin_Tema7/src/main/resources/classicmodels.properties").toFile()))) {
             // Cargamos la información del fichero
             properties.load(br);
             // Guardamos los valores que necesitaremos para la conexión
