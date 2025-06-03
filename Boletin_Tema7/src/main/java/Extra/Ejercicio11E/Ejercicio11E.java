@@ -13,7 +13,7 @@ import java.util.Properties;
 public class Ejercicio11E {
     public static void main(String[] args) {
         try {
-            Path properties = Path.of("Boletin_Tema7/src/main/resources/my_test_db.properties");
+            Path properties = Path.of("Boletin_Tema7/src/main/resources/classicmodels.properties");
             try (Connection connection = establecerConexion(properties)) {
                 int op;
                 do {
@@ -97,7 +97,7 @@ public class Ejercicio11E {
             ResultSet rs = ps.getGeneratedKeys();
             while (rs.next()) {
                 // Mostramos por consola la clave que se ha generado al insertar al cliente
-                System.out.println(rs.getInt(1));
+                System.out.println("Se ha insertado correctamente el registro " + rs.getInt(1));
             }
 
         } catch (SQLException e) {
